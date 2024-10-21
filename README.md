@@ -19,6 +19,9 @@ A webform based website for posting, administrating, and viewing content
 - **SQL Server Management Studio (SSMS)**  
   [Download SSMS](https://learn.microsoft.com/en-us/sql/ssms)
 
+- **NuGet Package Manager Console**  
+  In the case of an error after setting up, run the following command in the console  
+  ```Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r```
 
 ### Versions
 - .NET Framework 4.7.2
