@@ -1,8 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ForgotPassword.aspx.cs" Inherits="es.admin.ForgotPassword" %>
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ForgotPassword.aspx.cs" Inherits="es.admin.ForgotPassword" %>
 
-    <!DOCTYPE html>
-    <html lang="en" data-bs-theme="light" data-scheme="navy">
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-scheme="navy">
 
     <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -356,4 +355,3 @@
 
     </html>
 
-</asp:Content>

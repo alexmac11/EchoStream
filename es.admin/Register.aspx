@@ -1,8 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="es.admin.Register" %>
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="es.admin.Register" %>
 
-    <!DOCTYPE html>
-    <html lang="en" data-bs-theme="light" data-scheme="navy">
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-scheme="navy">
 
     <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -402,4 +401,3 @@
 
     </html>
 
-</asp:Content>

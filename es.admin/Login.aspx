@@ -1,7 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="es.admin.Login" %>
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <!DOCTYPE html>
-    <html lang="en" data-bs-theme="light" data-scheme="navy">
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="es.admin.Login" %>
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-scheme="navy">
 
 <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -387,4 +387,3 @@
 </body>
 
 </html>
-</asp:Content>

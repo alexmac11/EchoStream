@@ -1,10 +1,9 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ForgotUsername.aspx.cs" Inherits="es.admin.ForgotUsername" %>
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ForgotUsername.aspx.cs" Inherits="es.admin.ForgotUsername" %>
 
-    <!DOCTYPE html>
-    <html lang="en" data-bs-theme="light" data-scheme="navy">
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-scheme="navy">
 
-   <head>
+  <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
    <meta name="description" content="Change your password for security reasons or reset it if you forget it.">
@@ -356,4 +355,3 @@
 
 </html>
 
-</asp:Content>

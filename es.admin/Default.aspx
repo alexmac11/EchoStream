@@ -1,9 +1,7 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="es.admin._Default" %>
+﻿<%@ Page Title="Home Page" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="es.admin._Default" %>
 
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-
-    <!DOCTYPE html>
-    <html lang="en" data-bs-theme="light" data-scheme="ocean">
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-scheme="ocean">
 
 <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -646,7 +644,7 @@
                              <div class="mainnav__categoriy py-3"> 
                                  <ul class="mainnav__menu nav flex-column">
                                    <li class="nav-item">
-                                     <a href="./Post_Managment.aspx" class="nav-link mininav-toggle"><i class="demo-pli-receipt-4 fs-5 me-2"></i>
+                                     <a href="./PostManagement.aspx" class="nav-link mininav-toggle"><i class="demo-pli-receipt-4 fs-5 me-2"></i>
                                        <span class="nav-label mininav-content ms-1">
                                               <span data-popper-arrow class="arrow"></span>
                                               Manage Posts
@@ -661,7 +659,7 @@
                              <div class="mainnav__categoriy py-3">
                                  <ul class="mainnav__menu nav flex-column">
                                    <li class="nav-item">
-                                     <a href="./Edit_Posts.aspx" class="nav-link mininav-toggle"><i class="demo-pli-pen-5 fs-5 me-2"></i>
+                                     <a href="./PostEdit.aspx" class="nav-link mininav-toggle"><i class="demo-pli-pen-5 fs-5 me-2"></i>
                                        <span class="nav-label mininav-content ms-1">
                                               <span data-popper-arrow class="arrow"></span>
                                               Edit Posts
@@ -678,7 +676,7 @@
                             <div class="mainnav__categoriy py-3">
                                <ul class="mainnav__menu nav flex-column">
                                  <li class="nav-item">
-                                   <a href="./Video_Posts.aspx" class="nav-link mininav-toggle"><i class="demo-pli-computer-secure fs-5 me-2"></i>
+                                   <a href="./PostVideo.aspx" class="nav-link mininav-toggle"><i class="demo-pli-computer-secure fs-5 me-2"></i>
                                      <span class="nav-label mininav-content ms-1">
                                             <span data-popper-arrow class="arrow"></span>
                                             Video Posts
@@ -1002,4 +1000,4 @@
 
 </html>
 
-</asp:Content>
+
