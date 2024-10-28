@@ -211,7 +211,7 @@
                         <div class="brand-wrap">
 
                         <!-- Brand logo -->
-                        <a href="index.html" class="brand-img stretched-link">
+                        <a href="Default.aspx" class="brand-img stretched-link">
                             <img src="./assets/img/logo.svg" alt="Nifty Logo" class="Nifty logo" width="16" height="16">
                         </a>
 
@@ -327,7 +327,7 @@
                                     <span class="ms-1">Settings</span>
                                     </a>
                  
-                                    <a href="#" class="nav-link">
+                                    <a href="Login.aspx" class="nav-link">
                                     <i class="demo-pli-unlock fs-5 me-2"></i>
                                     <span class="ms-1">Logout</span>
                                     </a>
