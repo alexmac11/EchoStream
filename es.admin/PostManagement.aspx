@@ -78,17 +78,6 @@
                     <div class="content__wrap">
 
 
-                       <!-- Breadcrumb -->
-                       <nav aria-label="breadcrumb">
-                          <ol class="breadcrumb">
-                             <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
-                             <li class="breadcrumb-item"><a href="./blog-apps.html">Blog Apps</a></li>
-                             <li class="breadcrumb-item active" aria-current="page">Manage Posts</li>
-                          </ol>
-                       </nav>
-                       <!-- END : Breadcrumb -->
-
-
                        <!-- Title and information -->
                        <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">Manage posts</h1>
                        <p class="text-center lead mb-5">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio, <br> esse corporis ipsam fuga ratione cum quisquam voluptas dolores ullam eius.</p>

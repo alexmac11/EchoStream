@@ -80,15 +80,7 @@
             <div class="content__wrap">
 
 
-               <!-- Breadcrumb -->
-               <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                     <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
-                     <li class="breadcrumb-item"><a href="./blog-apps.html">Blog Apps</a></li>
-                     <li class="breadcrumb-item active" aria-current="page">Add Edit Posts</li>
-                  </ol>
-               </nav>
-               <!-- END : Breadcrumb -->
+
 
 
                <h1 class="page-title mb-0 mt-2">Add Edit Posts</h1>
