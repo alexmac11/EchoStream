@@ -146,8 +146,6 @@
                                          <th>Post Title</th>
                                          <th class="text-nowrap">Creation Date</th>
                                          <th>Categories</th>
-                                         <th>Post by</th>
-                                         <th class="text-center">Status</th>
                                          <th class="text-center">Actions</th>
                                       </tr>
                                    </thead>
@@ -157,129 +155,6 @@
                                          <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">Lorem ipsum dolor sit amet</a></td>
                                          <td><span class="text-nowrap text-body-secondary">May 22, 2024</span></td>
                                          <td>Internet</td>
-                                         <td><a href="#" class="btn-link text-nowrap">Betty Murphy</a></td>
-                                         <td class="h5">
-                                            <div class="d-block badge bg-success">Published</div>
-                                         </td>
-                                         <td>
-                                            <div class="text-nowrap text-center">
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary"><i class="demo-pli-gear fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                            </div>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                         <td><img class="img-sm rounded" src="./assets/img/megamenu/img-3.jpg" alt="thumbs"></td>
-                                         <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">The copy warned the Little Blind Text</a></td>
-                                         <td><span class="text-nowrap text-body-secondary">May 24, 2024</span></td>
-                                         <td>Movies</td>
-                                         <td><a href="#" class="btn-link text-nowrap">Jack George</a></td>
-                                         <td class="h5">
-                                            <div class="d-block badge bg-success">Published</div>
-                                         </td>
-                                         <td>
-                                            <div class="text-nowrap text-center">
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary"><i class="demo-pli-gear fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                            </div>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                         <td><img class="img-sm rounded" src="./assets/img/megamenu/img-2.jpg" alt="thumbs"></td>
-                                         <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">I should be incapable of drawing a single stroke</a></td>
-                                         <td><span class="text-nowrap text-body-secondary">May 24, 2024</span></td>
-                                         <td>Sports</td>
-                                         <td><a href="#" class="btn-link text-nowrap">Lucy Doe</a></td>
-                                         <td class="h5">
-                                            <div class="d-block badge bg-light text-dark">Unpublish</div>
-                                         </td>
-                                         <td>
-                                            <div class="text-nowrap text-center">
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary"><i class="demo-pli-gear fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                            </div>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                         <td><img class="img-sm rounded" src="./assets/img/megamenu/img-4.jpg" alt="thumbs"></td>
-                                         <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">Drops of rain could be heard hitting the pane</a></td>
-                                         <td><span class="text-nowrap text-body-secondary">May 15, 2024</span></td>
-                                         <td>Entertainment</td>
-                                         <td><a href="#" class="btn-link text-nowrap">Teresa L. Doe</a></td>
-                                         <td class="h5">
-                                            <div class="d-block badge bg-light text-dark">Unpublish</div>
-                                         </td>
-                                         <td>
-                                            <div class="text-nowrap text-center">
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary"><i class="demo-pli-gear fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                            </div>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                         <td><img class="img-sm rounded" src="./assets/img/megamenu/img-6.jpg" alt="thumbs"></td>
-                                         <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">How quickly daft jumping zebras</a></td>
-                                         <td><span class="text-nowrap text-body-secondary">May 12, 2024</span></td>
-                                         <td>Tutorial</td>
-                                         <td><a href="#" class="btn-link text-nowrap">Teresa L. Doe</a></td>
-                                         <td class="h5">
-                                            <div class="d-block badge bg-success">Published</div>
-                                         </td>
-                                         <td>
-                                            <div class="text-nowrap text-center">
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary"><i class="demo-pli-gear fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                            </div>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                         <td><img class="img-sm rounded" src="./assets/img/megamenu/img-2.jpg" alt="thumbs"></td>
-                                         <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">I should be incapable of drawing a single stroke</a></td>
-                                         <td><span class="text-nowrap text-body-secondary">May 24, 2024</span></td>
-                                         <td>Sports</td>
-                                         <td><a href="#" class="btn-link text-nowrap">Lucy Doe</a></td>
-                                         <td class="h5">
-                                            <div class="d-block badge bg-light text-dark">Unpublish</div>
-                                         </td>
-                                         <td>
-                                            <div class="text-nowrap text-center">
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary"><i class="demo-pli-gear fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                            </div>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                         <td><img class="img-sm rounded" src="./assets/img/megamenu/img-5.jpg" alt="thumbs"></td>
-                                         <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">The copy warned the Little Blind Text</a></td>
-                                         <td><span class="text-nowrap text-body-secondary">May 24, 2024</span></td>
-                                         <td>Movies</td>
-                                         <td><a href="#" class="btn-link text-nowrap">Jack George</a></td>
-                                         <td class="h5">
-                                            <div class="d-block badge bg-success">Published</div>
-                                         </td>
-                                         <td>
-                                            <div class="text-nowrap text-center">
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary"><i class="demo-pli-gear fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                               <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                            </div>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                         <td><img class="img-sm rounded" src="./assets/img/megamenu/img-1.jpg" alt="thumbs"></td>
-                                         <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">I should be incapable of drawing a single stroke</a></td>
-                                         <td><span class="text-nowrap text-body-secondary">May 24, 2024</span></td>
-                                         <td>Sports</td>
-                                         <td><a href="#" class="btn-link text-nowrap">Lucy Doe</a></td>
-                                         <td class="h5">
-                                            <div class="d-block badge bg-light text-dark">Unpublish</div>
-                                         </td>
                                          <td>
                                             <div class="text-nowrap text-center">
                                                <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary"><i class="demo-pli-gear fs-5"></i></a>
@@ -302,10 +177,8 @@
                                       <li class="page-item disabled">
                                          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
                                       </li>
-                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item active" aria-current="page">
-                                         <a class="page-link" href="#">2</a>
-                                      </li>
+                                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                      <li class="page-item" aria-current="page"><a class="page-link" href="#">2</a></li>
                                       <li class="page-item"><a class="page-link" href="#">3</a></li>
                                       <li class="page-item"><a class="page-link" href="#">4</a></li>
                                       <li class="page-item"><a class="page-link" href="#">5</a></li>
