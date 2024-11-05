@@ -4,25 +4,26 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d9b6a81b2bec4ea78d8f93924d79b46e" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="DataModel.AuditLogs" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.BuildVersion" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.Categories" Width="1.5" PointX="1.5" PointY="16.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.Content" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.ErrorLog" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.HtmlPosts" Width="1.5" PointX="6" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.Referrals" Width="1.5" PointX="3" PointY="13.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.Users" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.Videos" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.database_firewall_rules" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
+      <Diagram DiagramId="352edaca23bf4e79bd009e902b445e7a" Name="Diagram1" ZoomLevel="71">
+        <EntityTypeShape EntityType="DataModel.AuditLog" Width="1.5" PointX="2.375" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.Category" Width="1.5" PointX="4.25" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.Content" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.HtmlPost" Width="1.5" PointX="2.375" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.PasswordResetToken" Width="1.5" PointX="6.875" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.Referral" Width="1.5" PointX="6.875" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.RegistrationTracking" Width="1.5" PointX="6.875" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.User" Width="1.5" PointX="0.5" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.Video" Width="1.5" PointX="2.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.database_firewall_rules" Width="1.5" PointX="12.625" PointY="0.5" IsExpanded="true" />
         <AssociationConnector Association="DataModel.FK_AuditLogs_ContentID" ManuallyRouted="false" />
         <AssociationConnector Association="DataModel.FK_AuditLogs_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="DataModel.FK__HtmlPosts__Categ__72C60C4A" ManuallyRouted="false" />
         <AssociationConnector Association="DataModel.FK_Content_CategoryID" ManuallyRouted="false" />
-        <AssociationConnector Association="DataModel.FK_HtmlPosts_CategoryID" ManuallyRouted="false" />
         <AssociationConnector Association="DataModel.FK_Videos_ContentID" ManuallyRouted="false" />
-        <AssociationConnector Association="DataModel.FK_HtmlPosts_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="DataModel.FK__HtmlPosts__UserI__73BA3083" ManuallyRouted="false" />
+        <AssociationConnector Association="DataModel.FK__PasswordR__UserI__778AC167" ManuallyRouted="false" />
         <AssociationConnector Association="DataModel.FK_Referrals_UserID" ManuallyRouted="false" />
-        <AssociationConnector Association="DataModel.FK_Videos_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="DataModel.FK__Registrat__UserI__7C4F7684" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

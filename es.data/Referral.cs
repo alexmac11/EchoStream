@@ -12,18 +12,15 @@ namespace es.data
     using System;
     using System.Collections.Generic;
     
-    public partial class HtmlPosts
+    public partial class Referral
     {
-        public int PostID { get; set; }
-        public string Title { get; set; }
-        public string ShortDescription { get; set; }
-        public string ContentBody { get; set; }
-        public Nullable<System.DateTime> PublishedDate { get; set; }
-        public bool IsActive { get; set; }
-        public Nullable<int> CategoryID { get; set; }
+        public int ReferralID { get; set; }
         public Nullable<int> UserID { get; set; }
+        public string ReferralName { get; set; }
+        public string ReferralEmail { get; set; }
+        public string ReferralComments { get; set; }
+        public Nullable<System.DateTime> ReferralDate { get; set; }
     
-        public virtual Categories Categories { get; set; }
-        public virtual Users Users { get; set; }
+        public virtual User User { get; set; }
     }
 }

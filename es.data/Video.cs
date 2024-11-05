@@ -12,16 +12,15 @@ namespace es.data
     using System;
     using System.Collections.Generic;
     
-    public partial class ErrorLog
+    public partial class Video
     {
-        public int ErrorLogID { get; set; }
-        public System.DateTime ErrorTime { get; set; }
-        public string UserName { get; set; }
-        public int ErrorNumber { get; set; }
-        public Nullable<int> ErrorSeverity { get; set; }
-        public Nullable<int> ErrorState { get; set; }
-        public string ErrorProcedure { get; set; }
-        public Nullable<int> ErrorLine { get; set; }
-        public string ErrorMessage { get; set; }
+        public int VideoID { get; set; }
+        public Nullable<int> ContentID { get; set; }
+        public string VideoTitle { get; set; }
+        public string VideoDescription { get; set; }
+        public string VideoURL { get; set; }
+        public string VideoSource { get; set; }
+    
+        public virtual Content Content { get; set; }
     }
 }

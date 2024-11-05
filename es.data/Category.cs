@@ -12,21 +12,21 @@ namespace es.data
     using System;
     using System.Collections.Generic;
     
-    public partial class Categories
+    public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Categories()
+        public Category()
         {
-            this.Content = new HashSet<Content>();
-            this.HtmlPosts = new HashSet<HtmlPosts>();
+            this.HtmlPosts = new HashSet<HtmlPost>();
+            this.Contents = new HashSet<Content>();
         }
     
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Content> Content { get; set; }
+        public virtual ICollection<HtmlPost> HtmlPosts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HtmlPosts> HtmlPosts { get; set; }
+        public virtual ICollection<Content> Contents { get; set; }
     }
 }
