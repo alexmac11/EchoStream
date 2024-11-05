@@ -101,6 +101,9 @@
                               <input type="email" class="form-control" placeholder="Email" aria-label="Email">
                            </div>
                            <div class="col-sm-6">
+                              <input type="text" class="form-control" placeholder="Last name" aria-label="Company Name">
+                           </div>
+                           <div class="col-sm-6">
                               <input type="password" class="form-control" placeholder="Password" aria-label="Password">
                            </div>
                            <div class="col-sm-6">
@@ -122,28 +125,11 @@
 
                      <div class="d-flex justify-content-between mt-4">
                         Already have an account ?
-                        <a href="./front-pages-login.html" class="btn-link text-decoration-none">Sign In</a>
+                        <a href="Login.aspx" class="btn-link text-decoration-none">Sign In</a>
                      </div>
 
                      <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
-                        <h5 class="m-0">Sign Up with</h5>
-
-                        <!-- Social media buttons -->
-                        <div class="ms-3">
-                           <a href="#" class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
-                              <i class="demo-psi-facebook fs-5"></i>
-                           </a>
-                           <a href="#" class="btn btn-sm btn-icon btn-hover btn-info text-inherit">
-                              <i class="demo-psi-twitter fs-5"></i>
-                           </a>
-                           <a href="#" class="btn btn-sm btn-icon btn-hover btn-danger text-inherit">
-                              <i class="demo-psi-google-plus fs-5"></i>
-                           </a>
-                           <a href="#" class="btn btn-sm btn-icon btn-hover btn-warning text-inherit">
-                              <i class="demo-psi-instagram fs-5"></i>
-                           </a>
-                        </div>
-                        <!-- END : Social media buttons -->
+                       
 
                      </div>
 
@@ -153,17 +139,6 @@
 
                <!-- END : Login card -->
 
-
-               <!-- Show the background images container -->
-               <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
-                  <button class="btn btn-danger hstack gap-2" data-bs-toggle="offcanvas" data-bs-target="#_dm-boxedBgContent">
-                     <i class=" demo-psi-photos fs-4"></i>
-                     <span class="vr"></span>
-                     Background image
-                  </button>
-                  <button class="btn btn-light" onclick="window.history.back()">Back</button>
-               </div>
-               <!-- END : Show the background images container -->
 
 
             </div>

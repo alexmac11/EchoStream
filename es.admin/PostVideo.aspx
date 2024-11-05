@@ -296,49 +296,22 @@
                     <div class="mainnav__top-content scrollable-content pb-5">
 
 
-                        <!-- Profile Widget -->
-                        <div id="_dm-mainnavProfile" class="mainnav__widget my-3 hv-outline-parent">
+                       <!-- Profile Widget -->
+                            <div id="_dm-mainnavProfile" class="mainnav__widget my-3 hv-outline-parent">
 
-                        <!-- Profile picture  -->
-                        <div class="mininav-toggle text-center py-2">
-                            <img class="mainnav__avatar img-md rounded-circle hv-oc" src="./assets/img/profile-photos/1.png" alt="Profile Picture">
-                        </div>
+                               <!-- Profile picture  -->
+                                    <div class="text-center py-2">
+                                       <img class="mainnav__avatar img-md rounded-circle hv-oc" src="./assets/img/profile-photos/1.png" alt="Profile Picture">
+                                    </div>
 
-
-                        <div class="mininav-content collapse d-mn-max">
-                            <span data-popper-arrow class="arrow"></span>
-                            <div class="d-grid">
-
-                                <!-- User name and position -->
-                                <button class="mainnav-widget-toggle d-block btn border-0 p-2" data-bs-toggle="collapse" data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
-                                    <span class="dropdown-toggle d-flex justify-content-center align-items-center">
-                                    <h5 class="mb-0 me-3">Aaron Chavez</h5>
-                                    </span>
-                                    <small class="text-body-secondary">Administrator</small>
-                                </button>
-
-
-                                <!-- Collapsed user menu -->
-                                <div id="usernav" class="nav flex-column collapse">
-                 
-                 
-                                    <a href="#" class="nav-link">
-                                    <i class="demo-pli-gear fs-5 me-2"></i>
-                                    <span class="ms-1">Settings</span>
-                                    </a>
-                 
-                                    <a href="Login.aspx" class="nav-link">
-                                    <i class="demo-pli-unlock fs-5 me-2"></i>
-                                    <span class="ms-1">Logout</span>
-                                    </a>
-                                </div>
-
+                                    <!-- User name and position -->
+                                    <div class="text-center">
+                                       <h5 class="mb-0">Aaron Chavez</h5>
+                                       <small class="text-body-secondary">Administrator</small>
+                                    </div>
 
                             </div>
-                        </div>
-
-                        </div>
-                        <!-- End - Profile widget -->
+                       <!-- End - Profile widget -->
 
 
                         <!-- Dashboard -->              
@@ -406,32 +379,28 @@
 
                     </div>
                     <!-- End - Navigation menu -->
-
-
-                    <!-- Bottom navigation menu -->
-                    <div class="mainnav__bottom-content border-top pb-2">
-                        <ul id="mainnav" class="mainnav__menu nav flex-column">
-                        <li class="nav-item has-sub">
-                            <a href="#" class="nav-link mininav-toggle collapsed" aria-expanded="false">
-                                <i class="demo-pli-unlock fs-5 me-2"></i>
-                                <span class="nav-label ms-1">Logout</span>
-                            </a>
-                            <ul class="mininav-content nav flex-column collapse">
-                                <li data-popper-arrow class="arrow"></li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">This device only</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">All Devices</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Lock screen</a>
-                                </li>
-                            </ul>
-                        </li>
-                        </ul>
-                    </div>
-                    <!-- End - Bottom navigation menu -->
+                    
+                <!-- Bottom navigation menu -->
+                <div class="mainnav__bottom-content border-top pb-2">
+                   <ul id="mainnav" class="mainnav__menu nav flex-column">
+                    <!-- Settings -->
+                      <li class="nav-item has-sub">
+                          <a href="#" class="nav-link">
+                              <i class="demo-pli-gear fs-5 me-2"></i>
+                              <span class="nav-label ms-1">Settings</span>
+                          </a>
+                      </li>
+                    <!-- Logout -->
+                      <li class="nav-item has-sub">
+                         <a href="Login.aspx" class="nav-link">
+                            <i class="demo-pli-unlock fs-5 me-2"></i>
+                            <span class="nav-label ms-1">Logout</span>
+                         </a>
+                      </li>
+            
+                   </ul>
+                </div>
+                <!-- End - Bottom navigation menu -->
 
 
             </div>

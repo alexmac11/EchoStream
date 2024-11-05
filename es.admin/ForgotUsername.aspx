@@ -98,7 +98,7 @@
 
 
                      <div class="text-center mt-3">
-                        <a href="./front-pages-login.html" class="btn-link text-decoration-none">Back to login</a>
+                        <a href="Login.aspx" class="btn-link text-decoration-none">Back to login</a>
                      </div>
 
 
@@ -106,18 +106,6 @@
                </div>
 
                <!-- END : Login card -->
-
-
-               <!-- Show the background images container -->
-               <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
-                  <button class="btn btn-danger hstack gap-2" data-bs-toggle="offcanvas" data-bs-target="#_dm-boxedBgContent">
-                     <i class=" demo-psi-photos fs-4"></i>
-                     <span class="vr"></span>
-                     Background image
-                  </button>
-                  <button class="btn btn-light" onclick="window.history.back()">Back</button>
-               </div>
-               <!-- END : Show the background images container -->
 
 
             </div>
