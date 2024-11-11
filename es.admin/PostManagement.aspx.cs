@@ -12,7 +12,6 @@ using System.Web.Services.Protocols;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
-using System.Net.Http;
 using System.Web.Script.Serialization;
 using System.Diagnostics;
 using System.Drawing;
@@ -36,17 +35,17 @@ namespace es.admin
                 TableRow row = new TableRow();
 
                 TableCell cell1 = new TableCell();
-                cell1.Text = posts[0].Title;
+                cell1.Text = post.Title;
                 cell1.Attributes.Add("class", "text-nowrap text-body-secondary");
                 row.Cells.Add(cell1);
 
                 TableCell cell2 = new TableCell();
-                cell2.Text = posts[0].PublishedDate.ToString();
+                cell2.Text = post.PublishedDate.ToString();
                 cell2.Attributes.Add("class", "text-nowrap text-body-secondary");
                 row.Cells.Add(cell2);
 
                 TableCell cell3 = new TableCell();
-                cell3.Text = posts[0].Tags;
+                cell3.Text = post.Tags;
                 cell3.Attributes.Add("class", "text-nowrap text-body-secondary");
                 row.Cells.Add(cell3);
 

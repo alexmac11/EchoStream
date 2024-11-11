@@ -92,7 +92,7 @@ namespace es.admin
                     }
                 }
             }
-            var categories = String.Join(",", categoryList);
+            var categories = String.Join(", ", categoryList);
 
             return categories;
         }
