@@ -11,24 +11,6 @@ namespace es.data
 {
     public class Requests
     {
-        public void Func()
-        {
-            /* query example */
-            var context = new DataEntities();
-
-            /* query add to table */
-            // Reminder - DBEntityValidationException, during debugger under watch 
-            //var std = new Users() { FirstName="joe", LastName="smith", Email="@example.com", IsClient=true, DeviceID="cook" };
-            //context.Users.Add(std);
-            //context.SaveChanges();
-
-            /* query read from table */
-            var data = context.Users;
-            foreach (var user in data) {
-                Debug.WriteLine(user.FirstName);
-            }
-            /**/
-        }
         public void addContent(string title, string contentBody, string tags)
         {
             var context = new DataEntities();

@@ -1,5 +1,4 @@
-﻿using es.data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,8 +11,6 @@ namespace es.admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var class1 = new Class1();
-            class1.Func();
         }
     }
 }
