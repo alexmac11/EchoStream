@@ -561,8 +561,22 @@
                               </ul>
                            </div>
                    <!-- End Video Posts -->
-            
-     <!-- End - Navigation menu -->
+                   <!-- Accounts -->              
+                         <div class="mainnav__categoriy py-3">
+                            <ul class="mainnav__menu nav flex-column">
+                              <li class="nav-item">
+                                <a href="./Accounts.aspx" class="nav-link mininav-toggle"><i class="demo-pli-speech-bubble-5 fs-5 me-2"></i>
+                                  <span class="nav-label mininav-content ms-1">
+                                         <span data-popper-arrow class="arrow"></span>
+                                         Accounts
+                                  </span>
+                                </a>
+                              </li>
+                            </ul>
+                         </div>
+                <!-- End Accounts -->
+            </div>
+           <!-- End - Navigation menu -->
 
            <!-- Bottom navigation menu -->
                 <div class="mainnav__bottom-content border-top pb-2">
@@ -588,7 +602,8 @@
             <!-- End - Bottom navigation menu -->
 
 
-         </div>
+         
+        </div>
       </nav>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- END - MAIN NAVIGATION -->

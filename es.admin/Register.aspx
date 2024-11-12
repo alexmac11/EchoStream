@@ -100,8 +100,8 @@
                            <div class="col-12">
                               <input type="email" class="form-control" placeholder="Email" aria-label="Email">
                            </div>
-                           <div class="col-sm-6">
-                              <input type="text" class="form-control" placeholder="Last name" aria-label="Company Name">
+                           <div class="col-sm-12">
+                              <input type="text" class="form-control" placeholder="Company Name" aria-label="Company Name">
                            </div>
                            <div class="col-sm-6">
                               <input type="password" class="form-control" placeholder="Password" aria-label="Password">
