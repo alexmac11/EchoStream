@@ -10,11 +10,16 @@
 namespace es.data
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class ufnGetCustomerInformation_Result
+    public partial class PasswordResetToken
     {
-        public int CustomerID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public int TokenID { get; set; }
+        public int UserID { get; set; }
+        public string ResetToken { get; set; }
+        public System.DateTime ExpirationDate { get; set; }
+        public Nullable<bool> IsUsed { get; set; }
+    
+        public virtual User User { get; set; }
     }
 }

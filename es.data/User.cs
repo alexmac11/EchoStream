@@ -12,31 +12,38 @@ namespace es.data
     using System;
     using System.Collections.Generic;
     
-    public partial class Users
+    public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Users()
+        public User()
         {
-            this.AuditLogs = new HashSet<AuditLogs>();
-            this.HtmlPosts = new HashSet<HtmlPosts>();
-            this.Referrals = new HashSet<Referrals>();
-            this.Videos = new HashSet<Videos>();
+            this.AuditLogs = new HashSet<AuditLog>();
+            this.HtmlPosts = new HashSet<HtmlPost>();
+            this.PasswordResetTokens = new HashSet<PasswordResetToken>();
+            this.Referrals = new HashSet<Referral>();
+            this.RegistrationTrackings = new HashSet<RegistrationTracking>();
         }
     
         public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
+        public string PasswordHash { get; set; }
+        public Nullable<System.DateTime> RegistrationDate { get; set; }
         public bool IsClient { get; set; }
         public string DeviceID { get; set; }
+        public Nullable<bool> IsVerified { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AuditLogs> AuditLogs { get; set; }
+        public virtual ICollection<AuditLog> AuditLogs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HtmlPosts> HtmlPosts { get; set; }
+        public virtual ICollection<HtmlPost> HtmlPosts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Referrals> Referrals { get; set; }
+        public virtual ICollection<PasswordResetToken> PasswordResetTokens { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Videos> Videos { get; set; }
+        public virtual ICollection<Referral> Referrals { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RegistrationTracking> RegistrationTrackings { get; set; }
     }
 }

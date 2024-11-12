@@ -12,15 +12,18 @@ namespace es.data
     using System;
     using System.Collections.Generic;
     
-    public partial class AuditLogs
+    public partial class HtmlPost
     {
-        public int AuditID { get; set; }
+        public int PostID { get; set; }
+        public string Title { get; set; }
+        public string ShortDescription { get; set; }
+        public string ContentBody { get; set; }
+        public Nullable<System.DateTime> PublishedDate { get; set; }
+        public bool IsActive { get; set; }
+        public Nullable<int> CategoryID { get; set; }
         public Nullable<int> UserID { get; set; }
-        public string Action { get; set; }
-        public Nullable<int> ContentID { get; set; }
-        public Nullable<System.DateTime> Timestamp { get; set; }
     
-        public virtual Content Content { get; set; }
-        public virtual Users Users { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual User User { get; set; }
     }
 }

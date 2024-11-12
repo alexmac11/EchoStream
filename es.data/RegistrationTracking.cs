@@ -10,11 +10,15 @@
 namespace es.data
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class ufnGetAllCategories_Result
+    public partial class RegistrationTracking
     {
-        public string ParentProductCategoryName { get; set; }
-        public string ProductCategoryName { get; set; }
-        public int ProductCategoryID { get; set; }
+        public int TrackingID { get; set; }
+        public int UserID { get; set; }
+        public string RegistrationStatus { get; set; }
+        public Nullable<System.DateTime> RegistrationDate { get; set; }
+    
+        public virtual User User { get; set; }
     }
 }

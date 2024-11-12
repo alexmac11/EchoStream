@@ -12,11 +12,15 @@ namespace es.data
     using System;
     using System.Collections.Generic;
     
-    public partial class BuildVersion
+    public partial class AuditLog
     {
-        public byte SystemInformationID { get; set; }
-        public string Database_Version { get; set; }
-        public System.DateTime VersionDate { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
+        public int AuditID { get; set; }
+        public Nullable<int> UserID { get; set; }
+        public string Action { get; set; }
+        public Nullable<int> ContentID { get; set; }
+        public Nullable<System.DateTime> Timestamp { get; set; }
+    
+        public virtual Content Content { get; set; }
+        public virtual User User { get; set; }
     }
 }

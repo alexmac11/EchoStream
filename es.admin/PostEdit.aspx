@@ -1,72 +1,11 @@
-﻿<%@ Page Language="C#"  AutoEventWireup="true" CodeBehind="PostEdit.aspx.cs" Inherits="es.admin.PostEdit" %>
-
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light" data-scheme="navy">
-
-<head>
-   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-   <meta name="description" content="Write a new article or edit an article to improve it.">
-   <title>Add Edit Posts | Nifty - Admin Template</title>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PostEdit.aspx.cs" Inherits="es.admin.PostEdit" %>
 
 
-   <!-- STYLESHEETS -->
-   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
 
-   <!-- Fonts [ OPTIONAL ] -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+</asp:Content>
 
-
-   <!-- Bootstrap CSS [ REQUIRED ] -->
-   <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-
-   <!-- Nifty CSS [ REQUIRED ] -->
-   <link rel="stylesheet" href="./assets/css/nifty.min.css">
-
-   <!-- Nifty Demo Icons [ OPTIONAL ] -->
-   <link rel="stylesheet" href="./assets/css/demo-purpose/demo-icons.min.css">
-
-   <!-- Demo purpose CSS [ DEMO ] -->
-   <link rel="stylesheet" href="./assets/css/demo-purpose/demo-settings.min.css">
-
-
-   <!-- Favicons [ OPTIONAL ] -->
-   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-   <link rel="manifest" href="./site.webmanifest">
-   <!-- Quill [ OPTIONAL ] -->
-   <link rel="stylesheet" href="./assets/vendors/quill/quill.min.css">
-
-
-   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   [ REQUIRED ]
-   You must include this category in your project.
-
-
-   [ OPTIONAL ]
-   This is an optional plugin. You may choose to include it in your project.
-
-
-   [ DEMO ]
-   Used for demonstration purposes only. This category should NOT be included in your project.
-
-
-   [ SAMPLE ]
-   Here's a sample script that explains how to initialize plugins and/or components: This category should NOT be included in your project.
-
-
-   Detailed information and more samples can be found in the documentation.
-
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
-</head>
-
-<body class="out-quart">
+<asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
 
 
    <!-- PAGE CONTAINER -->
@@ -88,7 +27,7 @@
                <p class="lead">
                   Write a new article or edit an article to improve it.
                </p>
-               <input class="form-control form-control-lg mb-4 rounded" type="text" placeholder="Enter title here" aria-label="Post title" value="These sweet mornings of spring">
+               <input runat="server" id="contentTitle" class="form-control form-control-lg mb-4 rounded" type="text" placeholder="Enter title here" aria-label="Post title" value="These sweet mornings of spring">
             </div>
 
          </div>
@@ -220,15 +159,17 @@
 
                            <!-- Editor -->
                            <div id="_dm-quillAdvancedEditor" class="pb-5">
-                              <h1>These sweet mornings of spring</h1>
-                              <p>One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked.</p>
-                              <br>
-                              <p><strong><em>"What's happened to me?"</em></strong> he thought. It wasn't a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar walls. <a href="#" class="btn-link">A collection of textile samples</a> lay spread out on the table.</p>
-                              <br>
-                              <p>Two driven jocks help fax my big quiz. Quick, Baz, get my woven flax jodhpurs! "Now fax quiz Jack!" my brave ghost pled. Five quacking zephyrs jolt my wax bed. Flummoxed by job, kvetching W. zaps Iraq. Cozy sphinx waves quart jug of bad milk. A very bad quack might jinx zippy fowls. Few quips galvanized the mock jury box. <span style="background-color: rgb(0, 71, 178); color: rgb(255, 255, 255);">Quick brown dogs jump over the lazy fox.</span></p>
-                              <br><br>
-                              <p><span class="ql-size-large" style="color: rgb(107, 36, 178);">Brick quiz</span> whangs jumpy veldt fox. Bright vixens jump; dozy fowl quack. Quick wafting zephyrs vex bold Jim. Quick zephyrs blow, vexing daft Jim.</p>
-
+                               <div runat="server" id="editor">
+                                   <h1>These sweet mornings of spring</h1>
+                                   <p>One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked.</p>
+                                   <br>
+                                   <p><strong><em>"What's happened to me?"</em></strong> he thought. It wasn't a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar walls. <a href="#" class="btn-link">A collection of textile samples</a> lay spread out on the table.</p>
+                                   <br>
+                                   <p>Two driven jocks help fax my big quiz. Quick, Baz, get my woven flax jodhpurs! "Now fax quiz Jack!" my brave ghost pled. Five quacking zephyrs jolt my wax bed. Flummoxed by job, kvetching W. zaps Iraq. Cozy sphinx waves quart jug of bad milk. A very bad quack might jinx zippy fowls. Few quips galvanized the mock jury box. <span style="background-color: rgb(0, 71, 178); color: rgb(255, 255, 255);">Quick brown dogs jump over the lazy fox.</span></p>
+                                   <br>
+                                   <br>
+                                   <p><span class="ql-size-large" style="color: rgb(107, 36, 178);">Brick quiz</span> whangs jumpy veldt fox. Bright vixens jump; dozy fowl quack. Quick wafting zephyrs vex bold Jim. Quick zephyrs blow, vexing daft Jim.</p>
+                                </div>
                            </div>
                            <!-- END : Editor -->
 
@@ -298,7 +239,7 @@
                               </li>
                               <li class="list-group-item d-flex justify-content-between align-items-start px-0">
                                  <div class="me-auto">
-                                    <i class="demo-pli-calendar-4 fs-5 me-2"></i>Puslish
+                                    <i class="demo-pli-calendar-4 fs-5 me-2"></i>Publish
                                  </div>
                                  <a href="#" class="h6 btn-link text-decoration-underline">Immediately</a>
                               </li>
@@ -309,34 +250,12 @@
 
                         <!-- Categories -->
                         <div class="mb-3">
-                           <div class="d-flex align-items-center justify-content-between mb-3">
-                              <h5 class="m-0">Categories</h5>
-                              <a href="#" type="button" class="btn btn-icon btn-primary btn-sm">+</a>
-                           </div>
-                           <div class="form-check mb-3">
-                              <input id="_dm-sportCategory" class="form-check-input" type="checkbox">
-                              <label for="_dm-sportCategory" class="form-check-label">
-                                 Sport
-                              </label>
-                           </div>
-                           <div class="form-check mb-3">
-                              <input id="_dm-moviesCategory" class="form-check-input" type="checkbox">
-                              <label for="_dm-moviesCategory" class="form-check-label">
-                                 Movies
-                              </label>
-                           </div>
-                           <div class="form-check mb-3">
-                              <input id="_dm-musicCategory" class="form-check-input" type="checkbox">
-                              <label for="_dm-musicCategory" class="form-check-label">
-                                 Music
-                              </label>
-                           </div>
-                           <div class="form-check mb-3">
-                              <input id="_dm-internetCategory" class="form-check-input" type="checkbox" checked>
-                              <label for="_dm-internetCategory" class="form-check-label">
-                                 Internet
-                              </label>
-                           </div>
+                                <h5 class="m-0">Categories</h5>
+                                <asp:Table ID="categoryTable" runat="server" class="table align-middle">
+                                </asp:Table>
+                                <asp:Button runat="server" class="btn btn-icon btn-primary btn-sm" OnClick="Add_Category" Text="+"></asp:Button>
+                                <asp:Button runat="server" class="btn btn-icon btn-primary btn-sm" OnClick="Remove_Category" Text="-"></asp:Button>
+                                <input runat="server" id="categoryInput" class="form-control mb-1 rounded" type="text" placeholder="Add/Delete Category" value="">
                         </div>
                         <!-- END : Categories -->
 
@@ -348,7 +267,7 @@
                            <button type="button" class="btn btn-secondary btn-sm">Draft</button>
                         </div>
                         <div class="d-grid">
-                           <button type="button" class="btn btn-primary btn-lg text-nowrap">Save &amp; Publish</button>
+                            <asp:Button runat="server" class="btn btn-primary btn-lg text-nowrap" OnClick="Save_Edit" Text="Save &amp; Publish"></asp:Button>
                         </div>
                         <!-- END : Footer -->
 
@@ -881,7 +800,8 @@
    <script src="./assets/pages/blog-add-edit-post.js"></script>
 
 
-</body>
+    <script src="Scripts/jquery-3.7.0.min.js"></script>
 
-</html>
+    <script src="assets/js/posting.js"></script>
 
+</asp:Content>

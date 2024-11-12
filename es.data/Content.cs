@@ -17,8 +17,8 @@ namespace es.data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Content()
         {
-            this.AuditLogs = new HashSet<AuditLogs>();
-            this.Videos = new HashSet<Videos>();
+            this.AuditLogs = new HashSet<AuditLog>();
+            this.Videos = new HashSet<Video>();
         }
     
         public int ContentID { get; set; }
@@ -33,9 +33,9 @@ namespace es.data
         public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AuditLogs> AuditLogs { get; set; }
-        public virtual Categories Categories { get; set; }
+        public virtual ICollection<AuditLog> AuditLogs { get; set; }
+        public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Videos> Videos { get; set; }
+        public virtual ICollection<Video> Videos { get; set; }
     }
 }
