@@ -607,28 +607,4 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- END - OFFCANVAS [ DEMO ] -->
 
-
-    <!-- JAVASCRIPTS -->
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
-    <!-- Popper JS [ OPTIONAL ] -->
-    <script src="./assets/vendors/popperjs/popper.min.js"></script>
-
-
-    <!-- Bootstrap JS [ OPTIONAL ] -->
-    <script src="./assets/vendors/bootstrap/bootstrap.min.js"></script>
-
-
-    <!-- Nifty JS [ OPTIONAL ] -->
-    <script src="./assets/js/nifty.js"></script>
-
-
-    <!-- Nifty Settings [ DEMO ] -->
-    <script src="./assets/js/demo-purpose-only.js"></script>
-
-
-    <script src="assets/js/posting.js"></script>
-
 </asp:Content>
-

@@ -778,36 +778,7 @@
    <!-- END - OFFCANVAS [ DEMO ] -->
 
 
-   <!-- JAVASCRIPTS -->
-   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
-   <!-- Popper JS [ OPTIONAL ] -->
-   <script src="./assets/vendors/popperjs/popper.min.js"></script>
-
-
-   <!-- Bootstrap JS [ OPTIONAL ] -->
-   <script src="./assets/vendors/bootstrap/bootstrap.min.js"></script>
-
-
-   <!-- Nifty JS [ OPTIONAL ] -->
-   <script src="./assets/js/nifty.js"></script>
-
-
-   <!-- Nifty Settings [ DEMO ] -->
-   <script src="./assets/js/demo-purpose-only.js"></script>
-
-
-   <!-- Quill [ OPTIONAL ] -->
-   <script src="./assets/vendors/quill/quill.min.js"></script>
-
-
-   <!-- Initialize [ SAMPLE ] -->
-   <script src="./assets/pages/blog-add-edit-post.js"></script>
-
-
-    <script src="Scripts/jquery-3.7.0.min.js"></script>
-
-    <script src="assets/js/posting.js"></script>
+    <script src="./assets/vendors/quill/quill.min.js"></script>           <!-- Quill            [ OPTIONAL ] -->
+    <script src="./assets/pages/blog-add-edit-post.js"></script>          <!-- Initialize       [ SAMPLE ]   -->
 
 </asp:Content>
