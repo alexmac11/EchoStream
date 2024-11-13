@@ -23,6 +23,9 @@
     <!-- Nifty CSS [ REQUIRED ] -->
     <link rel="stylesheet" href="./assets/css/nifty.min.css">
 
+    <!-- Nifty Demo Icons [ OPTIONAL ] -->
+    <link rel="stylesheet" href="./assets/css/demo-purpose/demo-icons.min.css">
+
     <!-- Quill [ OPTIONAL ] -->
     <link rel="stylesheet" href="./assets/vendors/quill/quill.min.css">
 
