@@ -11,7 +11,8 @@ namespace es.data
 {
     public class Requests
     {
-        public void addContent(string title, string contentBody, string tags)
+        //todo change Audience to isClientVisible and isProspectVisible
+        public void addContent(string title, string contentBody, string tags, bool isClientVisible, bool isProspectVisible)
         {
             var context = new DataEntities();
 

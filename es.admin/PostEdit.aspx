@@ -235,8 +235,14 @@
                                  <div class="me-auto">
                                     <i class="demo-pli-male fs-5 me-2"></i>Visibility
                                  </div>
-                                 <a href="#" class="h6 btn-link text-decoration-underline">Public</a>
+                                 <asp:CheckBox runat="server" ID="clientCheck" CssClass="inline" Text="Client" Checked="true"/>
                               </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                    <div class="me-auto">
+                                        <i class="demo-pli-male fs-5 me-2"></i>
+                                    </div>
+                                    <asp:CheckBox runat="server" ID="prospectCheck" CssClass="inline" Text="Prospect" Checked="true"/>
+                                </li>
                               <li class="list-group-item d-flex justify-content-between align-items-start px-0">
                                  <div class="me-auto">
                                     <i class="demo-pli-calendar-4 fs-5 me-2"></i>Publish
@@ -251,10 +257,10 @@
                         <!-- Categories -->
                         <div class="mb-3">
                                 <h5 class="m-0">Categories</h5>
-                                <asp:Table ID="categoryTable" runat="server" class="table align-middle">
+                                <asp:Table ID="categoryTable" runat="server" CssClass="table align-middle">
                                 </asp:Table>
-                                <asp:Button runat="server" class="btn btn-icon btn-primary btn-sm" OnClick="Add_Category" Text="+"></asp:Button>
-                                <asp:Button runat="server" class="btn btn-icon btn-primary btn-sm" OnClick="Remove_Category" Text="-"></asp:Button>
+                                <asp:Button runat="server" CssClass="btn btn-icon btn-primary btn-sm" OnClick="Add_Category" Text="+"></asp:Button>
+                                <asp:Button runat="server" CssClass="btn btn-icon btn-primary btn-sm" OnClick="Remove_Category" Text="-"></asp:Button>
                                 <input runat="server" id="categoryInput" class="form-control mb-1 rounded" type="text" placeholder="Add/Delete Category" value="">
                         </div>
                         <!-- END : Categories -->

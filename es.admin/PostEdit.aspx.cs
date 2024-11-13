@@ -32,7 +32,7 @@ namespace es.admin
                 TableCell cell = new TableCell();
 
                 CheckBox cb = new CheckBox();
-                cb.Attributes.Add("class", "form-check-input");
+                cb.Attributes.Add("class", "inline");
                 cb.ID = category;
                 cb.Text = category;
                 cell.Controls.Add(cb);
@@ -53,7 +53,7 @@ namespace es.admin
             TableCell cell = new TableCell();
             
             CheckBox cb = new CheckBox();
-            cb.Attributes.Add("class", "form-check-input");
+            cb.Attributes.Add("class", "inline");
             cb.ID = this.categoryInput.Value;
             cb.Text = this.categoryInput.Value;
             cell.Controls.Add(cb);
@@ -101,11 +101,13 @@ namespace es.admin
             string title = this.contentTitle.Value;
             string editorContent = this.editor.InnerHtml;
             string categories = getCategories();
+            bool isClientVisible = this.clientCheck.Checked;
+            bool isProspectVisible = this.prospectCheck.Checked;
 
 
 
             var request = new Requests();
-            request.addContent(title, editorContent, categories);
+            request.addContent(title, editorContent, categories, isClientVisible, isProspectVisible);
         }
     }
 }
