@@ -87,29 +87,35 @@
 
                      <form class="mt-5" action="#">
 
-                        <div class="w-md-400px d-inline-flex row g-3 mb-4">
-                           <div class="col-sm-6">
-                              <input type="text" class="form-control" placeholder="First name" aria-label="First name" autofocus>
-                           </div>
-                           <div class="col-sm-6">
-                              <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
-                           </div>
-                           <div class="col-12">
-                              <input type="text" class="form-control" placeholder="Username" aria-label="Username">
-                           </div>
-                           <div class="col-12">
-                              <input type="email" class="form-control" placeholder="Email" aria-label="Email">
-                           </div>
-                           <div class="col-sm-12">
-                              <input type="text" class="form-control" placeholder="Company Name" aria-label="Company Name">
-                           </div>
-                           <div class="col-sm-6">
-                              <input type="password" class="form-control" placeholder="Password" aria-label="Password">
-                           </div>
-                           <div class="col-sm-6">
-                              <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password">
-                           </div>
-                        </div>
+                         <div class="w-md-400px d-inline-flex row g-3 mb-4">
+                             <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="First name" aria-label="First name" autofocus>
+                             </div>
+                             <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                             </div>
+                             <div class="col-sm-12">
+                                 <input type="text" class="form-control" placeholder="Company Name" aria-label="Company Name">
+                             </div>
+                             <div class="col-sm-12">
+                                 <input type="text" class="form-control" placeholder="Website" aria-label="Website">
+                             </div>
+                             <div class="col-12">
+                                 <input type="email" class="form-control" placeholder="Email" aria-label="Email">
+                             </div>
+                             <div class="col-sm-12">
+                                 <input type="text" class="form-control" placeholder="Phone" aria-label="Phone">
+                             </div>
+                             <div class="col-sm-12">
+                                 <input type="text" class="form-control" placeholder="Address" aria-label="Address">
+                             </div>
+                             <div class="col-sm-6">
+                                 <input type="password" class="form-control" placeholder="Password" aria-label="Password">
+                             </div>
+                             <div class="col-sm-6">
+                                 <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password">
+                             </div>
+                         </div>
 
                         <div class="form-check">
                            <input id="_dm-registerCheck" class="form-check-input" type="checkbox">

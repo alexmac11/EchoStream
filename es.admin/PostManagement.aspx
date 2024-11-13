@@ -75,12 +75,12 @@
                         <!-- Blog post lists -->
                         <div class="table-responsive">
                             <asp:Table ID="postTable" runat="server" class="table table-striped align-middle">
-                                <asp:TableRow>
+                                <asp:TableHeaderRow TableSection="TableHeader">
                                     <asp:TableCell>Post Title</asp:TableCell>
                                     <asp:TableCell>Creation Date</asp:TableCell>
                                     <asp:TableCell>Categories</asp:TableCell>
                                     <asp:TableCell>Actions</asp:TableCell>
-                                </asp:TableRow>
+                                </asp:TableHeaderRow>
                             </asp:Table>
                         </div>
                         <!-- END : Blog post lists -->

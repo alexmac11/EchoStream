@@ -11,7 +11,19 @@ namespace es.data
 {
     public class Requests
     {
-        //todo change Audience to isClientVisible and isProspectVisible
+        //todo
+        //Add Website, Phone, Address row to User table
+        public List<User> getNUsers(int N)
+        {
+            var context = new DataEntities();
+
+            var row = context.Users.Take(N).ToList();
+
+            return row;
+        }
+
+        //todo
+        //change Audience to isClientVisible and isProspectVisible
         public void addContent(string title, string contentBody, string tags, bool isClientVisible, bool isProspectVisible)
         {
             var context = new DataEntities();

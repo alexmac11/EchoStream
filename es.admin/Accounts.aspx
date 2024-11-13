@@ -1,70 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Accounts.aspx.cs" Inherits="es.admin.Accounts" %>
-
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light" data-scheme="navy">
-
-<head>
-   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-   <meta name="description" content="Edit, publish, and remove post page layout">
-   <title>Accounts | Nifty - Admin Template</title>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Accounts.aspx.cs" Inherits="es.admin.Accounts" %>
 
 
-   <!-- STYLESHEETS -->
-   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
 
-   <!-- Fonts [ OPTIONAL ] -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+</asp:Content>
 
-
-   <!-- Bootstrap CSS [ REQUIRED ] -->
-   <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-
-   <!-- Nifty CSS [ REQUIRED ] -->
-   <link rel="stylesheet" href="./assets/css/nifty.min.css">
-
-   <!-- Nifty Demo Icons [ OPTIONAL ] -->
-   <link rel="stylesheet" href="./assets/css/demo-purpose/demo-icons.min.css">
-
-   <!-- Demo purpose CSS [ DEMO ] -->
-   <link rel="stylesheet" href="./assets/css/demo-purpose/demo-settings.min.css">
-
-
-   <!-- Favicons [ OPTIONAL ] -->
-   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-   <link rel="manifest" href="./site.webmanifest">
-
-
-   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   [ REQUIRED ]
-   You must include this category in your project.
-
-
-   [ OPTIONAL ]
-   This is an optional plugin. You may choose to include it in your project.
-
-
-   [ DEMO ]
-   Used for demonstration purposes only. This category should NOT be included in your project.
-
-
-   [ SAMPLE ]
-   Here's a sample script that explains how to initialize plugins and/or components: This category should NOT be included in your project.
-
-
-   Detailed information and more samples can be found in the documentation.
-
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
-</head>
-
-<body class="out-quart">
+<asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
 
 
    <!-- PAGE CONTAINER -->
@@ -110,86 +51,15 @@
 
                      <!-- Blog post lists -->
                      <div class="table-responsive">
-                        <table class="table table-striped align-middle">
-                           <thead>
-                              <tr>
-                                 <th width="55"></th>
-                                 <th>Name</th>
-                                 <th class="text-nowrap">Email</th>
-                                 <th>Website</th>
-                                 <th>Phone</th>
-                                 <th class="text-center">Address</th>
-                              
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr>
-                                 <td></td>
-                                 <td>Betty Murphy</td>
-                                 <td>murphy.betty@example.com</td>
-                                 <td>bettymurphy.com</td>
-                                 <td>000-000-000</td>
-                                 <td class="text-center">123 Main St, Wichita, KS 67202</td>
-                                 
-                              </tr>
-                              <tr>
-                                    <td></td>
-                                    <td>John Smith</td>
-                                    <td>john.smith@example.com</td>
-                                    <td>johnsmithsite.com</td>
-                                    <td>111-111-111</td>
-                                    <td class="text-center">456 Broadway Ave, New York, NY 10012</td>
-                                 </tr>
-                                 <tr>
-                                    <td></td>
-                                    <td>Emily Johnson</td>
-                                    <td>emily.johnson@example.com</td>
-                                    <td>emilysblog.com</td>
-                                    <td>222-222-222</td>
-                                    <td class="text-center">789 Market St, San Francisco, CA 94103</td>
-                                 </tr>
-                                 <tr>
-                                    <td></td>
-                                    <td>Michael Brown</td>
-                                    <td>michael.brown@example.com</td>
-                                    <td>mbrownpage.org</td>
-                                    <td>333-333-333</td>
-                                    <td class="text-center">321 Lakeshore Dr, Chicago, IL 60611</td>
-                                 </tr>
-                                 <tr>
-                                    <td></td>
-                                    <td>Linda Davis</td>
-                                    <td>linda.davis@example.com</td>
-                                    <td>lindaspace.net</td>
-                                    <td>444-444-444</td>
-                                    <td class="text-center">654 Maple St, Houston, TX 77002</td>
-                                 </tr>
-                                 <tr>
-                                    <td></td>
-                                    <td>James Wilson</td>
-                                    <td>james.wilson@example.com</td>
-                                    <td>wilsonweb.com</td>
-                                    <td>555-555-555</td>
-                                    <td class="text-center">987 Pine St, Seattle, WA 98101</td>
-                                 </tr>
-                                 <tr>
-                                    <td></td>
-                                    <td>Sarah Moore</td>
-                                    <td>sarah.moore@example.com</td>
-                                    <td>sarahportfolio.co</td>
-                                    <td>666-666-666</td>
-                                    <td class="text-center">258 Elm St, Denver, CO 80203</td>
-                                 </tr>
-                                 <tr>
-                                    <td></td>
-                                    <td>Robert Lee</td>
-                                    <td>robert.lee@example.com</td>
-                                    <td>robertscorner.info</td>
-                                    <td>777-777-777</td>
-                                    <td class="text-center">741 Beacon St, Boston, MA 02116</td>
-                                 </tr>
-                           </tbody>
-                        </table>
+                         <asp:Table ID="userTable" runat="server" class="table table-striped align-middle">
+                            <asp:TableHeaderRow TableSection="TableHeader">
+                                <asp:TableCell>Name</asp:TableCell>
+                                <asp:TableCell>Email</asp:TableCell>
+                                <asp:TableCell>Website</asp:TableCell>
+                                <asp:TableCell>Phone</asp:TableCell>
+                                <asp:TableCell>Address</asp:TableCell>
+                            </asp:TableHeaderRow>
+                        </asp:Table>
                      </div>
                      <!-- END : Blog post lists -->
 
@@ -1001,6 +871,4 @@
    <script src="./assets/js/demo-purpose-only.js"></script>
 
 
-</body>
-
-</html>
+</asp:Content>
