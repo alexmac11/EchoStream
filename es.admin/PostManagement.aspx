@@ -30,12 +30,10 @@
 
                     <!-- Search form -->
                     <div class="col-md-8 offset-md-2 mb-3">
-                        <input runat="server" class="searchbox__input form-control form-control-lg" type="search" placeholder="Search posts. . ." aria-label="Search">
-                        <div class="searchbox__btn-group">
-                            <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
-                                <i class="demo-pli-magnifi-glass"></i>
-                            </button>
-                        </div>
+                        <asp:Panel runat="server" DefaultButton="searchBtn">
+                            <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by title"></asp:TextBox>
+                            <asp:Button runat="server" ID="searchBtn" class="btn" OnClick="Search_Posts" Text="Search"></asp:Button>
+                        </asp:Panel>
                     </div>
                     <!-- END : Search form -->
 

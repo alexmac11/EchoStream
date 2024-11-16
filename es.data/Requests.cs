@@ -22,6 +22,15 @@ namespace es.data
             return row;
         }
 
+        public List<Content> getSearchContent(string search)
+        {
+            var context = new DataEntities();
+
+            List<Content> content = context.Contents.Where(sp => sp.Title.Contains(search)).OrderBy(sp => sp.Title).ToList();
+
+            return content;
+        }
+
         //todo
         //change Audience to isClientVisible and isProspectVisible
         public void addContent(string title, string contentBody, string tags, bool isClientVisible, bool isProspectVisible)

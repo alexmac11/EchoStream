@@ -22,14 +22,24 @@ namespace es.admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Add_Posts(sender, e);
-        }
-
-        public void Add_Posts(object sender, EventArgs e)
-        {
             var request = new Requests();
             var posts = request.getNContent(10);
 
+            Create_Posts(sender, e, posts);
+        }
+
+        public void Search_Posts(object sender, EventArgs e)
+        {
+            Clear_Posts(sender, e);
+
+            var request = new Requests();
+            var posts = request.getSearchContent(this.search.Text);
+
+            Create_Posts(sender, e, posts);
+        }
+
+        public void Create_Posts(object sender, EventArgs e, List<data.Content> posts)
+        {
             foreach (var post in posts)
             {
                 TableRow row = new TableRow();
@@ -55,7 +65,7 @@ namespace es.admin
 
                 Button btn1 = new Button();
                 btn1.Attributes.Add("class", "btn btn-icon btn-sm btn-hover btn-danger");
-                btn1.Click += new EventHandler((s, evnt) => this.Remove_Post(sender, e, post.ContentID, row));
+                btn1.Click += new EventHandler((s, evnt) => this.Delete_Post(sender, e, post.ContentID, row));
                 btn1.Text = "Delete";
                 cell4.Controls.Add(btn1);
 
@@ -71,12 +81,17 @@ namespace es.admin
                 postTable.Rows.Add(row);
             }
         }
-        void Remove_Post(object sender, EventArgs e, int contentID, TableRow row)
+        void Delete_Post(object sender, EventArgs e, int contentID, TableRow row)
         {
             var request = new Requests();
             request.removeContent(contentID);
 
             row.Visible = false;
+        }
+
+        void Clear_Posts(object sender, EventArgs e)
+        {
+            postTable.Rows.Clear();
         }
 
         void Redirect(object sender, EventArgs e, int contentID)
