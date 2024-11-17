@@ -310,8 +310,8 @@
     <!-- END - PAGE CONTAINER -->
 
     <!-- Quill            [ OPTIONAL ] -->
-    <script src="./assets/vendors/quill/quill.min.js"></script>
+    <script src="../assets/vendors/quill/quill.min.js"></script>
     <!-- Initialize       [ SAMPLE ]   -->
-    <script src="./assets/pages/blog-add-edit-post.js"></script>
+    <script src="../assets/pages/blog-add-edit-post.js"></script>
 
 </asp:Content>

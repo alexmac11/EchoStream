@@ -10,12 +10,12 @@
 
                 <!-- Brand logo -->
                 <a href="Default.aspx" class="brand-img stretched-link">
-                    <img src="./assets/img/logo.svg" alt="Nifty Logo" class="Nifty logo" width="16" height="16">
+                    <!-- <img src="./assets/img/logo.svg" alt="Nifty Logo" class="Nifty logo" width="16" height="16"> -->
                 </a>
 
 
                 <!-- Brand title -->
-                <div class="brand-title">Nifty</div>
+                <div class="brand-title">EchoStream</div>
 
 
                 <!-- You can also use IMG or SVG instead of a text element. -->

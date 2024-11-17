@@ -79,9 +79,9 @@
     </asp:PlaceHolder>
 
 
-    <script src="./assets/vendors/popperjs/popper.min.js"></script>       <!-- Popper JS        [ OPTIONAL ] -->
-    <script src="./assets/vendors/bootstrap/bootstrap.min.js"></script>   <!-- Bootstrap JS     [ OPTIONAL ] -->
-    <script src="./assets/js/nifty.js"></script>                          <!-- Nifty JS         [ OPTIONAL ] -->
-    <script src="./assets/js/demo-purpose-only.js"></script>              <!-- Nifty Settings   [ DEMO ]     -->
+    <script src="../assets/vendors/popperjs/popper.min.js"></script>       <!-- Popper JS        [ OPTIONAL ] -->
+    <script src="../assets/vendors/bootstrap/bootstrap.min.js"></script>   <!-- Bootstrap JS     [ OPTIONAL ] -->
+    <script src="../assets/js/nifty.js"></script>                          <!-- Nifty JS         [ OPTIONAL ] -->
+    <script src="../assets/js/demo-purpose-only.js"></script>              <!-- Nifty Settings   [ DEMO ]     -->
 </body>
 </html>

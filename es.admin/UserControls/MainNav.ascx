@@ -11,10 +11,6 @@
             <!-- Profile Widget -->
             <div id="_dm-mainnavProfile" class="mainnav__widget my-3 hv-outline-parent">
 
-                <!-- Profile picture  -->
-                <div class="text-center py-2">
-                    <img class="mainnav__avatar img-md rounded-circle hv-oc" src="./assets/img/profile-photos/1.png" alt="Profile Picture">
-                </div>
 
                 <!-- User name and position -->
                 <div class="text-center">

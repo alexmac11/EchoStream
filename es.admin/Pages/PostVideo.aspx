@@ -77,43 +77,10 @@
 
             <div class="content__boxed">
                 <div class="content__wrap">
-
-                    <div class="card">
-                        <div class="card-body">
-
-
-                            <!-- Blog post lists -->
-                            <div class="table-responsive">
-                                <table class="table table-striped align-middle">
-                                    <thead>
-                                        <tr>
-                                            <th width="55"></th>
-                                            <th>Video Title</th>
-                                            <th>Description</th>
-                                            <th>Link</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <img class="img-sm rounded" src="./assets/img/megamenu/img-1.jpg" alt="thumbs"></td>
-                                            <td><span class="text-nowrap text-body-secondary">Title Place Holder</span></td>
-                                            <td><span class="text-nowrap text-body-secondary">Description Place Holder</span></td>
-                                            <td href="#">Internet</td>
-                                            <td>
-                                                <button class="btn btn-primary">Post</button>
-                                            </td>
-
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- END : Blog post lists -->
-                        </div>
+                    <div class="row mt-3">
+                        <asp:Panel runat="server" ID="videoTable" CssClass="row mt-3">
+                        </asp:Panel>
                     </div>
-
-
                 </div>
             </div>
 

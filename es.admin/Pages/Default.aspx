@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="es.admin._Default" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/./Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="es.admin._Default" %>
 
 <%@ Register Src="~/UserControls/MainNav.ascx" TagPrefix="usercontrols" TagName="MainNav" %>
 <%@ Register Src="~/UserControls/MainHeader.ascx" TagPrefix="usercontrols" TagName="MainHeader" %>
