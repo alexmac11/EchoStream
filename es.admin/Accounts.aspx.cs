@@ -52,7 +52,7 @@ namespace es.admin
                 row.Cells.Add(cell5);
 
 
-                userTable.Rows.Add(row);
+                this.userTable.Rows.Add(row);
             }
         }
     }
