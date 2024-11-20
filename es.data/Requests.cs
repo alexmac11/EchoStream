@@ -11,8 +11,7 @@ namespace es.data
 {
     public class Requests
     {
-        //todo
-        //Add Website, Phone, Address row to User table
+        
         public List<User> getNUsers(int N)
         {
             var context = new DataEntities();
@@ -31,13 +30,12 @@ namespace es.data
             return content;
         }
 
-        //todo
-        //change Audience to isClientVisible and isProspectVisible
+        
         public void addContent(string title, string contentBody, string tags, bool isClientVisible, bool isProspectVisible)
         {
             var context = new DataEntities();
 
-            var row = new Content() { Title = title, Description = null, ContentBody = contentBody, ContentType = null, CategoryID = null, Tags = tags, Audience = null, PublishedDate = DateTime.Now, IsActive = true };
+            var row = new Content() { Title = title, ContentBody = contentBody, ContentType = null, CategoryID = null, Tags = tags, PublishedDate = DateTime.Now, IsActive = true, isClientVisible = isClientVisible, isProspectVisible = isProspectVisible };
             context.Contents.Add(row);
 
             context.SaveChanges();

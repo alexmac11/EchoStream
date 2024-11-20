@@ -23,14 +23,14 @@ namespace es.data
     
         public int ContentID { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
         public string ContentBody { get; set; }
         public string ContentType { get; set; }
         public Nullable<int> CategoryID { get; set; }
         public string Tags { get; set; }
-        public string Audience { get; set; }
         public Nullable<System.DateTime> PublishedDate { get; set; }
         public bool IsActive { get; set; }
+        public bool isClientVisible { get; set; }
+        public bool isProspectVisible { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AuditLog> AuditLogs { get; set; }
