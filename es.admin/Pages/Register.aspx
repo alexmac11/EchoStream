@@ -28,31 +28,31 @@
 
                             <div class="w-md-400px d-inline-flex row g-3 mb-4">
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" placeholder="First name" aria-label="First name" autofocus>
+                                    <input runat="server" id="firstname" type="text" class="form-control" placeholder="First name" aria-label="First name" autofocus>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                                    <input runat="server" id="lastname" type="text" class="form-control" placeholder="Last name" aria-label="Last name">
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" placeholder="Company Name" aria-label="Company Name">
+                                    <input runat="server" id="companyname" type="text" class="form-control" placeholder="Company Name" aria-label="Company Name">
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" placeholder="Website" aria-label="Website">
+                                    <input runat="server" id="website" type="text" class="form-control" placeholder="Website" aria-label="Website">
                                 </div>
                                 <div class="col-12">
-                                    <input type="email" class="form-control" placeholder="Email" aria-label="Email">
+                                    <input runat="server" id="email" type="email" class="form-control" placeholder="Email" aria-label="Email">
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" placeholder="Phone" aria-label="Phone">
+                                    <input runat="server" id="phone" type="text" class="form-control" placeholder="Phone" aria-label="Phone">
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" placeholder="Address" aria-label="Address">
+                                    <input runat="server" id="address" type="text" class="form-control" placeholder="Address" aria-label="Address">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="password" class="form-control" placeholder="Password" aria-label="Password">
+                                    <input runat="server" id="password" type="password" class="form-control" placeholder="Password" aria-label="Password">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password">
+                                    <input runat="server" id="confirmpassword" type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password">
                                 </div>
                             </div>
 
@@ -64,7 +64,7 @@
                             </div>
 
                             <div class="d-grid mt-5">
-                                <button class="btn btn-primary btn-lg" type="submit">Register</button>
+                                <asp:Button runat="server" class="btn btn-primary btn-lg" type="submit" Text="Register" OnClick="Register_Button"></asp:Button>
                             </div>
 
                             <div class="d-flex justify-content-between mt-4">
