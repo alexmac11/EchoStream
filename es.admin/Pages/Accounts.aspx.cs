@@ -12,7 +12,7 @@ namespace es.admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Create_Table(sender, e);
         }
         public void Create_Table(object sender, EventArgs e)
         {
@@ -34,20 +34,17 @@ namespace es.admin
                 row.Cells.Add(cell2);
 
                 TableCell cell3 = new TableCell();
-                //cell3.Text = user.Website;
-                cell3.Text = "Website Placeholder";
+                cell3.Text = user.Website;
                 cell3.Attributes.Add("class", "text-nowrap text-body-secondary");
                 row.Cells.Add(cell3);
 
                 TableCell cell4 = new TableCell();
-                //cell4.Text = user.Phone;
-                cell4.Text = "Phone Placeholder";
+                cell4.Text = user.Phone;
                 cell4.Attributes.Add("class", "text-nowrap text-body-secondary");
                 row.Cells.Add(cell4);
 
                 TableCell cell5 = new TableCell();
-                //cell5.Text = user.Address;
-                cell5.Text = "Address Placeholder";
+                cell5.Text = user.Address;
                 cell5.Attributes.Add("class", "text-nowrap text-body-secondary");
                 row.Cells.Add(cell5);
 

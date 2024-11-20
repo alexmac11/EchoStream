@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,18 @@ namespace es.data
 {
     public class Requests
     {
-        
+        public void addAccount(string firstname, string lastname, string companyname, string website, string email, string phone, string address, string password)
+        {
+            var context = new DataEntities();
+
+            var row = new User() { FirstName = firstname, LastName = lastname, Username = null, Email = email, PasswordHash = password, RegistrationDate = DateTime.Now, IsClient = true, DeviceID = "PC", IsVerified = false, Website = website, Phone = phone, Address = address};
+            context.Users.Add(row);
+
+            context.SaveChanges();
+        }
+
+        //todo
+        //Add Website, Phone, Address row to User table
         public List<User> getNUsers(int N)
         {
             var context = new DataEntities();
