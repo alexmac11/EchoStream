@@ -67,11 +67,11 @@ namespace es.data
 
             context.SaveChanges();
         }
-        public List<Content> getNContent(int N)
+        public List<Content> getNContent(int N, int skipCount)
         {
             var context = new DataEntities();
 
-            var row = context.Contents.Take(N).ToList();
+            var row = context.Contents.Take(N).Skip(skipCount).ToList();
 
             return row;
         }

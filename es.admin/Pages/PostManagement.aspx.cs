@@ -20,10 +20,13 @@ namespace es.admin
 {
     public partial class PostManagement : System.Web.UI.Page
     {
+        private int indexPage = 0;
+        private int postCount = 10;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var request = new Requests();
-            var posts = request.getNContent(10);
+            var posts = request.getNContent(this.postCount, this.indexPage);
 
             Create_Posts(sender, e, posts);
         }
@@ -97,6 +100,29 @@ namespace es.admin
         void Redirect(object sender, EventArgs e, int contentID)
         {
             Response.Redirect("~/PostEdit.aspx?contentID=" + contentID.ToString());
+        }
+
+        protected void Previous(object sender, EventArgs e)
+        {
+            Clear_Posts(sender, e);
+
+            this.indexPage--;
+
+            var request = new Requests();
+            var posts = request.getNContent(this.postCount, this.indexPage * this.postCount);
+
+            Create_Posts(sender, e, posts);
+        }
+        protected void Next(object sender, EventArgs e)
+        {
+            Clear_Posts(sender, e);
+
+            this.indexPage++;
+
+            var request = new Requests();
+            var posts = request.getNContent(this.postCount, this.indexPage * this.postCount);
+
+            Create_Posts(sender, e, posts);
         }
     }
 }
