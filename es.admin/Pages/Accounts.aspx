@@ -30,14 +30,8 @@
 
                     <!-- Search form -->
                     <div class="col-md-8 offset-md-2 mb-3">
-                        <form class="searchbox input-group">
-                            <input class="searchbox__input form-control form-control-lg" type="search" placeholder="Search accounts. . ." aria-label="Search">
-                            <div class="searchbox__btn-group">
-                                <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
-                                    <i class="demo-pli-magnifi-glass"></i>
-                                </button>
-                            </div>
-                        </form>
+                        <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by First Name"></asp:TextBox>
+                        <asp:Button runat="server" ID="searchBtn" class="btn" OnClick="Search_Users" Text="Search"></asp:Button>
                     </div>
                     <!-- END : Search form -->
 

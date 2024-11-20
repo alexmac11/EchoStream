@@ -12,13 +12,22 @@ namespace es.admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Create_Table(sender, e);
-        }
-        public void Create_Table(object sender, EventArgs e)
-        {
             var request = new Requests();
             var userList = request.getNUsers(10);
 
+            Create_Table(sender, e, userList);
+        }
+        public void Search_Users(object sender, EventArgs e)
+        {
+            Clear_Users(sender, e);
+
+            var request = new Requests();
+            var userList = request.getSearchUsers(this.search.Text);
+
+            Create_Table(sender, e, userList);
+        }
+        public void Create_Table(object sender, EventArgs e, List<data.User> userList)
+        {
             foreach (var user in userList)
             {
                 TableRow row = new TableRow();
@@ -51,6 +60,10 @@ namespace es.admin
 
                 this.userTable.Rows.Add(row);
             }
+        }
+        void Clear_Users(object sender, EventArgs e)
+        {
+            userTable.Rows.Clear();
         }
     }
 }

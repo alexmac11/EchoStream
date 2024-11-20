@@ -21,9 +21,6 @@ namespace es.data
 
             context.SaveChanges();
         }
-
-        //todo
-        //Add Website, Phone, Address row to User table
         public List<User> getNUsers(int N)
         {
             var context = new DataEntities();
@@ -32,6 +29,15 @@ namespace es.data
 
             return row;
         }
+        public List<User> getSearchUsers(string search)
+        {
+            var context = new DataEntities();
+
+            List<User> users = context.Users.Where(sp => sp.FirstName.Contains(search)).OrderBy(sp => sp.FirstName).ToList();
+
+            return users;
+        }
+
 
         public List<Content> getSearchContent(string search)
         {
