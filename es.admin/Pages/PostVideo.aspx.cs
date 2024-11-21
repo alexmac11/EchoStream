@@ -30,16 +30,16 @@ namespace es.admin
                 div.Attributes.Add("class", "col-sm-6 col-md-4 col-xl-3 mb-3");
 
                 var div2 = new HtmlGenericControl("div");
-                div2.Attributes.Add("class", "card card-body pt-2 text-center text-wrap");
+                div2.Attributes.Add("class", "card card-body pt-2 text-center text-truncate");
 
                 var p1 = new HtmlGenericControl("p");
                 p1.Attributes.Add("class", "fs-5");
-                p1.InnerText = video.title;
+                if (video.title != "") { p1.InnerText = video.title; } else { p1.InnerText = "Empty Title"; }
                 div2.Controls.Add(p1);
 
                 var p2 = new HtmlGenericControl("p");
                 p2.Attributes.Add("class", "fs-5");
-                p2.InnerText = video.description;
+                if (video.description != "") { p2.InnerText = video.description; } else { p2.InnerText = "Empty Description"; }
                 div2.Controls.Add(p2);
 
                 var iframe = new HtmlIframe();
