@@ -21,29 +21,29 @@ namespace es.data
 
             context.SaveChanges();
         }
-        public List<User> getNUsers(int N)
+        public List<User> getNUsers(int N, int skipCount)
         {
             var context = new DataEntities();
 
-            var row = context.Users.Take(N).ToList();
+            var row = context.Users.OrderByDescending(sp => sp.FirstName).Skip(skipCount).Take(N).ToList();
 
             return row;
         }
-        public List<User> getSearchUsers(string search)
+        public List<User> getSearchUsers(string search, int N, int skipCount)
         {
             var context = new DataEntities();
 
-            List<User> users = context.Users.Where(sp => sp.FirstName.Contains(search)).OrderBy(sp => sp.FirstName).ToList();
+            List<User> users = context.Users.Where(sp => sp.FirstName.Contains(search)).OrderBy(sp => sp.FirstName).Skip(skipCount).Take(N).ToList();
 
             return users;
         }
 
 
-        public List<Content> getSearchContent(string search)
+        public List<Content> getSearchContent(string search, int N, int skipCount)
         {
             var context = new DataEntities();
 
-            List<Content> content = context.Contents.Where(sp => sp.Title.Contains(search)).OrderBy(sp => sp.Title).ToList();
+            List<Content> content = context.Contents.Where(sp => sp.Title.Contains(search)).OrderByDescending(sp => sp.PublishedDate).Skip(skipCount).Take(N).ToList();
 
             return content;
         }
@@ -71,7 +71,7 @@ namespace es.data
         {
             var context = new DataEntities();
 
-            var row = context.Contents.Take(N).Skip(skipCount).ToList();
+            var row = context.Contents.OrderByDescending(sp => sp.PublishedDate).Skip(skipCount).Take(N).ToList();
 
             return row;
         }

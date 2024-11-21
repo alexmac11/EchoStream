@@ -99,10 +99,10 @@
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination">
                                         <li class="page-item">
-                                            <asp:Button runat="server" OnClick="Previous" CssClass="page-link" Text="Previous"/>
+                                            <asp:Button runat="server" ID="previousBTN" OnClick="Previous" CssClass="page-link" Text="Previous" Enabled="false"/>
                                         </li>
                                         <li class="page-item">
-                                            <asp:Button runat="server" OnClick="Next" CssClass="page-link" Text="Next"/>
+                                            <asp:Button runat="server" ID="nextBTN" OnClick="Next" CssClass="page-link" Text="Next"/>
                                         </li>
                                     </ul>
                                 </nav>

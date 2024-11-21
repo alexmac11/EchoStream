@@ -10,22 +10,51 @@ namespace es.admin
 {
     public partial class Accounts : System.Web.UI.Page
     {
+        private int maxRows = 10;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var request = new Requests();
-            var userList = request.getNUsers(10);
+            if (!IsPostBack)
+            {
+                ViewState.Add("page", 0);
 
-            Create_Table(sender, e, userList);
+
+                var request = new Requests();
+                var userList = request.getNUsers(this.maxRows, (int)ViewState["page"] * this.maxRows);
+
+                Create_Table(sender, e, userList);
+            }
         }
+        protected void Page_LoadComplete(object sender, EventArgs e)
+        {
+            var page = (int)ViewState["page"];
+
+            if (page == 0)
+            {
+                this.previousBTN.Enabled = false;
+            }
+            else
+            {
+                this.previousBTN.Enabled = true;
+            }
+        }
+
+
+
+
         public void Search_Users(object sender, EventArgs e)
         {
-            Clear_Users(sender, e);
+            var page = (int)ViewState["page"];
+
+
+            Clear_Table(sender, e);
 
             var request = new Requests();
-            var userList = request.getSearchUsers(this.search.Text);
+            var userList = request.getSearchUsers(this.search.Text, this.maxRows, page * this.maxRows);
 
             Create_Table(sender, e, userList);
         }
+
         public void Create_Table(object sender, EventArgs e, List<data.User> userList)
         {
             foreach (var user in userList)
@@ -61,9 +90,44 @@ namespace es.admin
                 this.userTable.Rows.Add(row);
             }
         }
-        void Clear_Users(object sender, EventArgs e)
+
+        void Clear_Table(object sender, EventArgs e)
         {
             userTable.Rows.Clear();
+        }
+
+        protected void Previous(object sender, EventArgs e)
+        {
+            // page number
+            var page = (int)ViewState["page"];
+            page--;
+            ViewState["page"] = page;
+
+
+            // table
+            Clear_Table(sender, e);
+
+            var request = new Requests();
+            var posts = request.getNUsers(this.maxRows, (int)ViewState["page"] * this.maxRows);
+
+            Create_Table(sender, e, posts);
+        }
+
+        protected void Next(object sender, EventArgs e)
+        {
+            // page number
+            var page = (int)ViewState["page"];
+            page++;
+            ViewState["page"] = page;
+
+
+            // table
+            Clear_Table(sender, e);
+
+            var request = new Requests();
+            var posts = request.getNUsers(this.maxRows, (int)ViewState["page"] * this.maxRows);
+
+            Create_Table(sender, e, posts);
         }
     }
 }

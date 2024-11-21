@@ -66,18 +66,11 @@
                                 <!-- Pagination - Disabled and active states -->
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item active" aria-current="page">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">5</a></li>
                                         <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
+                                            <asp:Button runat="server" ID="previousBTN" OnClick="Previous" CssClass="page-link" Text="Previous" Enabled="false"/>
+                                        </li>
+                                        <li class="page-item">
+                                            <asp:Button runat="server" ID="nextBTN" OnClick="Next" CssClass="page-link" Text="Next"/>
                                         </li>
                                     </ul>
                                 </nav>

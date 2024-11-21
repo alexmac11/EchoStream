@@ -20,23 +20,45 @@ namespace es.admin
 {
     public partial class PostManagement : System.Web.UI.Page
     {
-        private int indexPage = 0;
-        private int postCount = 10;
+        private int maxRows = 10;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var request = new Requests();
-            var posts = request.getNContent(this.postCount, this.indexPage);
+            if (!IsPostBack)
+            {
+                ViewState.Add("page", 0);
 
-            Create_Posts(sender, e, posts);
+
+                var request = new Requests();
+                var posts = request.getNContent(this.maxRows, (int)ViewState["page"]);
+
+                Create_Posts(sender, e, posts);
+            }
         }
+        protected void Page_LoadComplete(object sender, EventArgs e)
+        {
+            var page = (int)ViewState["page"];
+
+            if (page == 0)
+            {
+                this.previousBTN.Enabled = false;
+            }
+            else
+            {
+                this.previousBTN.Enabled = true;
+            }
+        }
+
+
+
+
 
         public void Search_Posts(object sender, EventArgs e)
         {
             Clear_Posts(sender, e);
 
             var request = new Requests();
-            var posts = request.getSearchContent(this.search.Text);
+            var posts = request.getSearchContent(this.search.Text, this.maxRows, (int)ViewState["page"] * this.maxRows);
 
             Create_Posts(sender, e, posts);
         }
@@ -84,6 +106,7 @@ namespace es.admin
                 postTable.Rows.Add(row);
             }
         }
+
         void Delete_Post(object sender, EventArgs e, int contentID, TableRow row)
         {
             var request = new Requests();
@@ -104,23 +127,34 @@ namespace es.admin
 
         protected void Previous(object sender, EventArgs e)
         {
+            // page number
+            var page = (int)ViewState["page"];
+            page--;
+            ViewState["page"] = page;
+
+
+            // table
             Clear_Posts(sender, e);
 
-            this.indexPage--;
-
             var request = new Requests();
-            var posts = request.getNContent(this.postCount, this.indexPage * this.postCount);
+            var posts = request.getNContent(this.maxRows, (int)ViewState["page"] * this.maxRows);
 
             Create_Posts(sender, e, posts);
         }
+
         protected void Next(object sender, EventArgs e)
         {
+            // page number
+            var page = (int)ViewState["page"];
+            page++;
+            ViewState["page"] = page;
+
+
+            // table
             Clear_Posts(sender, e);
 
-            this.indexPage++;
-
             var request = new Requests();
-            var posts = request.getNContent(this.postCount, this.indexPage * this.postCount);
+            var posts = request.getNContent(this.maxRows, (int)ViewState["page"] * this.maxRows);
 
             Create_Posts(sender, e, posts);
         }
