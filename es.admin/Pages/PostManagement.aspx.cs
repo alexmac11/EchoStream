@@ -28,12 +28,12 @@ namespace es.admin
             {
                 ViewState.Add("page", 0);
 
-
-                var request = new Requests();
-                var posts = request.getNContent(this.maxRows, (int)ViewState["page"]);
-
-                Create_Posts(sender, e, posts);
             }
+
+            var request = new Requests();
+            var posts = request.getNContent(this.maxRows, (int)ViewState["page"]);
+
+            Create_Posts(sender, e, posts);
         }
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
@@ -53,7 +53,7 @@ namespace es.admin
 
 
 
-        public void Search_Posts(object sender, EventArgs e)
+        protected void Search_Posts(object sender, EventArgs e)
         {
             Clear_Posts(sender, e);
 
@@ -63,7 +63,7 @@ namespace es.admin
             Create_Posts(sender, e, posts);
         }
 
-        public void Create_Posts(object sender, EventArgs e, List<data.Content> posts)
+        protected void Create_Posts(object sender, EventArgs e, List<data.Content> posts)
         {
             foreach (var post in posts)
             {
@@ -107,7 +107,7 @@ namespace es.admin
             }
         }
 
-        void Delete_Post(object sender, EventArgs e, int contentID, TableRow row)
+        protected void Delete_Post(object sender, EventArgs e, int contentID, TableRow row)
         {
             var request = new Requests();
             request.removeContent(contentID);
@@ -115,14 +115,14 @@ namespace es.admin
             row.Visible = false;
         }
 
-        void Clear_Posts(object sender, EventArgs e)
+        protected void Clear_Posts(object sender, EventArgs e)
         {
             postTable.Rows.Clear();
         }
 
-        void Redirect(object sender, EventArgs e, int contentID)
+        protected void Redirect(object sender, EventArgs e, int contentID)
         {
-            Response.Redirect("~/PostEdit.aspx?contentID=" + contentID.ToString());
+            Response.Redirect("~/Pages/PostEdit.aspx?contentID=" + contentID.ToString());
         }
 
         protected void Previous(object sender, EventArgs e)
