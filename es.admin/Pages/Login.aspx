@@ -28,11 +28,11 @@
 
 
                             <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Username" autofocus>
+                                <input runat="server" id="username" type="text" class="form-control" placeholder="Username" autofocus>
                             </div>
 
                             <div class="mb-3">
-                                <input type="password" class="form-control" placeholder="Password">
+                                <input runat="server" id="password" type="password" class="form-control" placeholder="Password">
                             </div>
 
                             <div class="form-check">
@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="d-grid mt-5">
-                                <button class="btn btn-primary btn-lg" type="submit">Sign In</button>
+                                <asp:Button runat="server" OnClick="SignIn" class="btn btn-primary btn-lg" type="submit" Text="Sign In"></asp:Button>
                             </div>
 
                             <div class="d-flex justify-content-between gap-md-5 mt-4">

@@ -19,7 +19,7 @@ namespace es.admin
         {
             var request = new Requests();
             // this.firstname.Value
-            request.addAccount(firstname.Value, lastname.Value, companyname.Value, website.Value, email.Value, phone.Value, address.Value, password.Value);
+            request.addAccount(firstname.Value, lastname.Value, companyname.Value, website.Value, email.Value, phone.Value, address.Value, username.Value, password.Value);
         }
     }
 }

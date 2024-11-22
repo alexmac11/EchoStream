@@ -48,6 +48,10 @@
                                 <div class="col-sm-12">
                                     <input runat="server" id="address" type="text" class="form-control" placeholder="Address" aria-label="Address">
                                 </div>
+                                <p class="mb-3"/>
+                                <div class="col-sm-12">
+                                    <input runat="server" id="username" type="text" class="form-control" placeholder="Username" aria-label="Username">
+                                </div>
                                 <div class="col-sm-6">
                                     <input runat="server" id="password" type="password" class="form-control" placeholder="Password" aria-label="Password">
                                 </div>

@@ -14,7 +14,7 @@
 
                 <!-- User name and position -->
                 <div class="text-center">
-                    <h5 class="mb-0">Aaron Chavez</h5>
+                    <h5 runat="server" id="fullname" class="mb-0">Em</h5>
                     <small class="text-body-secondary">Administrator</small>
                 </div>
 
@@ -116,10 +116,10 @@
                 </li>
                 <!-- Logout -->
                 <li class="nav-item has-sub">
-                    <a href="Login.aspx" class="nav-link">
+                    <asp:LinkButton runat="server" ID="logoutBtn" CssClass="nav-link" OnClick="On_Logout">
                         <i class="demo-pli-unlock fs-5 me-2"></i>
                         <span class="nav-label ms-1">Logout</span>
-                    </a>
+                    </asp:LinkButton>
                 </li>
 
             </ul>

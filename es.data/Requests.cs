@@ -9,14 +9,41 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace es.data
+
 {
+    public class UserData
+    {
+        public string name;
+        public string username;
+    }
     public class Requests
     {
-        public void addAccount(string firstname, string lastname, string companyname, string website, string email, string phone, string address, string password)
+        public UserData Login(string username, string password)
+        {
+            UserData user = new UserData();
+            var context = new DataEntities();
+
+            var useris = context.Users.FirstOrDefault(sp => sp.Username == username && sp.PasswordHash == password);
+
+
+            if (useris != null) 
+            {
+                user.name = useris.FirstName + " " + useris.LastName;
+                user.username = useris.Username;
+
+                return user;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void addAccount(string firstname, string lastname, string companyname, string website, string email, string phone, string address, string username, string password)
         {
             var context = new DataEntities();
 
-            var row = new User() { FirstName = firstname, LastName = lastname, Username = null, Email = email, PasswordHash = password, RegistrationDate = DateTime.Now, IsClient = true, DeviceID = "PC", IsVerified = false, Website = website, Phone = phone, Address = address};
+            var row = new User() { FirstName = firstname, LastName = lastname, Username = username, Email = email, PasswordHash = password, RegistrationDate = DateTime.Now, IsClient = true, DeviceID = "PC", IsVerified = false, Website = website, Phone = phone, Address = address};
             context.Users.Add(row);
 
             context.SaveChanges();

@@ -15,10 +15,11 @@ namespace es.admin
 {
     public partial class PostVideo : System.Web.UI.Page
     {
+        private int max = 12;
         protected void Page_Load(object sender, EventArgs e)
         {
             var request = new videoRequests();
-            var videos = request.getNVideos(12);
+            var videos = request.getNVideos(max);
 
             Create_Videos(videos);
         }
