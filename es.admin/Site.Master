@@ -2,18 +2,51 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-bs-theme="light" data-scheme="navy">
 <head runat="server">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+
+
+    <!-- STYLESHEETS -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- Fonts [ OPTIONAL ] -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+    <!-- Bootstrap CSS [ REQUIRED ] -->
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+
+    <!-- Nifty CSS [ REQUIRED ] -->
+    <link rel="stylesheet" href="./assets/css/nifty.min.css">
+
+    <!-- Nifty Demo Icons [ OPTIONAL ] -->
+    <link rel="stylesheet" href="./assets/css/demo-purpose/demo-icons.min.css">
+
+    <!-- Quill [ OPTIONAL ] -->
+    <link rel="stylesheet" href="./assets/vendors/quill/quill.min.css">
+
+
+    <!-- Favicons [ OPTIONAL ] -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <!-- <webopt:bundlereference runat="server" path="~/Content/css" /> -->
+
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>Manage Posts | Nifty - Admin Template</title>
 
 </head>
 <body>
@@ -37,33 +70,18 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">Application name</a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">About</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
-            <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
-            </footer>
-        </div>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
+
     </form>
     <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+        
     </asp:PlaceHolder>
+
+
+    <script src="../assets/vendors/popperjs/popper.min.js"></script>       <!-- Popper JS        [ OPTIONAL ] -->
+    <script src="../assets/vendors/bootstrap/bootstrap.min.js"></script>   <!-- Bootstrap JS     [ OPTIONAL ] -->
+    <script src="../assets/js/nifty.js"></script>                          <!-- Nifty JS         [ OPTIONAL ] -->
+    <script src="../assets/js/demo-purpose-only.js"></script>              <!-- Nifty Settings   [ DEMO ]     -->
 </body>
 </html>
