@@ -18,145 +18,159 @@ using System.Drawing;
 
 namespace es.admin
 {
-    public partial class PostManagement : System.Web.UI.Page
+    public partial class PostManagement : Page
     {
-        private int maxRows = 10;
+        private readonly DatabaseService db = new DatabaseService();
+        private int pageSize = 10;
+        private int CurrentPage
+        {
+            get
+            {
+                if (ViewState["CurrentPage"] == null) { ViewState["CurrentPage"] = 0; }
+                return (int)ViewState["CurrentPage"];
+            }
+            set { ViewState["CurrentPage"] = value; }
+        }
+        private string Search
+        {
+            get
+            {
+                if (ViewState["Search"] == null) { ViewState["Search"] = ""; }
+                return (string)ViewState["Search"];
+            }
+            set { ViewState["Search"] = value; }
+
+        }
+        private int PageCount
+        {
+            get
+            {
+                if (ViewState["PageCount"] == null) { ViewState["PageCount"] = 1; }
+                return (int)ViewState["PageCount"];
+            }
+            set { ViewState["PageCount"] = value; }
+        }
+
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                ViewState.Add("page", 0);
-
+                BindData();
             }
-
-            var request = new Requests();
-            var posts = request.getNContent(this.maxRows, (int)ViewState["page"]);
-
-            Create_Posts(sender, e, posts);
         }
+
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
-            var page = (int)ViewState["page"];
+            previousBTN.Enabled = CurrentPage > 0;
 
-            if (page == 0)
-            {
-                this.previousBTN.Enabled = false;
-            }
-            else
-            {
-                this.previousBTN.Enabled = true;
-            }
+            nextBTN.Enabled = (CurrentPage + 1) * pageSize < PageCount;
         }
 
 
 
-
-
-        protected void Search_Posts(object sender, EventArgs e)
+        protected void BindData()
         {
-            Clear_Posts(sender, e);
+            var posts = db.Content.GetAll().Where(c => c.Title.Contains(Search)).ToList();
 
-            var request = new Requests();
-            var posts = request.getSearchContent(this.search.Text, this.maxRows, (int)ViewState["page"] * this.maxRows);
+            if (true) //todo sort by drop down list
+            {
+                posts = posts.OrderByDescending(c => c.PublishedDate).ToList();
+            }
 
-            Create_Posts(sender, e, posts);
-        }
+            PageCount = posts.Count();
+            posts = posts.Skip(CurrentPage * pageSize).Take(pageSize).ToList();
 
-        protected void Create_Posts(object sender, EventArgs e, List<data.Content> posts)
-        {
+            Debug.WriteLine("currentPage " + CurrentPage);
+
+            postTable.Rows.Clear();
+
             foreach (var post in posts)
             {
                 TableRow row = new TableRow();
+                row.ID = post.ContentID.ToString();
 
-                TableCell cell1 = new TableCell();
-                cell1.Text = post.Title;
-                cell1.Attributes.Add("class", "text-nowrap text-body-secondary");
-                row.Cells.Add(cell1);
+                row.Cells.Add(new TableCell
+                {
+                    Text = post.Title,
+                    CssClass = "text-nowrap text-body-secondary"
+                });
 
-                TableCell cell2 = new TableCell();
-                cell2.Text = post.PublishedDate.ToString();
-                cell2.Attributes.Add("class", "text-nowrap text-body-secondary");
-                row.Cells.Add(cell2);
+                row.Cells.Add(new TableCell
+                {
+                    Text = post.PublishedDate.ToString(),
+                    CssClass = "text-nowrap text-body-secondary"
+                });
 
-                TableCell cell3 = new TableCell();
-                cell3.Text = post.Tags;
-                cell3.Attributes.Add("class", "text-nowrap text-body-secondary");
-                row.Cells.Add(cell3);
-
-
-                TableCell cell4 = new TableCell();
-                cell4.Attributes.Add("class", "text-nowrap text-body-secondary");
-
-                Button btn1 = new Button();
-                btn1.Attributes.Add("class", "btn btn-icon btn-sm btn-hover btn-danger");
-                btn1.Click += new EventHandler((s, evnt) => this.Delete_Post(sender, e, post.ContentID, row));
-                btn1.Text = "Delete";
-                cell4.Controls.Add(btn1);
-
-                Button btn2 = new Button();
-                btn2.Attributes.Add("class", "btn btn-icon btn-sm btn-hover btn-danger");
-                btn2.Click += new EventHandler((s, evnt) => this.Redirect(sender, e, post.ContentID));
-                btn2.Text = "Edit";
-                cell4.Controls.Add(btn2);
-
-                row.Cells.Add(cell4);
+                row.Cells.Add(new TableCell
+                {
+                    Text = post.Tags,
+                    CssClass = "text-nowrap text-body-secondary"
+                });
 
 
-                postTable.Rows.Add(row);
+
+                TableCell buttonCell = new TableCell
+                {
+                    CssClass = "text-nowrap text-body-secondary"
+                };
+
+                Button btn1 = new Button {
+                    Text = "Delete",
+                    CssClass = "btn btn-icon btn-sm btn-hover btn-danger"
+                };
+                btn1.Click += new EventHandler((s, evnt) => this.Delete_Post(post.ContentID, row));
+                buttonCell.Controls.Add(btn1);
+
+                Button btn2 = new Button { 
+                    Text = "Edit",
+                    CssClass = "btn btn-icon btn-sm btn-hover btn-danger"
+                };
+                btn2.Click += new EventHandler((s, evnt) => this.Redirect(post.ContentID));
+                buttonCell.Controls.Add(btn2);
+
+                row.Cells.Add(buttonCell);
+
+
+                this.postTable.Rows.Add(row);
             }
         }
 
-        protected void Delete_Post(object sender, EventArgs e, int contentID, TableRow row)
+        protected void Search_Posts(object sender, EventArgs e)
         {
-            var request = new Requests();
-            request.removeContent(contentID);
+            CurrentPage = 0;
+            Search = this.search.Text;
+
+            BindData();
+        }
+
+        protected void Delete_Post(int contentID, TableRow row)
+        {
+            Debug.WriteLine("Delete");
+            db.Content.DeleteById(contentID);
+            db.Save();
 
             row.Visible = false;
+
+            BindData();
         }
 
-        protected void Clear_Posts(object sender, EventArgs e)
+        protected void Redirect(int contentID)
         {
-            postTable.Rows.Clear();
-        }
-
-        protected void Redirect(object sender, EventArgs e, int contentID)
-        {
-            Response.Redirect("~/Pages/PostEdit.aspx?contentID=" + contentID.ToString());
+            Response.Redirect("~/Pages/PostEdit.aspx?contentID=" + contentID);
         }
 
         protected void Previous(object sender, EventArgs e)
         {
-            // page number
-            var page = (int)ViewState["page"];
-            page--;
-            ViewState["page"] = page;
-
-
-            // table
-            Clear_Posts(sender, e);
-
-            var request = new Requests();
-            var posts = request.getNContent(this.maxRows, (int)ViewState["page"] * this.maxRows);
-
-            Create_Posts(sender, e, posts);
+            CurrentPage--;
+            BindData();
         }
 
         protected void Next(object sender, EventArgs e)
         {
-            // page number
-            var page = (int)ViewState["page"];
-            page++;
-            ViewState["page"] = page;
-
-
-            // table
-            Clear_Posts(sender, e);
-
-            var request = new Requests();
-            var posts = request.getNContent(this.maxRows, (int)ViewState["page"] * this.maxRows);
-
-            Create_Posts(sender, e, posts);
+            CurrentPage++;
+            BindData();
         }
     }
 }

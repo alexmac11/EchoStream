@@ -47,7 +47,7 @@
                             </div>
 
                             <div class="d-flex justify-content-between gap-md-5 mt-4">
-                                <a href="ForgotPassword.aspx" class="btn-link text-decoration-none">Forgot password ?</a>
+                                <a href="ForgotPassword.aspx" class="btn-link text-decoration-none">Forgot password</a>
                                 <a href="Register.aspx" class="btn-link text-decoration-none">Create a new account</a>
                             </div>
 

@@ -13,18 +13,23 @@ using System.Web.UI.WebControls;
 
 namespace es.admin
 {
-    public partial class PostVideo : System.Web.UI.Page
+    public partial class PostVideo : Page
     {
-        private int max = 12;
+        private readonly DatabaseService db = new DatabaseService();
+        private int pageSize = 12;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var request = new videoRequests();
-            var videos = request.getNVideos(max);
-
-            Create_Videos(videos);
+            if (!IsPostBack)
+            {
+                BindData();
+            }
         }
-        public void Create_Videos(List<VideoObj> videos)
+
+        public void BindData()
         {
+            var videos = db.Video.GetNVideos(pageSize);
+
             foreach (var video in videos)
             {
                 var div = new HtmlGenericControl("div");

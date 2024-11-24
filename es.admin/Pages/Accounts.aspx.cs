@@ -3,131 +3,136 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace es.admin
 {
-    public partial class Accounts : System.Web.UI.Page
+    public partial class Accounts : Page
     {
-        private int maxRows = 10;
+        private readonly DatabaseService db = new DatabaseService();
+        private int pageSize = 10;
+        private int CurrentPage
+        {
+            get
+            {
+                if (ViewState["CurrentPage"] == null) { ViewState["CurrentPage"] = 0; }
+                return (int)ViewState["CurrentPage"];
+            }
+            set { ViewState["CurrentPage"] = value; }
+        }
+        private string Search
+        {
+            get
+            {
+                if (ViewState["Search"] == null) { ViewState["Search"] = ""; }
+                return (string)ViewState["Search"];
+            }
+            set { ViewState["Search"] = value; }
+
+        }
+        private int PageCount
+        {
+            get
+            {
+                if (ViewState["PageCount"] == null) { ViewState["PageCount"] = 1; }
+                return (int)ViewState["PageCount"];
+            }
+            set { ViewState["PageCount"] = value; }
+        }
+
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                ViewState.Add("page", 0);
-
-
-                var request = new Requests();
-                var userList = request.getNUsers(this.maxRows, (int)ViewState["page"] * this.maxRows);
-
-                Create_Table(sender, e, userList);
+                BindData();
             }
         }
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
-            var page = (int)ViewState["page"];
+            previousBTN.Enabled = CurrentPage > 0;
 
-            if (page == 0)
-            {
-                this.previousBTN.Enabled = false;
-            }
-            else
-            {
-                this.previousBTN.Enabled = true;
-            }
+            nextBTN.Enabled = (CurrentPage + 1) * pageSize < PageCount;
         }
 
 
 
-
-        public void Search_Users(object sender, EventArgs e)
+        public void BindData()
         {
-            var page = (int)ViewState["page"];
+            var users = db.User.GetAll().Where(c => c.FirstName.Contains(Search)).ToList();
+
+            if (true) //todo sort by drop down list
+            {
+                users = users.OrderByDescending(c => c.RegistrationDate).ToList();
+            }
+
+            PageCount = users.Count();
+            users = users.Skip(CurrentPage * pageSize).Take(pageSize).ToList();
 
 
-            Clear_Table(sender, e);
 
-            var request = new Requests();
-            var userList = request.getSearchUsers(this.search.Text, this.maxRows, page * this.maxRows);
+            userTable.Rows.Clear();
 
-            Create_Table(sender, e, userList);
-        }
-
-        public void Create_Table(object sender, EventArgs e, List<data.User> userList)
-        {
-            foreach (var user in userList)
+            foreach (var user in users)
             {
                 TableRow row = new TableRow();
 
-                TableCell cell1 = new TableCell();
-                cell1.Text = user.FirstName + " " + user.LastName;
-                cell1.Attributes.Add("class", "text-nowrap text-body-secondary");
-                row.Cells.Add(cell1);
+                row.Cells.Add(new TableCell
+                {
+                    Text = user.FirstName + " " + user.LastName,
+                    CssClass = "text-nowrap text-body-secondary"
+                });
 
-                TableCell cell2 = new TableCell();
-                cell2.Text = user.Email;
-                cell2.Attributes.Add("class", "text-nowrap text-body-secondary");
-                row.Cells.Add(cell2);
+                row.Cells.Add(new TableCell
+                {
+                    Text = user.Email,
+                    CssClass = "text-nowrap text-body-secondary"
+                });
 
-                TableCell cell3 = new TableCell();
-                cell3.Text = user.Website;
-                cell3.Attributes.Add("class", "text-nowrap text-body-secondary");
-                row.Cells.Add(cell3);
+                row.Cells.Add(new TableCell
+                {
+                    Text = user.Website,
+                    CssClass = "text-nowrap text-body-secondary"
+                });
 
-                TableCell cell4 = new TableCell();
-                cell4.Text = user.Phone;
-                cell4.Attributes.Add("class", "text-nowrap text-body-secondary");
-                row.Cells.Add(cell4);
+                row.Cells.Add(new TableCell
+                {
+                    Text = user.Phone,
+                    CssClass = "text-nowrap text-body-secondary"
+                });
 
-                TableCell cell5 = new TableCell();
-                cell5.Text = user.Address;
-                cell5.Attributes.Add("class", "text-nowrap text-body-secondary");
-                row.Cells.Add(cell5);
+                row.Cells.Add(new TableCell
+                {
+                    Text = user.Address,
+                    CssClass = "text-nowrap text-body-secondary"
+                });
 
 
                 this.userTable.Rows.Add(row);
             }
         }
 
-        void Clear_Table(object sender, EventArgs e)
+        public void Search_Users(object sender, EventArgs e)
         {
-            userTable.Rows.Clear();
+            CurrentPage = 0;
+            Search = this.search.Text;
+
+            BindData();
         }
 
         protected void Previous(object sender, EventArgs e)
         {
-            // page number
-            var page = (int)ViewState["page"];
-            page--;
-            ViewState["page"] = page;
-
-
-            // table
-            Clear_Table(sender, e);
-
-            var request = new Requests();
-            var posts = request.getNUsers(this.maxRows, (int)ViewState["page"] * this.maxRows);
-
-            Create_Table(sender, e, posts);
+            CurrentPage--;
+            BindData();
         }
 
         protected void Next(object sender, EventArgs e)
         {
-            // page number
-            var page = (int)ViewState["page"];
-            page++;
-            ViewState["page"] = page;
-
-
-            // table
-            Clear_Table(sender, e);
-
-            var request = new Requests();
-            var posts = request.getNUsers(this.maxRows, (int)ViewState["page"] * this.maxRows);
-
-            Create_Table(sender, e, posts);
+            CurrentPage++;
+            BindData();
         }
     }
 }

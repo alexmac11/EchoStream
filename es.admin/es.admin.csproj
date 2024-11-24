@@ -2874,13 +2874,13 @@
     <Content Include="Global.asax" />
     <Content Include="Pages\Accounts.aspx" />
     <Content Include="Pages\Default.aspx" />
-    <Content Include="Pages\ForgotPassword.aspx" />
-    <Content Include="Pages\ForgotUsername.aspx" />
-    <Content Include="Pages\Login.aspx" />
+    <Content Include="Pages\Login\ForgotPassword.aspx" />
+    <Content Include="Pages\Login\ForgotUsername.aspx" />
+    <Content Include="Pages\Login\Login.aspx" />
+    <Content Include="Pages\Login\Register.aspx" />
     <Content Include="Pages\PostEdit.aspx" />
     <Content Include="Pages\PostManagement.aspx" />
     <Content Include="Pages\PostVideo.aspx" />
-    <Content Include="Pages\Register.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -3018,26 +3018,33 @@
     <Compile Include="Pages\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ForgotPassword.aspx.cs">
+    <Compile Include="Pages\Login\ForgotPassword.aspx.cs">
       <DependentUpon>ForgotPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\ForgotPassword.aspx.designer.cs">
+    <Compile Include="Pages\Login\ForgotPassword.aspx.designer.cs">
       <DependentUpon>ForgotPassword.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ForgotUsername.aspx.cs">
+    <Compile Include="Pages\Login\ForgotUsername.aspx.cs">
       <DependentUpon>ForgotUsername.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\ForgotUsername.aspx.designer.cs">
+    <Compile Include="Pages\Login\ForgotUsername.aspx.designer.cs">
       <DependentUpon>ForgotUsername.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Login.aspx.cs">
+    <Compile Include="Pages\Login\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\Login.aspx.designer.cs">
+    <Compile Include="Pages\Login\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Login\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Login\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\PostEdit.aspx.cs">
       <DependentUpon>PostEdit.aspx</DependentUpon>
@@ -3059,13 +3066,6 @@
     </Compile>
     <Compile Include="Pages\PostVideo.aspx.designer.cs">
       <DependentUpon>PostVideo.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Register.aspx.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Register.aspx.designer.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">

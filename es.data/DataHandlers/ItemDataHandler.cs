@@ -1,32 +1,42 @@
-﻿using System;
+﻿using Google.Apis.Services;
+using Google.Apis.YouTube.v3.Data;
+using Google.Apis.YouTube.v3;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Threading;
+using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Text;
 using System.Threading.Tasks;
-using System.Dynamic;
-
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Services;
-using Google.Apis.Upload;
-using Google.Apis.Util.Store;
-using Google.Apis.YouTube.v3;
-using Google.Apis.YouTube.v3.Data;
-
 
 namespace es.data
 {
+    public class UserDataHandler : GenericDataHandler<User>
+    {
+        public UserDataHandler(DataEntities context) : base(context) { }
+
+        public User GetUserByUserNameAndPassword(string username, string password)
+        {
+            return _dbSet.FirstOrDefault(sp => sp.Username == username && sp.PasswordHash == password);
+        }
+    }
+
+    public class ContentDataHandler : GenericDataHandler<Content>
+    {
+        public ContentDataHandler(DataEntities context) : base(context) { }
+    }
+
     public class VideoObj
     {
         public string title;
         public string description;
         public string id;
     }
-
-    public class videoRequests
+    public class VideoDataHandler : GenericDataHandler<Video>
     {
-        public List<VideoObj> getNVideos(int videoCount)
+        public VideoDataHandler(DataEntities context) : base(context) { }
+
+        public IEnumerable<VideoObj> GetNVideos(int videoCount)
         {
             var videos = new List<VideoObj>();
             try
@@ -44,7 +54,7 @@ namespace es.data
                     string nextPageToken = "";
                     while (nextPageToken != null && requestCount < 1)
                     {
-                        requestCount ++;
+                        requestCount++;
                         PlaylistItemsResource.ListRequest playlistItemsListRequest = yt.PlaylistItems.List("snippet");
                         playlistItemsListRequest.PlaylistId = uploadsListId;
                         playlistItemsListRequest.MaxResults = videoCount;
@@ -62,7 +72,7 @@ namespace es.data
                         nextPageToken = playlistItemsListResponse.NextPageToken;
                     }
                 }
-
+                
                 return videos;
             }
             catch (Exception e)
@@ -72,5 +82,45 @@ namespace es.data
                 return null;
             }
         }
+    }
+
+    public class HtmlPostDataHandler : GenericDataHandler<HtmlPost>
+    {
+        public HtmlPostDataHandler(DataEntities context) : base(context) { }
+    }
+
+    public class AuditLogDataHandler : GenericDataHandler<AuditLog>
+    {
+        public AuditLogDataHandler(DataEntities context) : base(context) { }
+    }
+
+    public class CategoryDataHandler : GenericDataHandler<Category>
+    {
+        public CategoryDataHandler(DataEntities context) : base(context) { }
+
+        public void RemoveCategoryByName(string name)
+        {
+            var row = _dbSet.FirstOrDefault(CategoryName => CategoryName.CategoryName == name);
+            
+            if (row != null)
+            {
+                _dbSet.Remove(row);
+            }
+        }
+    }
+
+    public class RegistrationTrackingDataHandler : GenericDataHandler<RegistrationTracking>
+    {
+        public RegistrationTrackingDataHandler(DataEntities context) : base(context) { }
+    }
+
+    public class PasswordResetTokenDataHandler : GenericDataHandler<PasswordResetToken>
+    {
+        public PasswordResetTokenDataHandler(DataEntities context) : base(context) { }
+    }
+
+    public class ReferralDataHandler : GenericDataHandler<Referral>
+    {
+        public ReferralDataHandler(DataEntities context) : base(context) { }
     }
 }

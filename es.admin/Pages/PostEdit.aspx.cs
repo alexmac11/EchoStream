@@ -13,8 +13,10 @@ using es.data;
 
 namespace es.admin
 {
-    public partial class PostEdit : System.Web.UI.Page
+    public partial class PostEdit : Page
     {
+        private readonly DatabaseService db = new DatabaseService();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Create_Categories();
@@ -22,10 +24,9 @@ namespace es.admin
 
         public void Create_Categories()
         {
-            var request = new Requests();
-            var categories = request.getCategories();
+            var categories = db.Category.GetAll().ToList();
 
-            foreach(string category in categories) {
+            foreach(var category in categories) {
                 TableRow row = new TableRow();
                 row.Attributes.Add("class", "form-check mb-3");
 
@@ -33,8 +34,8 @@ namespace es.admin
 
                 CheckBox cb = new CheckBox();
                 cb.Attributes.Add("class", "inline");
-                cb.ID = category;
-                cb.Text = category;
+                cb.ID = category.CategoryName;
+                cb.Text = category.CategoryName;
                 cell.Controls.Add(cb);
 
                 row.Cells.Add(cell);
@@ -44,8 +45,8 @@ namespace es.admin
         }
         protected void Add_Category(object sender, EventArgs e)
         {
-            var request = new Requests();
-            request.addCategory(this.categoryInput.Value);
+            db.Category.Insert(new Category{CategoryName = this.categoryInput.Value});
+            db.Save();
 
             TableRow row = new TableRow();
             row.Attributes.Add("class", "form-check mb-3");
@@ -64,8 +65,9 @@ namespace es.admin
         }
         protected void Remove_Category(object sender, EventArgs e) 
         {
-            var request = new Requests();
-            request.removeCategory(this.categoryInput.Value);
+            db.Category.RemoveCategoryByName(this.categoryInput.Value);
+            db.Save();
+
 
             var cat = this.categoryTable.FindControl(this.categoryInput.Value);
             cat.Visible = false;
@@ -105,9 +107,19 @@ namespace es.admin
             bool isProspectVisible = this.prospectCheck.Checked;
 
 
-
-            var request = new Requests();
-            request.addContent(title, editorContent, categories, isClientVisible, isProspectVisible);
+            db.Content.Insert(new data.Content
+            {
+                Title = title,
+                ContentBody = editorContent,
+                ContentType = null,
+                CategoryID = null,
+                Tags = categories,
+                PublishedDate = DateTime.Now,
+                IsActive = true,
+                isClientVisible = isClientVisible,
+                isProspectVisible = isProspectVisible
+            });
+            db.Save();
         }
     }
 }

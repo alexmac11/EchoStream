@@ -75,8 +75,10 @@
     <Compile Include="Category.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="videoRequests.cs" />
-    <Compile Include="Requests.cs" />
+    <Compile Include="DataHandlers\DatabaseService.cs" />
+    <Compile Include="DataHandlers\GenericDataHandler.cs" />
+    <Compile Include="DataHandlers\IDataHandler.cs" />
+    <Compile Include="DataHandlers\ItemDataHandler.cs" />
     <Compile Include="Content.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
