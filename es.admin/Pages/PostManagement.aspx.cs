@@ -1,57 +1,21 @@
-﻿using es.data;
-using Microsoft.Ajax.Utilities;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Security.Policy;
-using System.Web;
-using System.Web.Services;
-using System.Web.Services.Protocols;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.Script.Serialization;
-using System.Diagnostics;
-using System.Drawing;
+using es.data;
 
 namespace es.admin
 {
     public partial class PostManagement : Page
     {
         private readonly DatabaseService db = new DatabaseService();
-        private int pageSize = 10;
-        private int CurrentPage
-        {
-            get
-            {
-                if (ViewState["CurrentPage"] == null) { ViewState["CurrentPage"] = 0; }
-                return (int)ViewState["CurrentPage"];
-            }
-            set { ViewState["CurrentPage"] = value; }
-        }
+
         private string Search
         {
-            get
-            {
-                if (ViewState["Search"] == null) { ViewState["Search"] = ""; }
-                return (string)ViewState["Search"];
-            }
+            get { return ViewState["Search"] as string ?? ""; }
             set { ViewState["Search"] = value; }
-
         }
-        private int PageCount
-        {
-            get
-            {
-                if (ViewState["PageCount"] == null) { ViewState["PageCount"] = 1; }
-                return (int)ViewState["PageCount"];
-            }
-            set { ViewState["PageCount"] = value; }
-        }
-
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -61,115 +25,72 @@ namespace es.admin
             }
         }
 
-        protected void Page_LoadComplete(object sender, EventArgs e)
-        {
-            previousBTN.Enabled = CurrentPage > 0;
-
-            nextBTN.Enabled = (CurrentPage + 1) * pageSize < PageCount;
-        }
-
-
-
         protected void BindData()
         {
-            var posts = db.Content.GetAll().Where(c => c.Title.Contains(Search)).ToList();
+            int pageSize = GridView1.PageSize;
+            int pageIndex = GridView1.PageIndex;
 
-            if (true) //todo sort by drop down list
+            var posts = db.Content.GetAll()
+                .Where(c => c.Title.Contains(Search))
+                .OrderByDescending(c => c.PublishedDate)
+                .ToList();
+
+            GridView1.DataSource = posts;
+            GridView1.DataBind();
+        }
+
+        protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+
+            BindData();
+        }
+
+        protected void GridView1_DataBound(object sender, EventArgs e)
+        {
+            if (GridView1.BottomPagerRow != null)
             {
-                posts = posts.OrderByDescending(c => c.PublishedDate).ToList();
+                // Find the buttons in the PagerTemplate
+                LinkButton btnPrev = (LinkButton)GridView1.BottomPagerRow.FindControl("btnPrev");
+                LinkButton btnNext = (LinkButton)GridView1.BottomPagerRow.FindControl("btnNext");
+                Label lblPageInfo = (Label)GridView1.BottomPagerRow.FindControl("lblPageInfo");
+
+                // Update button states based on the current page
+                btnPrev.Enabled = GridView1.PageIndex > 0; // Disable Previous if on the first page
+                btnNext.Enabled = GridView1.PageIndex < GridView1.PageCount - 1; // Disable Next if on the last page
+
+                // Update page info
+                lblPageInfo.Text = $"Page {GridView1.PageIndex + 1} of {GridView1.PageCount}";
             }
+        }
 
-            PageCount = posts.Count();
-            posts = posts.Skip(CurrentPage * pageSize).Take(pageSize).ToList();
-
-            Debug.WriteLine("currentPage " + CurrentPage);
-
-            postTable.Rows.Clear();
-
-            foreach (var post in posts)
+        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Delete_Click")
             {
-                TableRow row = new TableRow();
-                row.ID = post.ContentID.ToString();
-
-                row.Cells.Add(new TableCell
+                try
                 {
-                    Text = post.Title,
-                    CssClass = "text-nowrap text-body-secondary"
-                });
-
-                row.Cells.Add(new TableCell
+                    int contentId = Convert.ToInt32(e.CommandArgument);
+                    db.Content.DeleteById(contentId);
+                    db.Save();
+                    BindData();
+                }
+                catch (Exception ex)
                 {
-                    Text = post.PublishedDate.ToString(),
-                    CssClass = "text-nowrap text-body-secondary"
-                });
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+            else if (e.CommandName == "Edit_Click")
+            {
+                int contentId = Convert.ToInt32(e.CommandArgument);
+                Response.Redirect("~/Pages/PostEdit.aspx?contentID=" + contentId);
 
-                row.Cells.Add(new TableCell
-                {
-                    Text = post.Tags,
-                    CssClass = "text-nowrap text-body-secondary"
-                });
-
-
-
-                TableCell buttonCell = new TableCell
-                {
-                    CssClass = "text-nowrap text-body-secondary"
-                };
-
-                Button btn1 = new Button {
-                    Text = "Delete",
-                    CssClass = "btn btn-icon btn-sm btn-hover btn-danger"
-                };
-                btn1.Click += new EventHandler((s, evnt) => this.Delete_Post(post.ContentID, row));
-                buttonCell.Controls.Add(btn1);
-
-                Button btn2 = new Button { 
-                    Text = "Edit",
-                    CssClass = "btn btn-icon btn-sm btn-hover btn-danger"
-                };
-                btn2.Click += new EventHandler((s, evnt) => this.Redirect(post.ContentID));
-                buttonCell.Controls.Add(btn2);
-
-                row.Cells.Add(buttonCell);
-
-
-                this.postTable.Rows.Add(row);
             }
         }
 
         protected void Search_Posts(object sender, EventArgs e)
         {
-            CurrentPage = 0;
-            Search = this.search.Text;
-
-            BindData();
-        }
-
-        protected void Delete_Post(int contentID, TableRow row)
-        {
-            Debug.WriteLine("Delete");
-            db.Content.DeleteById(contentID);
-            db.Save();
-
-            row.Visible = false;
-
-            BindData();
-        }
-
-        protected void Redirect(int contentID)
-        {
-            Response.Redirect("~/Pages/PostEdit.aspx?contentID=" + contentID);
-        }
-
-        protected void Previous(object sender, EventArgs e)
-        {
-            CurrentPage--;
-            BindData();
-        }
-
-        protected void Next(object sender, EventArgs e)
-        {
-            CurrentPage++;
+            Search = search.Text.Trim();
             BindData();
         }
     }

@@ -22,14 +22,8 @@
                 <div class="content__wrap">
 
 
-                    <!-- Title and information -->
+                    <!-- Title -->
                     <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">Manage posts</h1>
-                    <p class="text-center lead mb-5">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio,
-                        <br>
-                        esse corporis ipsam fuga ratione cum quisquam voluptas dolores ullam eius.
-                    </p>
-                    <!-- END : Title and information -->
 
 
                     <!-- Search form -->
@@ -81,34 +75,62 @@
                         <div class="card-body">
                             <!-- Blog post lists -->
                             <div class="table-responsive">
-                                <asp:Table ID="postTable" runat="server" class="table table-striped align-middle">
-                                    <asp:TableHeaderRow TableSection="TableHeader">
-                                        <asp:TableCell>Post Title</asp:TableCell>
-                                        <asp:TableCell>Creation Date</asp:TableCell>
-                                        <asp:TableCell>Categories</asp:TableCell>
-                                        <asp:TableCell>Actions</asp:TableCell>
-                                    </asp:TableHeaderRow>
-                                </asp:Table>
+                                <asp:GridView ID="GridView1" runat="server"
+                                    AllowPaging="true"
+                                    PageSize="10"
+                                    AutoGenerateColumns="false"
+                                    DataKeyNames="ContentID"
+
+                                    OnPageIndexChanging="GridView1_PageIndexChanging"
+                                    OnRowCommand="GridView1_RowCommand"
+                                    OnDataBound="GridView1_DataBound"
+
+                                    CssClass="table table-striped align-middle">
+
+                                    <PagerTemplate>
+                                        <div class="text-center">
+                                            <asp:LinkButton runat="server" CommandName="Page" CommandArgument="First" Text="First" CssClass="btn btn-sm btn-light mx-1" />
+                                            <asp:LinkButton runat="server" ID="btnPrev" CommandName="Page" CommandArgument="Prev" Text="Previous" CssClass="btn btn-sm btn-light mx-1" />
+                                            <asp:Label ID="lblPageInfo" runat="server" CssClass="mx-2"></asp:Label>
+                                            <asp:LinkButton runat="server" ID="btnNext" CommandName="Page" CommandArgument="Next" Text="Next" CssClass="btn btn-sm btn-light mx-1" />
+                                            <asp:LinkButton runat="server" CommandName="Page" CommandArgument="Last" Text="Last" CssClass="btn btn-sm btn-light mx-1" />
+                                        </div>
+                                    </PagerTemplate>
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Title">
+                                            <ItemTemplate>
+                                                <span class="text-nowrap text-body-secondary"><%# Eval("Title") %></span>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Tags">
+                                            <ItemTemplate>
+                                                <span class="text-nowrap text-body-secondary"><%# Eval("Tags") %></span>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+            
+                                        <asp:TemplateField HeaderText="Published Date">
+                                            <ItemTemplate>
+                                                <span class="text-nowrap text-body-secondary"><%# Eval("PublishedDate") %></span>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-end" HeaderStyle-Width="20px" ItemStyle-Width="20px">
+                                            <ItemTemplate>
+                                                <div class="d-flex justify-content-end">
+                                                    <asp:Button ID="btnEdit" runat="server" CommandName="Edit_Click" 
+                                                        CommandArgument='<%# Eval("ContentID") %>' 
+                                                        Text="Edit" CssClass="btn btn-warning btn-sm mx-1" />
+                                                    <asp:Button ID="btnDelete" runat="server" CommandName="Delete_Click" 
+                                                        CommandArgument='<%# Eval("ContentID") %>' 
+                                                        Text="Delete" CssClass="btn btn-danger btn-sm mx-1" />
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
                             </div>
-                            <!-- END : Blog post lists -->
 
-
-                            <div class="mt-4 d-flex justify-content-center">
-
-                                <!-- Pagination - Disabled and active states -->
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <asp:Button runat="server" ID="previousBTN" OnClick="Previous" CssClass="page-link" Text="Previous" Enabled="false"/>
-                                        </li>
-                                        <li class="page-item">
-                                            <asp:Button runat="server" ID="nextBTN" OnClick="Next" CssClass="page-link" Text="Next"/>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <!-- END : Pagination - Disabled and active states -->
-
-                            </div>
 
 
                         </div>
