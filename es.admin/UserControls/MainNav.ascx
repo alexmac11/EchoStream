@@ -14,7 +14,7 @@
 
                 <!-- User name and position -->
                 <div class="text-center">
-                    <h5 runat="server" id="fullname" class="mb-0">Em</h5>
+                    <h5 runat="server" id="fullname" class="mb-0">Empty</h5>
                     <small class="text-body-secondary">Administrator</small>
                 </div>
 

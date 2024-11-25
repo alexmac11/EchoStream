@@ -25,9 +25,9 @@ namespace es.admin
 
             if (user != null)
             {
-                this.Session["NAME"] = user.FirstName + " " + user.LastName;
+                Session["NAME"] = user.FirstName + " " + user.LastName;
 
-                FormsAuthentication.RedirectFromLoginPage(user.Username, createPersistentCookie: true);
+                FormsAuthentication.RedirectFromLoginPage(user.UserID.ToString(), createPersistentCookie: true);
             }
         }
     }
