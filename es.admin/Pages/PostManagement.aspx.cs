@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.UI;
@@ -16,13 +18,37 @@ namespace es.admin
             get { return ViewState["Search"] as string ?? ""; }
             set { ViewState["Search"] = value; }
         }
+        private string Category
+        {
+            get { return ViewState["Category"] as string ?? ""; }
+            set { ViewState["Category"] = value; }
+        }
+        private string SortBy
+        {
+            get { return ViewState["SortBy"] as string ?? ""; }
+            set { ViewState["SortBy"] = value; }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                LoadCategories();
                 BindData();
             }
+        }
+
+        private void LoadCategories()
+        {
+            var categories = db.Category.GetAll().ToList();
+
+            ddlCategories.DataSource = categories;
+            ddlCategories.DataTextField = "CategoryName";
+            ddlCategories.DataValueField = "CategoryName"; 
+            ddlCategories.DataBind();
+
+            // Add default option
+            ddlCategories.Items.Insert(0, new ListItem("-Select category-", "none"));
         }
 
         protected void BindData()
@@ -30,10 +56,26 @@ namespace es.admin
             int pageSize = PostGridView.PageSize;
             int pageIndex = PostGridView.PageIndex;
 
-            var posts = db.Content.GetAll()
-                .Where(c => c.Title.ToLower().Contains(Search.ToLower()))
-                .OrderByDescending(c => c.PublishedDate)
-                .ToList();
+
+            // db processing
+            var posts = db.Content.GetAll();
+
+            if (Category != "none" && Category != "")
+            {
+                posts = posts.Where(c => c.Tags.ToLower().Contains(Category.ToLower()));
+            }
+
+            if (SortBy == "date-created" || SortBy == "")
+            {
+                posts = posts.OrderByDescending(c => c.PublishedDate);
+            }
+            else if (SortBy == "alphabetically")
+            {
+                posts = posts.OrderBy(c => c.Title);
+            }
+
+            posts = posts.ToList();
+
 
             PostGridView.DataSource = posts;
             PostGridView.DataBind();
@@ -92,6 +134,13 @@ namespace es.admin
         protected void Search_Data(object sender, EventArgs e)
         {
             Search = search.Text.Trim();
+            BindData();
+        }
+
+        protected void btnFilter_Click(object sender, EventArgs e)
+        {
+            Category = ddlCategories.SelectedValue;
+            SortBy = ddlSortOptions.SelectedValue;
             BindData();
         }
     }

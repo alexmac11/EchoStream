@@ -35,13 +35,6 @@
                                 <input runat="server" id="password" type="password" class="form-control" placeholder="Password">
                             </div>
 
-                            <div class="form-check">
-                                <input id="_dm-loginCheck" class="form-check-input" type="checkbox">
-                                <label for="_dm-loginCheck" class="form-check-label">
-                                    Remember me
-                                </label>
-                            </div>
-
                             <div class="d-grid mt-5">
                                 <asp:Button runat="server" OnClick="SignIn" class="btn btn-primary btn-lg" type="submit" Text="Sign In"></asp:Button>
                             </div>

@@ -40,28 +40,19 @@
                     <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
                         <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
                             <div class="text-center mb-2 mb-md-0">Only in category</div>
-                            <select class="form-select w-auto" aria-label="Categories">
-                                <option value="none" selected="">-Select category-</option>
-                                <option value="musics">Musics</option>
-                                <option value="photos">Photos</option>
-                                <option value="internet">Internet</option>
-                                <option value="sports">Sports</option>
-                            </select>
+                            <asp:DropDownList ID="ddlCategories" runat="server" CssClass="form-select w-auto">
+                            </asp:DropDownList>
                         </div>
-
 
                         <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
                             <div class="text-center mb-2 mb-md-0">Sort by</div>
-                            <select class="form-select w-auto" aria-label="Sort options">
-                                <option value="date-created" selected="">Date Created</option>
-                                <option value="date-modified">Date Modified</option>
-                                <option value="frequency-used">Frequency Used</option>
-                                <option value="alpabetically">Alpabetically</option>
-                                <option value="alpabetically-reversed">Alpabetically Reversed</option>
-                            </select>
+                            <asp:DropDownList ID="ddlSortOptions" runat="server" CssClass="form-select w-auto">
+                                <asp:ListItem Text="Date Created" Value="date-created" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="Alphabetically" Value="alphabetically"></asp:ListItem>
+                            </asp:DropDownList>
                         </div>
 
-                        <button class="btn btn-light mb-3 mb-sm-0">Filter</button>
+                        <asp:Button ID="btnFilter" runat="server" Text="Filter" CssClass="btn btn-light mb-3 mb-sm-0" OnClick="btnFilter_Click" />
                     </div>
                     <!-- END : Sort and categories filter -->
                 </div>

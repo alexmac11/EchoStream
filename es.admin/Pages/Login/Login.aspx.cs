@@ -18,7 +18,7 @@ namespace es.admin
         {
 
         }
-        //todo Remember me checkbox
+
         protected void SignIn(object sender, EventArgs e)
         {
             var user = db.User.GetUserByUserNameAndPassword(this.username.Value, this.password.Value);
