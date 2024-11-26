@@ -30,7 +30,7 @@
 
                     <!-- Search form -->
                     <div class="col-md-8 offset-md-2 mb-3">
-                        <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by First or Last Name"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by First or Last Name" autofocus></asp:TextBox>
                         <asp:Button runat="server" ID="searchBtn" class="btn" OnClick="Search_Data" Text="Search"></asp:Button>
                     </div>
                     <!-- END : Search form -->

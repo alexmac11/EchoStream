@@ -29,7 +29,7 @@
                     <!-- Search form -->
                     <div class="col-md-8 offset-md-2 mb-3">
                         <asp:Panel runat="server" DefaultButton="searchBtn">
-                            <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by title"></asp:TextBox>
+                            <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by title" autofocus></asp:TextBox>
                             <asp:Button runat="server" ID="searchBtn" class="btn" OnClick="Search_Data" Text="Search"></asp:Button>
                         </asp:Panel>
                     </div>

@@ -58,7 +58,8 @@ namespace es.admin
 
 
             // db processing
-            var posts = db.Content.GetAll();
+            var posts = db.Content.GetAll()
+                .Where(c => c.Title.ToLower().Contains(Search.ToLower()));
 
             if (Category != "none" && Category != "")
             {

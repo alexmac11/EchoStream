@@ -14,7 +14,7 @@ namespace es.admin.UserControls
     public partial class MainNav : System.Web.UI.UserControl
     {
         private readonly DatabaseService db = new DatabaseService();
-
+        //TODO add settings page
         protected void Page_Load(object sender, EventArgs e)
         {
             if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["NAME"] != null)
