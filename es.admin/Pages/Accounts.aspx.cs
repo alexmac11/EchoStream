@@ -1,48 +1,21 @@
-﻿using es.data;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
-using System.Web;
-using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using es.data;
 
 namespace es.admin
 {
     public partial class Accounts : Page
     {
         private readonly DatabaseService db = new DatabaseService();
-        private int pageSize = 10;
-        private int CurrentPage
-        {
-            get
-            {
-                if (ViewState["CurrentPage"] == null) { ViewState["CurrentPage"] = 0; }
-                return (int)ViewState["CurrentPage"];
-            }
-            set { ViewState["CurrentPage"] = value; }
-        }
+
         private string Search
         {
-            get
-            {
-                if (ViewState["Search"] == null) { ViewState["Search"] = ""; }
-                return (string)ViewState["Search"];
-            }
+            get { return ViewState["Search"] as string ?? ""; }
             set { ViewState["Search"] = value; }
-
         }
-        private int PageCount
-        {
-            get
-            {
-                if (ViewState["PageCount"] == null) { ViewState["PageCount"] = 1; }
-                return (int)ViewState["PageCount"];
-            }
-            set { ViewState["PageCount"] = value; }
-        }
-
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,87 +24,68 @@ namespace es.admin
                 BindData();
             }
         }
-        protected void Page_LoadComplete(object sender, EventArgs e)
-        {
-            previousBTN.Enabled = CurrentPage > 0;
 
-            nextBTN.Enabled = (CurrentPage + 1) * pageSize < PageCount;
+        protected void BindData()
+        {
+            int pageSize = AccountsGridView.PageSize;
+            int pageIndex = AccountsGridView.PageIndex;
+
+            var posts = db.User.GetAll()
+                .Where(c => c.FirstName.ToLower().Contains(Search.ToLower()) || c.LastName.ToLower().Contains(Search.ToLower()))
+                .OrderByDescending(c => c.RegistrationDate)
+                .ToList();
+
+            AccountsGridView.DataSource = posts;
+            AccountsGridView.DataBind();
         }
 
-
-
-        public void BindData()
+        protected void AccountsGridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            var users = db.User.GetAll().Where(c => c.FirstName.Contains(Search)).ToList();
-
-            if (true) //todo sort by drop down list
-            {
-                users = users.OrderByDescending(c => c.RegistrationDate).ToList();
-            }
-
-            PageCount = users.Count();
-            users = users.Skip(CurrentPage * pageSize).Take(pageSize).ToList();
-
-
-
-            userTable.Rows.Clear();
-
-            foreach (var user in users)
-            {
-                TableRow row = new TableRow();
-
-                row.Cells.Add(new TableCell
-                {
-                    Text = user.FirstName + " " + user.LastName,
-                    CssClass = "text-nowrap text-body-secondary"
-                });
-
-                row.Cells.Add(new TableCell
-                {
-                    Text = user.Email,
-                    CssClass = "text-nowrap text-body-secondary"
-                });
-
-                row.Cells.Add(new TableCell
-                {
-                    Text = user.Website,
-                    CssClass = "text-nowrap text-body-secondary"
-                });
-
-                row.Cells.Add(new TableCell
-                {
-                    Text = user.Phone,
-                    CssClass = "text-nowrap text-body-secondary"
-                });
-
-                row.Cells.Add(new TableCell
-                {
-                    Text = user.Address,
-                    CssClass = "text-nowrap text-body-secondary"
-                });
-
-
-                this.userTable.Rows.Add(row);
-            }
-        }
-
-        public void Search_Users(object sender, EventArgs e)
-        {
-            CurrentPage = 0;
-            Search = this.search.Text;
+            AccountsGridView.PageIndex = e.NewPageIndex;
 
             BindData();
         }
 
-        protected void Previous(object sender, EventArgs e)
+        protected void AccountsGridView_DataBound(object sender, EventArgs e)
         {
-            CurrentPage--;
-            BindData();
+            if (AccountsGridView.BottomPagerRow != null)
+            {
+                // Find the buttons in the PagerTemplate
+                LinkButton btnPrev = (LinkButton)AccountsGridView.BottomPagerRow.FindControl("btnPrev");
+                LinkButton btnNext = (LinkButton)AccountsGridView.BottomPagerRow.FindControl("btnNext");
+                Label lblPageInfo = (Label)AccountsGridView.BottomPagerRow.FindControl("lblPageInfo");
+
+                // Update button states based on the current page
+                btnPrev.Enabled = AccountsGridView.PageIndex > 0; // Disable Previous if on the first page
+                btnNext.Enabled = AccountsGridView.PageIndex < AccountsGridView.PageCount - 1; // Disable Next if on the last page
+
+                // Update page info
+                lblPageInfo.Text = $"Page {AccountsGridView.PageIndex + 1} of {AccountsGridView.PageCount}";
+            }
         }
 
-        protected void Next(object sender, EventArgs e)
+        protected void AccountsGridView_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            CurrentPage++;
+            if (e.CommandName == "Delete_Click")
+            {
+                try
+                {
+                    int userID = Convert.ToInt32(e.CommandArgument);
+                    db.User.DeleteById(userID);
+                    db.Save();
+
+                    BindData();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        protected void Search_Data(object sender, EventArgs e)
+        {
+            Search = search.Text.Trim();
             BindData();
         }
     }

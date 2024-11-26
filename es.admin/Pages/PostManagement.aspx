@@ -30,7 +30,7 @@
                     <div class="col-md-8 offset-md-2 mb-3">
                         <asp:Panel runat="server" DefaultButton="searchBtn">
                             <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by title"></asp:TextBox>
-                            <asp:Button runat="server" ID="searchBtn" class="btn" OnClick="Search_Posts" Text="Search"></asp:Button>
+                            <asp:Button runat="server" ID="searchBtn" class="btn" OnClick="Search_Data" Text="Search"></asp:Button>
                         </asp:Panel>
                     </div>
                     <!-- END : Search form -->
@@ -75,60 +75,62 @@
                         <div class="card-body">
                             <!-- Blog post lists -->
                             <div class="table-responsive">
-                                <asp:GridView ID="GridView1" runat="server"
-                                    AllowPaging="true"
-                                    PageSize="10"
-                                    AutoGenerateColumns="false"
-                                    DataKeyNames="ContentID"
+                                <asp:UpdatePanel ID="UpdatePanel" runat="server">
+                                    <ContentTemplate>
+                                        <asp:GridView ID="PostGridView" runat="server"
+                                            AllowPaging="true"
+                                            PageSize="10"
+                                            AutoGenerateColumns="false"
+                                            DataKeyNames="ContentID"
+                                            CssClass="table table-striped align-middle"
+                                            OnPageIndexChanging="PostGridView_PageIndexChanging"
+                                            OnRowCommand="PostGridView_RowCommand"
+                                            OnDataBound="PostGridView_DataBound">
 
-                                    OnPageIndexChanging="GridView1_PageIndexChanging"
-                                    OnRowCommand="GridView1_RowCommand"
-                                    OnDataBound="GridView1_DataBound"
-
-                                    CssClass="table table-striped align-middle">
-
-                                    <PagerTemplate>
-                                        <div class="text-center">
-                                            <asp:LinkButton runat="server" CommandName="Page" CommandArgument="First" Text="First" CssClass="btn btn-sm btn-light mx-1" />
-                                            <asp:LinkButton runat="server" ID="btnPrev" CommandName="Page" CommandArgument="Prev" Text="Previous" CssClass="btn btn-sm btn-light mx-1" />
-                                            <asp:Label ID="lblPageInfo" runat="server" CssClass="mx-2"></asp:Label>
-                                            <asp:LinkButton runat="server" ID="btnNext" CommandName="Page" CommandArgument="Next" Text="Next" CssClass="btn btn-sm btn-light mx-1" />
-                                            <asp:LinkButton runat="server" CommandName="Page" CommandArgument="Last" Text="Last" CssClass="btn btn-sm btn-light mx-1" />
-                                        </div>
-                                    </PagerTemplate>
-                                    <Columns>
-                                        <asp:TemplateField HeaderText="Title">
-                                            <ItemTemplate>
-                                                <span class="text-nowrap text-body-secondary"><%# Eval("Title") %></span>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-
-                                        <asp:TemplateField HeaderText="Tags">
-                                            <ItemTemplate>
-                                                <span class="text-nowrap text-body-secondary"><%# Eval("Tags") %></span>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-            
-                                        <asp:TemplateField HeaderText="Published Date">
-                                            <ItemTemplate>
-                                                <span class="text-nowrap text-body-secondary"><%# Eval("PublishedDate") %></span>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-
-                                        <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-end" HeaderStyle-Width="20px" ItemStyle-Width="20px">
-                                            <ItemTemplate>
-                                                <div class="d-flex justify-content-end">
-                                                    <asp:Button ID="btnEdit" runat="server" CommandName="Edit_Click" 
-                                                        CommandArgument='<%# Eval("ContentID") %>' 
-                                                        Text="Edit" CssClass="btn btn-warning btn-sm mx-1" />
-                                                    <asp:Button ID="btnDelete" runat="server" CommandName="Delete_Click" 
-                                                        CommandArgument='<%# Eval("ContentID") %>' 
-                                                        Text="Delete" CssClass="btn btn-danger btn-sm mx-1" />
+                                            <PagerTemplate>
+                                                <div class="text-center">
+                                                    <asp:LinkButton runat="server" CommandName="Page" CommandArgument="First" Text="First" CssClass="btn btn-sm btn-light mx-1" />
+                                                    <asp:LinkButton runat="server" ID="btnPrev" CommandName="Page" CommandArgument="Prev" Text="Previous" CssClass="btn btn-sm btn-light mx-1" />
+                                                    <asp:Label ID="lblPageInfo" runat="server" CssClass="mx-2"></asp:Label>
+                                                    <asp:LinkButton runat="server" ID="btnNext" CommandName="Page" CommandArgument="Next" Text="Next" CssClass="btn btn-sm btn-light mx-1" />
+                                                    <asp:LinkButton runat="server" CommandName="Page" CommandArgument="Last" Text="Last" CssClass="btn btn-sm btn-light mx-1" />
                                                 </div>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                    </Columns>
-                                </asp:GridView>
+                                            </PagerTemplate>
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="Title">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("Title") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Tags">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("Tags") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Published Date">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("PublishedDate") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-end" HeaderStyle-Width="20px" ItemStyle-Width="20px">
+                                                    <ItemTemplate>
+                                                        <div class="d-flex justify-content-end">
+                                                            <asp:Button ID="btnEdit" runat="server" CommandName="Edit_Click"
+                                                                CommandArgument='<%# Eval("ContentID") %>'
+                                                                Text="Edit" CssClass="btn btn-warning btn-sm mx-1" />
+                                                            <asp:Button ID="btnDelete" runat="server" CommandName="Delete_Click"
+                                                                CommandArgument='<%# Eval("ContentID") %>'
+                                                                Text="Delete" CssClass="btn btn-danger btn-sm mx-1" />
+                                                        </div>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
                             </div>
 
 

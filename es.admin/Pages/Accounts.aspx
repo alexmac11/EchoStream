@@ -30,8 +30,8 @@
 
                     <!-- Search form -->
                     <div class="col-md-8 offset-md-2 mb-3">
-                        <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by First Name"></asp:TextBox>
-                        <asp:Button runat="server" ID="searchBtn" class="btn" OnClick="Search_Users" Text="Search"></asp:Button>
+                        <asp:TextBox runat="server" ID="search" CssClass="searchbox__input form-control form-control-lg" placeholder="Search by First or Last Name"></asp:TextBox>
+                        <asp:Button runat="server" ID="searchBtn" class="btn" OnClick="Search_Data" Text="Search"></asp:Button>
                     </div>
                     <!-- END : Search form -->
 
@@ -48,37 +48,79 @@
 
                             <!-- Blog post lists -->
                             <div class="table-responsive">
-                                <asp:Table ID="userTable" runat="server" class="table table-striped align-middle">
-                                    <asp:TableHeaderRow TableSection="TableHeader">
-                                        <asp:TableCell>Name</asp:TableCell>
-                                        <asp:TableCell>Email</asp:TableCell>
-                                        <asp:TableCell>Website</asp:TableCell>
-                                        <asp:TableCell>Phone</asp:TableCell>
-                                        <asp:TableCell>Address</asp:TableCell>
-                                    </asp:TableHeaderRow>
-                                </asp:Table>
+                                <asp:UpdatePanel ID="UpdatePanel" runat="server">
+                                    <ContentTemplate>
+                                        <asp:GridView ID="AccountsGridView" runat="server"
+                                            AllowPaging="true"
+                                            PageSize="10"
+                                            AutoGenerateColumns="false"
+                                            DataKeyNames="UserID"
+                                            CssClass="table table-striped align-middle"
+                                            OnPageIndexChanging="AccountsGridView_PageIndexChanging"
+                                            OnRowCommand="AccountsGridView_RowCommand"
+                                            OnDataBound="AccountsGridView_DataBound">
+
+                                            <PagerTemplate>
+                                                <div class="text-center">
+                                                    <asp:LinkButton runat="server" CommandName="Page" CommandArgument="First" Text="First" CssClass="btn btn-sm btn-light mx-1" />
+                                                    <asp:LinkButton runat="server" ID="btnPrev" CommandName="Page" CommandArgument="Prev" Text="Previous" CssClass="btn btn-sm btn-light mx-1" />
+                                                    <asp:Label ID="lblPageInfo" runat="server" CssClass="mx-2"></asp:Label>
+                                                    <asp:LinkButton runat="server" ID="btnNext" CommandName="Page" CommandArgument="Next" Text="Next" CssClass="btn btn-sm btn-light mx-1" />
+                                                    <asp:LinkButton runat="server" CommandName="Page" CommandArgument="Last" Text="Last" CssClass="btn btn-sm btn-light mx-1" />
+                                                </div>
+                                            </PagerTemplate>
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="First Name">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("FirstName") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Last Name">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("LastName") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Email">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("Email") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Website">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("Website") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Phone">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("Phone") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Address">
+                                                    <ItemTemplate>
+                                                        <span class="text-nowrap text-body-secondary"><%# Eval("Address") %></span>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-end" HeaderStyle-Width="20px" ItemStyle-Width="20px">
+                                                    <ItemTemplate>
+                                                        <div class="d-flex justify-content-end">
+                                                            <asp:Button ID="btnDelete" runat="server" CommandName="Delete_Click"
+                                                                CommandArgument='<%# Eval("UserID") %>'
+                                                                Text="Delete" CssClass="btn btn-danger btn-sm mx-1" />
+                                                        </div>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
                             </div>
                             <!-- END : Blog post lists -->
-
-
-                            <div class="mt-4 d-flex justify-content-center">
-
-                                <!-- Pagination - Disabled and active states -->
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <asp:Button runat="server" ID="previousBTN" OnClick="Previous" CssClass="page-link" Text="Previous" Enabled="false"/>
-                                        </li>
-                                        <li class="page-item">
-                                            <asp:Button runat="server" ID="nextBTN" OnClick="Next" CssClass="page-link" Text="Next"/>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <!-- END : Pagination - Disabled and active states -->
-
-                            </div>
-
-
                         </div>
                     </div>
 

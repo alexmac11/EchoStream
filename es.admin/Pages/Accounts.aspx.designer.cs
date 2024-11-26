@@ -33,30 +33,21 @@ namespace es.admin
         protected global::System.Web.UI.WebControls.Button searchBtn;
 
         /// <summary>
-        /// userTable control.
+        /// UpdatePanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table userTable;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel;
 
         /// <summary>
-        /// previousBTN control.
+        /// AccountsGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button previousBTN;
-
-        /// <summary>
-        /// nextBTN control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button nextBTN;
+        protected global::System.Web.UI.WebControls.GridView AccountsGridView;
     }
 }

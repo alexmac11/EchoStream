@@ -27,44 +27,44 @@ namespace es.admin
 
         protected void BindData()
         {
-            int pageSize = GridView1.PageSize;
-            int pageIndex = GridView1.PageIndex;
+            int pageSize = PostGridView.PageSize;
+            int pageIndex = PostGridView.PageIndex;
 
             var posts = db.Content.GetAll()
-                .Where(c => c.Title.Contains(Search))
+                .Where(c => c.Title.ToLower().Contains(Search.ToLower()))
                 .OrderByDescending(c => c.PublishedDate)
                 .ToList();
 
-            GridView1.DataSource = posts;
-            GridView1.DataBind();
+            PostGridView.DataSource = posts;
+            PostGridView.DataBind();
         }
 
-        protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void PostGridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            GridView1.PageIndex = e.NewPageIndex;
+            PostGridView.PageIndex = e.NewPageIndex;
 
             BindData();
         }
 
-        protected void GridView1_DataBound(object sender, EventArgs e)
+        protected void PostGridView_DataBound(object sender, EventArgs e)
         {
-            if (GridView1.BottomPagerRow != null)
+            if (PostGridView.BottomPagerRow != null)
             {
                 // Find the buttons in the PagerTemplate
-                LinkButton btnPrev = (LinkButton)GridView1.BottomPagerRow.FindControl("btnPrev");
-                LinkButton btnNext = (LinkButton)GridView1.BottomPagerRow.FindControl("btnNext");
-                Label lblPageInfo = (Label)GridView1.BottomPagerRow.FindControl("lblPageInfo");
+                LinkButton btnPrev = (LinkButton)PostGridView.BottomPagerRow.FindControl("btnPrev");
+                LinkButton btnNext = (LinkButton)PostGridView.BottomPagerRow.FindControl("btnNext");
+                Label lblPageInfo = (Label)PostGridView.BottomPagerRow.FindControl("lblPageInfo");
 
                 // Update button states based on the current page
-                btnPrev.Enabled = GridView1.PageIndex > 0; // Disable Previous if on the first page
-                btnNext.Enabled = GridView1.PageIndex < GridView1.PageCount - 1; // Disable Next if on the last page
+                btnPrev.Enabled = PostGridView.PageIndex > 0; // Disable Previous if on the first page
+                btnNext.Enabled = PostGridView.PageIndex < PostGridView.PageCount - 1; // Disable Next if on the last page
 
                 // Update page info
-                lblPageInfo.Text = $"Page {GridView1.PageIndex + 1} of {GridView1.PageCount}";
+                lblPageInfo.Text = $"Page {PostGridView.PageIndex + 1} of {PostGridView.PageCount}";
             }
         }
 
-        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void PostGridView_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Delete_Click")
             {
@@ -73,6 +73,7 @@ namespace es.admin
                     int contentId = Convert.ToInt32(e.CommandArgument);
                     db.Content.DeleteById(contentId);
                     db.Save();
+
                     BindData();
                 }
                 catch (Exception ex)
@@ -88,7 +89,7 @@ namespace es.admin
             }
         }
 
-        protected void Search_Posts(object sender, EventArgs e)
+        protected void Search_Data(object sender, EventArgs e)
         {
             Search = search.Text.Trim();
             BindData();
