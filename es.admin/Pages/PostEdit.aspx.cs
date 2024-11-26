@@ -1,124 +1,185 @@
-﻿using Microsoft.Ajax.Utilities;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using es.data;
-//using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using Ganss.Xss;
 
 namespace es.admin
 {
+    public class CategoryItem
+    {
+        public string CategoryName { get; set; }
+        public bool IsChecked { get; set; }
+    }
+
     public partial class PostEdit : Page
     {
         private readonly DatabaseService db = new DatabaseService();
+        private readonly HtmlSanitizer sanitizer = new HtmlSanitizer();
+        private int ContentID
+        {
+            get { return ViewState["ContentID"] != null ? (int)ViewState["ContentID"] : 0; }
+            set { ViewState["ContentID"] = value; }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Create_Categories();
+            if (!IsPostBack)
+            {
+                if (int.TryParse(Request.QueryString["contentID"], out int contentID))
+                {
+                    if (contentID != 0)
+                    {
+                        ViewState["ContentID"] = contentID;
+                    }
+                }
+
+                LoadCategories();
+                LoadPost();
+            }
         }
 
-        public void Create_Categories()
+
+        private void LoadPost()
+        {
+            var post = db.Content.GetById(ContentID);
+
+            if (post != null)
+            {
+                //TODO encode all pages set to plaintext values    ex  contentTitle.Value = Server.HtmlEncode(post.Title);
+                contentTitle.Value = post.Title;
+                editorContentHidden.Value = sanitizer.Sanitize(post.ContentBody);
+                clientCheck.Checked = post.isClientVisible;
+                prospectCheck.Checked = post.isProspectVisible;
+            }
+            else
+            {
+                // Default quill editor content
+                editorContentHidden.Value = @"
+                    <h1>These sweet mornings of spring</h1>
+                    <p>One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked.</p>
+                    <br>
+                    <p><strong><em>""What's happened to me?""</em></strong> he thought. It wasn't a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar walls. <a href=""#"" class=""btn-link"">A collection of textile samples</a> lay spread out on the table.</p>
+                    <br>
+                    <p>Two driven jocks help fax my big quiz. Quick, Baz, get my woven flax jodhpurs! ""Now fax quiz Jack!"" my brave ghost pled. Five quacking zephyrs jolt my wax bed. Flummoxed by job, kvetching W. zaps Iraq. Cozy sphinx waves quart jug of bad milk. A very bad quack might jinx zippy fowls. Few quips galvanized the mock jury box. <span style=""background-color: rgb(0, 71, 178); color: rgb(255, 255, 255);"">Quick brown dogs jump over the lazy fox.</span></p>
+                    <br>
+                    <br>
+                    <p><span class=""ql-size-large"" style=""color: rgb(107, 36, 178);"">Brick quiz</span> whangs jumpy veldt fox. Bright vixens jump; dozy fowl quack. Quick wafting zephyrs vex bold Jim. Quick zephyrs blow, vexing daft Jim.</p>
+                ";
+            }
+        }
+
+        private void LoadCategories()
         {
             var categories = db.Category.GetAll().ToList();
 
-            foreach(var category in categories) {
-                TableRow row = new TableRow();
-                row.Attributes.Add("class", "form-check mb-3");
-
-                TableCell cell = new TableCell();
-
-                CheckBox cb = new CheckBox();
-                cb.Attributes.Add("class", "inline");
-                cb.ID = category.CategoryName;
-                cb.Text = category.CategoryName;
-                cell.Controls.Add(cb);
-
-                row.Cells.Add(cell);
-
-                categoryTable.Rows.Add(row);
-            }
-        }
-        protected void Add_Category(object sender, EventArgs e)
-        {
-            db.Category.Insert(new Category{CategoryName = this.categoryInput.Value});
-            db.Save();
-
-            TableRow row = new TableRow();
-            row.Attributes.Add("class", "form-check mb-3");
-
-            TableCell cell = new TableCell();
-            
-            CheckBox cb = new CheckBox();
-            cb.Attributes.Add("class", "inline");
-            cb.ID = this.categoryInput.Value;
-            cb.Text = this.categoryInput.Value;
-            cell.Controls.Add(cb);
-
-            row.Cells.Add(cell);
-
-            categoryTable.Rows.Add(row);
-        }
-        protected void Remove_Category(object sender, EventArgs e) 
-        {
-            db.Category.RemoveCategoryByName(this.categoryInput.Value);
-            db.Save();
-
-
-            var cat = this.categoryTable.FindControl(this.categoryInput.Value);
-            cat.Visible = false;
-        }
-
-
-        public string getCategories()
-        {
-            List<string> categoryList = new List<string>();
-            foreach (TableRow row in categoryTable.Rows)
+            // Initialize the category list with unchecked state
+            var categoryList = categories.Select(c => new CategoryItem
             {
-                foreach (TableCell cell in row.Cells)
+                CategoryName = c.CategoryName,
+                IsChecked = false
+            }).ToList();
+
+            if (ContentID != 0)
+            {
+                // Fetch selected categories for the existing post
+                var selectedCategories = db.Content.GetById(ContentID)
+                                          .Tags
+                                          .Split(',')
+                                          .Select(t => t.Trim())
+                                          .ToList();
+
+                // Update the IsChecked flag for matching categories
+                foreach (var category in categoryList)
                 {
-                    foreach (Control ctrl in cell.Controls)
+                    if (selectedCategories.Contains(category.CategoryName, StringComparer.OrdinalIgnoreCase))
                     {
-                        if (ctrl is CheckBox)
-                        {
-                            CheckBox txt = (CheckBox)ctrl;
-                            if (txt.Checked)
-                            {
-                                categoryList.Add(txt.Text);
-                            }
-                        }
+                        category.IsChecked = true;
                     }
                 }
             }
-            var categories = String.Join(", ", categoryList);
 
-            return categories;
+
+            CategoryRepeater.DataSource = categoryList;
+            CategoryRepeater.DataBind();
         }
-        public void Save_Edit(object sender, EventArgs e)
+
+
+        protected void AddCategory_Click(object sender, EventArgs e)
         {
-            string title = this.contentTitle.Value;
-            string editorContent = this.editor.InnerHtml;
-            string categories = getCategories();
-            bool isClientVisible = this.clientCheck.Checked;
-            bool isProspectVisible = this.prospectCheck.Checked;
-
-
-            db.Content.Insert(new data.Content
+            string categoryName = categoryInput.Value.Trim();
+            if (!string.IsNullOrEmpty(categoryName))
             {
-                Title = title,
-                ContentBody = editorContent,
-                ContentType = null,
-                CategoryID = null,
-                Tags = categories,
-                PublishedDate = DateTime.Now,
-                IsActive = true,
-                isClientVisible = isClientVisible,
-                isProspectVisible = isProspectVisible
-            });
+                db.Category.Insert(new Category { CategoryName = categoryName });
+                db.Save();
+
+                LoadCategories();
+            }
+        }
+
+        protected void CategoryRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "Remove")
+            {
+                string categoryName = e.CommandArgument.ToString();
+                db.Category.RemoveCategoryByName(categoryName);
+                db.Save();
+
+                LoadCategories();
+            }
+        }
+
+
+        public string GetSelectedCategories()
+        {
+            return string.Join(", ",
+                CategoryRepeater.Items.Cast<RepeaterItem>()
+                    .Where(item => ((CheckBox)item.FindControl("CategoryCheckBox")).Checked)
+                    .Select(item => ((Label)item.FindControl("CategoryLabel")).Text));
+        }
+
+        protected void SaveEdit_Click(object sender, EventArgs e)
+        {
+            string title = contentTitle.Value;
+            string editorContent = sanitizer.Sanitize(editorContentHidden.Value);
+            string categories = GetSelectedCategories();
+            bool isClientVisible = clientCheck.Checked;
+            bool isProspectVisible = prospectCheck.Checked;
+
+
+            if (ContentID == 0)
+            {
+                // Save New Post
+                db.Content.Insert(new data.Content
+                {
+                    Title = title,
+                    ContentBody = editorContent,
+                    Tags = categories,
+                    PublishedDate = DateTime.Now,
+                    IsActive = true,
+                    isClientVisible = isClientVisible,
+                    isProspectVisible = isProspectVisible
+                });
+            }
+            else
+            {
+                // Update Existing Post
+                var post = db.Content.GetById(ContentID);
+
+                if (post != null)
+                {
+                    post.Title = title;
+                    post.ContentBody = editorContent;
+                    post.Tags = categories;
+                    post.isClientVisible = isClientVisible;
+                    post.isProspectVisible = isProspectVisible;
+
+                    db.Content.Update(post);
+                }
+            }
+
             db.Save();
         }
     }

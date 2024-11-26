@@ -15,6 +15,15 @@ namespace es.admin
     {
 
         /// <summary>
+        /// ContentPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel ContentPanel;
+
+        /// <summary>
         /// contentTitle control.
         /// </summary>
         /// <remarks>
@@ -24,13 +33,22 @@ namespace es.admin
         protected global::System.Web.UI.HtmlControls.HtmlInputText contentTitle;
 
         /// <summary>
-        /// editor control.
+        /// editorContentHidden control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl editor;
+        protected global::System.Web.UI.WebControls.HiddenField editorContentHidden;
+
+        /// <summary>
+        /// UpdatePanel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
 
         /// <summary>
         /// clientCheck control.
@@ -51,13 +69,13 @@ namespace es.admin
         protected global::System.Web.UI.WebControls.CheckBox prospectCheck;
 
         /// <summary>
-        /// categoryTable control.
+        /// CategoryRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table categoryTable;
+        protected global::System.Web.UI.WebControls.Repeater CategoryRepeater;
 
         /// <summary>
         /// categoryInput control.
@@ -67,5 +85,41 @@ namespace es.admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText categoryInput;
+
+        /// <summary>
+        /// AddCategoryButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddCategoryButton;
+
+        /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+
+        /// <summary>
+        /// PublishButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button PublishButton;
+
+        /// <summary>
+        /// SaveStatusLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SaveStatusLabel;
     }
 }

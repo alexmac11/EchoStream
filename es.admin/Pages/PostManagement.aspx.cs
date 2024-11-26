@@ -126,8 +126,7 @@ namespace es.admin
             else if (e.CommandName == "Edit_Click")
             {
                 int contentId = Convert.ToInt32(e.CommandArgument);
-                Response.Redirect("~/Pages/PostEdit.aspx?contentID=" + contentId);
-
+                Response.Redirect($"~/Pages/PostEdit.aspx?contentID={contentId}");
             }
         }
 

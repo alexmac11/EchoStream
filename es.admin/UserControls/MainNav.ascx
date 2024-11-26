@@ -44,7 +44,7 @@
                         <a href="./PostManagement.aspx" class="nav-link mininav-toggle"><i class="demo-pli-receipt-4 fs-5 me-2"></i>
                             <span class="nav-label mininav-content ms-1">
                                 <span data-popper-arrow class="arrow"></span>
-                                Manage Posts
+                                Manage
                             </span>
                         </a>
                     </li>
@@ -59,7 +59,7 @@
                         <a href="./PostEdit.aspx" class="nav-link mininav-toggle"><i class="demo-pli-pen-5 fs-5 me-2"></i>
                             <span class="nav-label mininav-content ms-1">
                                 <span data-popper-arrow class="arrow"></span>
-                                Edit Posts
+                                Add & Edit
                             </span>
                         </a>
                     </li>
@@ -76,7 +76,7 @@
                         <a href="./PostVideo.aspx" class="nav-link mininav-toggle"><i class="demo-pli-computer-secure fs-5 me-2"></i>
                             <span class="nav-label mininav-content ms-1">
                                 <span data-popper-arrow class="arrow"></span>
-                                Video Posts
+                                Videos
                             </span>
                         </a>
                     </li>

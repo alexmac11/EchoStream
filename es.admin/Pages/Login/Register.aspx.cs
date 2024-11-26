@@ -20,6 +20,8 @@ namespace es.admin
 
         protected void Register_Button(object sender, EventArgs e)
         {
+            //TODO register and login security such as passwordhash and input sanitization eg if (string.IsNullOrWhiteSpace(firstname.Value) || firstname.Value.Length > 50 || !Regex.IsMatch(firstname.Value, @"^[a-zA-Z\s\-]+$"))
+            //TODO remove connectionstring from public
             db.User.Insert(new User{
                 FirstName = firstname.Value,
                 LastName = lastname.Value, 
