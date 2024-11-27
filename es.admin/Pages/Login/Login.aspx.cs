@@ -21,13 +21,22 @@ namespace es.admin
 
         protected void SignIn(object sender, EventArgs e)
         {
-            var user = db.User.GetUserByUserNameAndPassword(this.username.Value, this.password.Value);
+            string username = this.username.Value.Trim();
+            string password = this.password.Value;
+
+
+            var user = db.User.GetAll().FirstOrDefault(u => u.Username == username);
 
             if (user != null)
             {
-                Session["NAME"] = user.FirstName + " " + user.LastName;
+                bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
 
-                FormsAuthentication.RedirectFromLoginPage(user.UserID.ToString(), createPersistentCookie: true);
+                if (isPasswordValid)
+                {
+                    Session["NAME"] = user.FirstName + " " + user.LastName;
+
+                    FormsAuthentication.RedirectFromLoginPage(user.UserID.ToString(), createPersistentCookie: true);
+                }
             }
         }
     }

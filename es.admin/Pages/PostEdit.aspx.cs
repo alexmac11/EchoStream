@@ -48,8 +48,7 @@ namespace es.admin
 
             if (post != null)
             {
-                //TODO encode all pages set to plaintext values    ex  contentTitle.Value = Server.HtmlEncode(post.Title);
-                contentTitle.Value = post.Title;
+                contentTitle.Value = Server.HtmlEncode(post.Title);
                 editorContentHidden.Value = sanitizer.Sanitize(post.ContentBody);
                 clientCheck.Checked = post.isClientVisible;
                 prospectCheck.Checked = post.isProspectVisible;
@@ -78,7 +77,7 @@ namespace es.admin
             // Initialize the category list with unchecked state
             var categoryList = categories.Select(c => new CategoryItem
             {
-                CategoryName = c.CategoryName,
+                CategoryName = Server.HtmlEncode(c.CategoryName),
                 IsChecked = false
             }).ToList();
 
@@ -123,7 +122,7 @@ namespace es.admin
         {
             if (e.CommandName == "Remove")
             {
-                string categoryName = e.CommandArgument.ToString();
+                string categoryName = e.CommandArgument.ToString().Trim();
                 db.Category.RemoveCategoryByName(categoryName);
                 db.Save();
 
@@ -142,7 +141,7 @@ namespace es.admin
 
         protected void SaveEdit_Click(object sender, EventArgs e)
         {
-            string title = contentTitle.Value;
+            string title = contentTitle.Value.Trim();
             string editorContent = sanitizer.Sanitize(editorContentHidden.Value);
             string categories = GetSelectedCategories();
             bool isClientVisible = clientCheck.Checked;

@@ -14,11 +14,6 @@ namespace es.data
     public class UserDataHandler : GenericDataHandler<User>
     {
         public UserDataHandler(DataEntities context) : base(context) { }
-
-        public User GetUserByUserNameAndPassword(string username, string password)
-        {
-            return _dbSet.FirstOrDefault(sp => sp.Username == username && sp.PasswordHash == password);
-        }
     }
 
     public class ContentDataHandler : GenericDataHandler<Content>

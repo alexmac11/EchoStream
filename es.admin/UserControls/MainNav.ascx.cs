@@ -19,7 +19,7 @@ namespace es.admin.UserControls
         {
             if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["NAME"] != null)
             {
-                this.fullname.InnerText = (string)Session["NAME"];
+                this.fullname.InnerText = Server.HtmlEncode((string)Session["NAME"]);
             }
             else if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["NAME"] == null)
             {
@@ -30,7 +30,7 @@ namespace es.admin.UserControls
                 {
                     Session["NAME"] = user.FirstName + " " + user.LastName;
 
-                    this.fullname.InnerText = (string)Session["NAME"];
+                    this.fullname.InnerText = Server.HtmlEncode((string)Session["NAME"]);
                 }
                 else
                 {

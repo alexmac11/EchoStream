@@ -111,23 +111,24 @@ namespace es.admin
         {
             if (e.CommandName == "Delete_Click")
             {
-                try
+                int contentId;
+                if (int.TryParse(e.CommandArgument.ToString(), out contentId))
                 {
-                    int contentId = Convert.ToInt32(e.CommandArgument);
+                    contentId = Convert.ToInt32(e.CommandArgument);
                     db.Content.DeleteById(contentId);
                     db.Save();
 
                     BindData();
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                }
             }
             else if (e.CommandName == "Edit_Click")
             {
-                int contentId = Convert.ToInt32(e.CommandArgument);
-                Response.Redirect($"~/Pages/PostEdit.aspx?contentID={contentId}");
+                int contentId;
+                if (int.TryParse(e.CommandArgument.ToString(), out contentId))
+                {
+                    contentId = Convert.ToInt32(e.CommandArgument);
+                    Response.Redirect($"~/Pages/PostEdit.aspx?contentID={contentId}");
+                }
             }
         }
 
