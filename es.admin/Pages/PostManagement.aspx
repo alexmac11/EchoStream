@@ -52,7 +52,7 @@
                             </asp:DropDownList>
                         </div>
 
-                        <asp:Button ID="btnFilter" runat="server" Text="Filter" CssClass="btn btn-light mb-3 mb-sm-0" OnClick="btnFilter_Click" />
+                        <asp:Button ID="btnFilter" runat="server" Text="Filter" CssClass="btn btn-light mb-3 mb-sm-0" OnClick="Search_Data" />
                     </div>
                     <!-- END : Sort and categories filter -->
                 </div>

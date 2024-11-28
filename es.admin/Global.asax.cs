@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +17,16 @@ namespace es.admin
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            Application["VimeoClientId"] = config["VimeoSettings:ClientId"];
+            Application["VimeoSecret"] = config["VimeoSettings:ClientSecret"];
+            Application["YouTubeApiKey"] = config["YouTubeSettings:ApiKey"];
+            Application["YouTubeChannelId"] = config["YouTubeSettings:ChannelId"];
         }
     }
 }

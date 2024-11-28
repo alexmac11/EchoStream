@@ -20,6 +20,7 @@ namespace es.admin
 
         protected void Register_Button(object sender, EventArgs e)
         {
+            //TODO encrypt user data
             //TODO remove connectionstring from public
             db.User.Insert(new User{
                 FirstName = firstname.Value.Trim(),

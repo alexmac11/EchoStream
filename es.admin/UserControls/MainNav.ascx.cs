@@ -17,20 +17,14 @@ namespace es.admin.UserControls
         //TODO add settings page
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["NAME"] != null)
-            {
-                this.fullname.InnerText = Server.HtmlEncode((string)Session["NAME"]);
-            }
-            else if (HttpContext.Current.User.Identity.IsAuthenticated == true && Session["NAME"] == null)
+            if (HttpContext.Current.User.Identity.IsAuthenticated == true)
             {
                 int userid = int.Parse(HttpContext.Current.User.Identity.Name);
                 User user = db.User.GetById(userid);
 
                 if (user != null)
                 {
-                    Session["NAME"] = user.FirstName + " " + user.LastName;
-
-                    this.fullname.InnerText = Server.HtmlEncode((string)Session["NAME"]);
+                    this.fullname.InnerText = Server.HtmlEncode(user.FirstName + " " + user.LastName);
                 }
                 else
                 {

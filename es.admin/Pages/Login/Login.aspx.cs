@@ -33,8 +33,6 @@ namespace es.admin
 
                 if (isPasswordValid)
                 {
-                    Session["NAME"] = user.FirstName + " " + user.LastName;
-
                     FormsAuthentication.RedirectFromLoginPage(user.UserID.ToString(), createPersistentCookie: true);
                 }
             }

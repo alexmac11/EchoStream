@@ -53,7 +53,7 @@ namespace es.admin
 
         protected void BindData()
         {
-            int pageSize = PostGridView.PageSize;
+            int PageSize = PostGridView.PageSize;
             int pageIndex = PostGridView.PageIndex;
 
 
@@ -134,14 +134,10 @@ namespace es.admin
 
         protected void Search_Data(object sender, EventArgs e)
         {
-            Search = search.Text.Trim();
-            BindData();
-        }
-
-        protected void btnFilter_Click(object sender, EventArgs e)
-        {
             Category = ddlCategories.SelectedValue;
             SortBy = ddlSortOptions.SelectedValue;
+            Search = search.Text.Trim();
+            //TODO filter by is prospect and client visible
             BindData();
         }
     }

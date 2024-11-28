@@ -27,7 +27,7 @@ namespace es.admin
 
         protected void BindData()
         {
-            int pageSize = AccountsGridView.PageSize;
+            int PageSize = AccountsGridView.PageSize;
             int pageIndex = AccountsGridView.PageIndex;
 
             var posts = db.User.GetAll()

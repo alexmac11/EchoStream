@@ -36,6 +36,7 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="isClientVisible" Type="bit" Nullable="false" />
           <Property Name="isProspectVisible" Type="bit" Nullable="false" />
+          <Property Name="ContentURL" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="HtmlPosts">
           <Key>
@@ -97,6 +98,8 @@
           <Property Name="Website" Type="varchar" MaxLength="255" />
           <Property Name="Phone" Type="varchar" MaxLength="255" />
           <Property Name="Address" Type="varchar" MaxLength="255" />
+          <Property Name="VimeoAccessToken" Type="nvarchar(max)" />
+          <Property Name="YTAccessToken" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Videos">
           <Key>
@@ -334,6 +337,7 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <NavigationProperty Name="Videos" Relationship="Self.FK_Videos_ContentID" FromRole="Content" ToRole="Videos" />
           <Property Name="isClientVisible" Type="Boolean" Nullable="false" />
           <Property Name="isProspectVisible" Type="Boolean" Nullable="false" />
+          <Property Name="ContentURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="HtmlPost">
           <Key>
@@ -405,6 +409,8 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <Property Name="Website" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VimeoAccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="YTAccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Video">
           <Key>
@@ -618,6 +624,7 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <EntitySetMapping Name="Contents">
             <EntityTypeMapping TypeName="DataModel.Content">
               <MappingFragment StoreEntitySet="Content">
+                <ScalarProperty Name="ContentURL" ColumnName="ContentURL" />
                 <ScalarProperty Name="isProspectVisible" ColumnName="isProspectVisible" />
                 <ScalarProperty Name="isClientVisible" ColumnName="isClientVisible" />
                 <ScalarProperty Name="ContentID" ColumnName="ContentID" />
@@ -681,6 +688,8 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DataModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="YTAccessToken" ColumnName="YTAccessToken" />
+                <ScalarProperty Name="VimeoAccessToken" ColumnName="VimeoAccessToken" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Website" ColumnName="Website" />
