@@ -3057,7 +3057,6 @@
     <Content Include="assets\vendors\weathericons\weather-icons.min.css.map" />
     <Content Include="assets\vendors\zangdar\zangdar.css.map" />
     <Content Include="assets\vendors\zangdar\zangdar.min.css.map" />
-    <None Include=".editorconfig" />
     <Content Include="appsettings.json" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />

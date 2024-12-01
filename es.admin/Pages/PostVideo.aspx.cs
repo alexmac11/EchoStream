@@ -7,12 +7,17 @@ using System.Web.UI;
 using VimeoDotNet;
 using VimeoDotNet.Models;
 using Google.Apis.Services;
+using Google.Apis.Logging;
 using Google.Apis.YouTube.v3.Data;
 using Google.Apis.YouTube.v3;
 using Channel = Google.Apis.YouTube.v3.Data.Channel;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Auth.OAuth2;
+using System.Threading;
 
 namespace es.admin
 {
@@ -65,9 +70,17 @@ namespace es.admin
             get => ViewState["VimeoAccessToken"] != null ? (string)ViewState["VimeoAccessToken"] : "";
             set => ViewState["VimeoAccessToken"] = value;
         }
-
+        private string YTAccessToken
+        {
+            get => ViewState["YTAccessToken"] != null ? (string)ViewState["YTAccessToken"] : "";
+            set => ViewState["YTAccessToken"] = value;
+        }
 
         protected void Page_Load(object sender, EventArgs e)
+        {
+        }
+
+        protected void Page_PreRender(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
@@ -75,84 +88,157 @@ namespace es.admin
                 {
                     int userid = int.Parse(HttpContext.Current.User.Identity.Name);
                     data.User user = db.User.GetById(userid);
+
                     VimeoAccessToken = user.VimeoAccessToken;
 
-                    if (!string.IsNullOrEmpty(VimeoAccessToken)) {
-                        BindData();
-                    }
+                    //LoginToVimeo.Visible = false;
+                }
+                if (string.IsNullOrEmpty(YTAccessToken))
+                {
+                    int userid = int.Parse(HttpContext.Current.User.Identity.Name);
+                    data.User user = db.User.GetById(userid);
+
+                    YTAccessToken = user.YTAccessToken;
+
+                    //LoginToYouTube.Visible = false;
+                }
+                if (!string.IsNullOrEmpty(VimeoAccessToken) || !string.IsNullOrEmpty(VimeoAccessToken))
+                {
+                    BindData();
                 }
             }
         }
 
-        protected void AuthorizeVimeo_Click(object sender, EventArgs e)
+
+        private void RefreshYouTubeAccessToken()
         {
-            string authorizationUrl = $"https://api.vimeo.com/oauth/authorize" +
-                                      $"?response_type=code" +
-                                      $"&client_id={Application["VimeoClientId"]}" +
-                                      $"&redirect_uri={Request.Url.Scheme}://{Request.Url.Authority}/Pages/Callback.aspx" +
-                                      $"&state=service-vimeo" +
-                                      $"&scope=public private";
-            Response.Redirect(authorizationUrl);
+            try
+            {
+                int userId = int.Parse(HttpContext.Current.User.Identity.Name);
+                data.User user = db.User.GetById(userId);
+                Debug.WriteLine("refresh token " + user.YTRefreshToken);
+                if (user == null || string.IsNullOrEmpty(user.YTRefreshToken))
+                    throw new Exception("Refresh token not found for user.");
+
+                string clientId = (string)Application["YouTubeClientId"];
+                string clientSecret = (string)Application["YouTubeClientSecret"];
+
+                var flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
+                {
+                    ClientSecrets = new ClientSecrets
+                    {
+                        ClientId = clientId,
+                        ClientSecret = clientSecret
+                    }
+                });
+
+                // Refresh the token
+                TokenResponse newToken = flow.RefreshTokenAsync(
+                    userId: HttpContext.Current.User.Identity.Name,
+                    refreshToken: user.YTRefreshToken,
+                    taskCancellationToken: CancellationToken.None
+                ).Result;
+
+                if (newToken != null)
+                {
+                    user.YTAccessToken = newToken.AccessToken;
+                    YTAccessToken = newToken.AccessToken;
+
+                    db.User.Update(user);
+                    db.Save();
+
+                    Debug.WriteLine("YouTube access token refreshed successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error refreshing YouTube access token: " + ex.Message);
+                throw;
+            }
         }
 
-        protected void btnPrev_Click(object sender, EventArgs e)
-        {
-            NextYTPageToken = PreviousYTPageToken;
-            CurrentPage--;
-
-            BindData();
-        }
-
-        protected void btnNext_Click(object sender, EventArgs e)
-        {
-            CurrentPage++;
-            BindData();
-        }
 
         public IEnumerable<VideoObj> FetchYouTubeVideos()
         {
-            var videos = new List<VideoObj>();
+            List<VideoObj> videos = new List<VideoObj>();
+            ChannelListResponse channelsListResponse;
+            YouTubeService yt;
+            ChannelsResource.ListRequest channelsListRequest;
 
-            // Initialize YouTube API service
-            YouTubeService yt = new YouTubeService(new BaseClientService.Initializer() { ApiKey = (string)Application["YouTubeApiKey"] });
-
-            // Get the channel's upload playlist ID
-            ChannelsResource.ListRequest channelsListRequest = yt.Channels.List("contentDetails");
-            channelsListRequest.Id = (string)Application["YouTubeChannelId"];
-            ChannelListResponse channelsListResponse = channelsListRequest.Execute();
-
-            foreach (Channel channel in channelsListResponse.Items)
+            try
             {
-                string uploadPlaylistId = channel.ContentDetails.RelatedPlaylists.Uploads;
-
-                // Get videos from the upload playlist
-                PlaylistItemsResource.ListRequest playlistItemsListRequest = yt.PlaylistItems.List("snippet");
-                playlistItemsListRequest.PlaylistId = uploadPlaylistId;
-                playlistItemsListRequest.MaxResults = PageSize;
-                playlistItemsListRequest.PageToken = NextYTPageToken;
-                PlaylistItemListResponse playlistItemsListResponse = playlistItemsListRequest.Execute();
-
-                // Update pagination tokens
-                PreviousYTPageToken = playlistItemsListResponse.PrevPageToken;
-                NextYTPageToken = playlistItemsListResponse.NextPageToken;
-
-                // Filter videos based on search term
-                foreach (PlaylistItem playlistItem in playlistItemsListResponse.Items)
+                try
                 {
-                    if (string.IsNullOrEmpty(Search) ||
-                        playlistItem.Snippet.Title.IndexOf(Search, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        playlistItem.Snippet.Description.IndexOf(Search, StringComparison.OrdinalIgnoreCase) >= 0)
+                    yt = new YouTubeService(new BaseClientService.Initializer { 
+                        HttpClientInitializer = GoogleCredential.FromAccessToken(YTAccessToken) 
+                    });
+
+                    // Get the channel's upload playlist ID
+                    channelsListRequest = yt.Channels.List("contentDetails");
+                    channelsListRequest.Mine = true; // Fetch for the authenticated user
+                    channelsListResponse = channelsListRequest.Execute();
+                }
+                catch (Google.GoogleApiException ex) when (ex.HttpStatusCode == System.Net.HttpStatusCode.Unauthorized) // AccessToken Expired
+                {
+                    RefreshYouTubeAccessToken();
+
+                    yt = new YouTubeService(new BaseClientService.Initializer { 
+                        HttpClientInitializer = GoogleCredential.FromAccessToken(YTAccessToken) 
+                    });
+
+                    channelsListRequest = yt.Channels.List("contentDetails");
+                    channelsListRequest.Mine = true;
+                    channelsListResponse = channelsListRequest.Execute(); // Retry the request
+                }
+                catch (Google.GoogleApiException ex)
+                {
+                    Debug.WriteLine("YouTube API error: " + ex.Message);
+                    throw; // Rethrow for unexpected API errors
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Unexpected error: " + ex.StackTrace);
+                    throw; // Handle unexpected errors
+                }
+
+                // Iterate through the channels
+                foreach (Channel channel in channelsListResponse.Items)
+                {
+                    string uploadPlaylistId = channel.ContentDetails.RelatedPlaylists.Uploads;
+
+                    // Get videos from the upload playlist
+                    PlaylistItemsResource.ListRequest playlistItemsListRequest = yt.PlaylistItems.List("snippet");
+                    playlistItemsListRequest.PlaylistId = uploadPlaylistId;
+                    playlistItemsListRequest.MaxResults = PageSize;
+                    playlistItemsListRequest.PageToken = NextYTPageToken;
+                    PlaylistItemListResponse playlistItemsListResponse = playlistItemsListRequest.Execute();
+
+                    // Update pagination tokens
+                    PreviousYTPageToken = playlistItemsListResponse.PrevPageToken;
+                    NextYTPageToken = playlistItemsListResponse.NextPageToken;
+
+                    // Filter videos based on search term
+                    foreach (PlaylistItem playlistItem in playlistItemsListResponse.Items)
                     {
-                        videos.Add(new VideoObj
+                        if (string.IsNullOrEmpty(Search) ||
+                            playlistItem.Snippet.Title.IndexOf(Search, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            playlistItem.Snippet.Description.IndexOf(Search, StringComparison.OrdinalIgnoreCase) >= 0)
                         {
-                            Title = playlistItem.Snippet.Title ?? "Empty Title",
-                            Description = playlistItem.Snippet.Description ?? "Empty Description",
-                            VideoUrl = "https://www.youtube.com/embed/" + playlistItem.Snippet.ResourceId.VideoId ?? "Empty URL"
-                        });
+                            videos.Add(new VideoObj
+                            {
+                                Title = playlistItem.Snippet.Title ?? "Empty Title",
+                                Description = playlistItem.Snippet.Description ?? "Empty Description",
+                                VideoUrl = "https://www.youtube.com/embed/" + playlistItem.Snippet.ResourceId.VideoId ?? "Empty URL"
+                            });
+                        }
                     }
                 }
             }
-            //TODO change to authenticate via youtube login instead of api key
+            catch (Exception ex)
+            {
+                Debug.WriteLine("An unexpected error occurred: " + ex.Message);
+            }
+
             return videos;
         }
 
@@ -271,6 +357,46 @@ namespace es.admin
                 isProspectVisible = isProspectVisible
             });
             db.Save();
+        }
+
+        protected void AuthorizeVimeo_Click(object sender, EventArgs e)
+        {
+            string authorizationUrl = $"https://api.vimeo.com/oauth/authorize" +
+                                      $"?response_type=code" +
+                                      $"&client_id={Application["VimeoClientId"]}" +
+                                      $"&redirect_uri={Request.Url.Scheme}://{Request.Url.Authority}/Pages/Callback.aspx" +
+                                      $"&state=service-vimeo" +
+                                      $"&scope=public private";
+            Response.Redirect(authorizationUrl);
+        }
+
+        protected void AuthorizeYT_Click(object sender, EventArgs e)
+        {
+            string clientId = (string)Application["YouTubeClientId"];
+            string redirectUri = $"{Request.Url.Scheme}://{Request.Url.Authority}/Pages/Callback.aspx";
+            string authorizationUrl = $"https://accounts.google.com/o/oauth2/auth" +
+                                       $"?response_type=code" +
+                                       $"&client_id={clientId}" +
+                                       $"&redirect_uri={redirectUri}" +
+                                       $"&scope=https://www.googleapis.com/auth/youtube.readonly" +
+                                       $"&state=service-yt" +
+                                       $"&access_type=offline" + // Make refresh token
+                                       $"&prompt=consent";  // Consent makes a new refresh token upon every authorization. Default is one refresh token upon first authorization
+            Response.Redirect(authorizationUrl);
+        }
+
+        protected void btnPrev_Click(object sender, EventArgs e)
+        {
+            NextYTPageToken = PreviousYTPageToken;
+            CurrentPage--;
+
+            BindData();
+        }
+
+        protected void btnNext_Click(object sender, EventArgs e)
+        {
+            CurrentPage++;
+            BindData();
         }
     }
 }

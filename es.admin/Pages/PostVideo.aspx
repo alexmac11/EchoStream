@@ -23,7 +23,8 @@
             <div class="content__header content__boxed">
                 <div class="content__wrap">
 
-                    <asp:Button ID="LoginToVimeo" runat="server" CssClass="btn btn-primary" Text="Login to Vimeo" OnClick="AuthorizeVimeo_Click" />
+                    <asp:Button ID="LoginToVimeo" runat="server" CssClass="btn btn-secondary" Text="Login to Vimeo" OnClick="AuthorizeVimeo_Click" />
+                    <asp:Button ID="LoginToYouTube" runat="server" CssClass="btn btn-secondary" Text="Login to YouTube" OnClick="AuthorizeYT_Click" />
 
                     <!-- Title and information -->
                     <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">Videos</h1>

@@ -25,8 +25,8 @@ namespace es.admin
 
             Application["VimeoClientId"] = config["VimeoSettings:ClientId"];
             Application["VimeoSecret"] = config["VimeoSettings:ClientSecret"];
-            Application["YouTubeApiKey"] = config["YouTubeSettings:ApiKey"];
-            Application["YouTubeChannelId"] = config["YouTubeSettings:ChannelId"];
+            Application["YouTubeClientId"] = config["YouTubeSettings:ClientId"];
+            Application["YouTubeClientSecret"] = config["YouTubeSettings:ClientSecret"];
         }
     }
 }
