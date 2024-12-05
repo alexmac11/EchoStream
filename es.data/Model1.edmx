@@ -101,6 +101,7 @@
           <Property Name="VimeoAccessToken" Type="nvarchar(max)" />
           <Property Name="YTAccessToken" Type="nvarchar(max)" />
           <Property Name="YTRefreshToken" Type="nvarchar(max)" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Videos">
           <Key>
@@ -413,6 +414,7 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <Property Name="VimeoAccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="YTAccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="YTRefreshToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Video">
           <Key>
@@ -690,6 +692,7 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DataModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="YTRefreshToken" ColumnName="YTRefreshToken" />
                 <ScalarProperty Name="YTAccessToken" ColumnName="YTAccessToken" />
                 <ScalarProperty Name="VimeoAccessToken" ColumnName="VimeoAccessToken" />

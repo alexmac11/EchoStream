@@ -40,6 +40,7 @@ namespace es.data
         public string VimeoAccessToken { get; set; }
         public string YTAccessToken { get; set; }
         public string YTRefreshToken { get; set; }
+        public string CompanyName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AuditLog> AuditLogs { get; set; }

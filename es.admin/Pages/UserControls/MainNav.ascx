@@ -109,7 +109,7 @@
             <ul id="mainnav" class="mainnav__menu nav flex-column">
                 <!-- Settings -->
                 <li class="nav-item has-sub">
-                    <a href="#" class="nav-link">
+                    <a href="Settings.aspx" class="nav-link">
                         <i class="demo-pli-gear fs-5 me-2"></i>
                         <span class="nav-label ms-1">Settings</span>
                     </a>

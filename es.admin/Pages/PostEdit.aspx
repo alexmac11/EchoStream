@@ -1,9 +1,9 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PostEdit.aspx.cs" Inherits="es.admin.PostEdit" ValidateRequest="false" %>
 
 
-<%@ Register Src="~/UserControls/MainNav.ascx" TagPrefix="usercontrols" TagName="MainNav" %>
-<%@ Register Src="~/UserControls/MainHeader.ascx" TagPrefix="usercontrols" TagName="MainHeader" %>
-<%@ Register Src="~/UserControls/Footer.ascx" TagPrefix="usercontrols" TagName="Footer" %>
+<%@ Register Src="UserControls/MainNav.ascx" TagPrefix="usercontrols" TagName="MainNav" %>
+<%@ Register Src="UserControls/MainHeader.ascx" TagPrefix="usercontrols" TagName="MainHeader" %>
+<%@ Register Src="UserControls/Footer.ascx" TagPrefix="usercontrols" TagName="Footer" %>
 
 
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">

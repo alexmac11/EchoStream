@@ -116,7 +116,7 @@ namespace es.admin
             {
                 int userId = int.Parse(HttpContext.Current.User.Identity.Name);
                 data.User user = db.User.GetById(userId);
-                Debug.WriteLine("refresh token " + user.YTRefreshToken);
+
                 if (user == null || string.IsNullOrEmpty(user.YTRefreshToken))
                     throw new Exception("Refresh token not found for user.");
 

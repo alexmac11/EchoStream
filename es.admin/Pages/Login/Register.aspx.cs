@@ -34,7 +34,8 @@ namespace es.admin
                 IsVerified = false,
                 Website = website.Value.Trim(),
                 Phone = phone.Value.Trim(),
-                Address = address.Value.Trim()
+                Address = address.Value.Trim(),
+                CompanyName = companyname.Value.Trim()
             });
             db.Save();
 
