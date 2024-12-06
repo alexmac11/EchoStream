@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using es.data;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace es.admin
 {
     public class Global : HttpApplication
     {
+        private readonly DatabaseService db = new DatabaseService();
+
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
@@ -27,6 +30,21 @@ namespace es.admin
             Application["VimeoSecret"] = config["VimeoSettings:ClientSecret"];
             Application["YouTubeClientId"] = config["YouTubeSettings:ClientId"];
             Application["YouTubeClientSecret"] = config["YouTubeSettings:ClientSecret"];
+
+
+            //var _keepAliveTimer = new System.Threading.Timer(KeepDatabaseAlive, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+        }
+
+        private void KeepDatabaseAlive(object state)
+        {
+            try
+            {
+                db.Exists();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("KeepDatabaseAlive Error: " + ex.Message);
+            }
         }
     }
 }

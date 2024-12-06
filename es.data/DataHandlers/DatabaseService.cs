@@ -26,8 +26,8 @@ namespace es.data
         public ReferralDataHandler Referral => new ReferralDataHandler(_context);
 
 
+        public void Exists() => _context.Database.Exists();
         public void Save() => _context.SaveChanges();
-
         public void Dispose() => _context.Dispose();
     }
 }
