@@ -44,7 +44,7 @@
                         <a href="./PostManagement.aspx" class="nav-link mininav-toggle"><i class="demo-pli-receipt-4 fs-5 me-2"></i>
                             <span class="nav-label mininav-content ms-1">
                                 <span data-popper-arrow class="arrow"></span>
-                                Manage
+                                Manage Posts
                             </span>
                         </a>
                     </li>
@@ -52,21 +52,6 @@
             </div>
             <!-- End Manage Posts -->
 
-            <!-- Edit Posts -->
-            <div class="mainnav__categoriy py-3">
-                <ul class="mainnav__menu nav flex-column">
-                    <li class="nav-item">
-                        <a href="./PostEdit.aspx" class="nav-link mininav-toggle"><i class="demo-pli-pen-5 fs-5 me-2"></i>
-                            <span class="nav-label mininav-content ms-1">
-                                <span data-popper-arrow class="arrow"></span>
-                                Add & Edit
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- End Edit Posts -->
 
             <!-- Video Posts -->
 
@@ -76,7 +61,7 @@
                         <a href="./PostVideo.aspx" class="nav-link mininav-toggle"><i class="demo-pli-computer-secure fs-5 me-2"></i>
                             <span class="nav-label mininav-content ms-1">
                                 <span data-popper-arrow class="arrow"></span>
-                                Videos
+                                Video Library
                             </span>
                         </a>
                     </li>

@@ -28,6 +28,10 @@ namespace es.admin
             get { return ViewState["SortBy"] as string ?? ""; }
             set { ViewState["SortBy"] = value; }
         }
+        protected void btnAddPost_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("PostEdit.aspx");
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,6 +40,8 @@ namespace es.admin
                 LoadCategories();
                 BindData();
             }
+            // Register event handler
+            btnAddPost.Click += new EventHandler(btnAddPost_Click);
         }
 
         private void LoadCategories()

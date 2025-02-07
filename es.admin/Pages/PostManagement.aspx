@@ -34,7 +34,7 @@
                         </asp:Panel>
                     </div>
                     <!-- END : Search form -->
-
+                    
 
                     <!-- Sort and categories filter -->
                     <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
@@ -55,6 +55,13 @@
                         <asp:Button ID="btnFilter" runat="server" Text="Filter" CssClass="btn btn-light mb-3 mb-sm-0" OnClick="Search_Data" />
                     </div>
                     <!-- END : Sort and categories filter -->
+
+                    <!-- Add Post Button -->
+                    <div class="d-flex justify-content-center mb-3">
+                        <asp:Button ID="btnAddPost" runat="server" Text="Add Post" CssClass="btn btn-success btn-lg" OnClick="btnAddPost_Click" />
+                    </div>
+                    <!-- END : Add Post Button -->
+
                 </div>
 
             </div>
