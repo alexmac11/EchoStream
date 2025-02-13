@@ -1,0 +1,200 @@
+﻿@model es.view.Models.IndexViewModel
+@{
+    ViewBag.Title = "Latest Posts";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <!-- Assuming Bootstrap is already included via your template -->
+    <style>
+        /* Additional custom styling */
+        .post-card {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .post-number {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <main aria-labelledby="title">
+            <h2 id="title" class="text-center mb-4">@ViewBag.Title</h2>
+
+            <!-- Container that will hold all of our loaded posts -->
+            <div id="posts-container"></div>
+
+            <!-- Loading indicator, shown when we are fetching data -->
+            <div id="loading" class="text-center my-3" style="display: none;">Loading...</div>
+
+            <!-- A sentinel element for IntersectionObserver to watch -->
+            <div id="scroll-sentinel"></div>
+
+            <!-- Displayed when there are no more posts to load -->
+            <div id="no-more-posts" class="text-center my-3" style="display: none;">No more posts available.</div>
+        </main>
+    </div>
+
+    <script>
+        let page = 1;
+        const pageSize = 5;
+        let isLoading = false;
+        let hasMorePosts = true;
+        const loadedPostIds = new Set();
+        let postCount = 0; // Count of posts loaded
+
+        const postsContainer = document.getElementById("posts-container");
+        const loadingIndicator = document.getElementById("loading");
+        const sentinel = document.getElementById("scroll-sentinel");
+        const noMorePosts = document.getElementById("no-more-posts");
+
+        /**
+         * Fetches and appends posts from the server.
+         */
+        function loadPosts() {
+            if (isLoading || !hasMorePosts) return;
+            isLoading = true;
+            loadingIndicator.style.display = "block";
+            console.log(`Loading posts for page ${page}...`);
+
+            fetch(`/Home/GetPosts?page=${page}&pageSize=${pageSize}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data || data.length === 0) {
+                        console.log("No more posts to load.");
+                        hasMorePosts = false;
+                        noMorePosts.style.display = "block";
+                        if (observer) observer.disconnect();
+                    } else {
+                        console.log(`Received ${data.length} posts.`);
+                        data.forEach(post => {
+                            // Using the JSON property 'ContentID', 'Title', and 'ContentBody'
+                            if (!loadedPostIds.has(post.ContentID)) {
+                                loadedPostIds.add(post.ContentID);
+                                postCount++;
+
+                                // If ContentURL exists, create a video embed, otherwise show ContentBody text.
+                                let videoEmbed = "";
+                                if (post.ContentURL && post.ContentURL.trim() !== "") {
+                                    videoEmbed = `
+                                        <div
+                                            style="
+                                                position: relative;
+                                                width: 100%;
+                                                /* 16:9 aspect ratio => 9 / 16 = 56.25% */
+                                                padding-top: 56.25%;
+                                                border: 2px solid #ddd;
+                                                border-radius: 5px;
+                                                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                                                overflow: hidden;
+                                                margin-bottom: 1rem;
+                                            "
+                                        >
+                                            <iframe
+                                                src="${post.ContentURL}"
+                                                allowfullscreen
+                                                style="
+                                                    position: absolute;
+                                                    top: 0;
+                                                    left: 0;
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    border: 0;
+                                                "
+                                            >
+                                            </iframe>
+                                        </div>
+                                    `;
+                                }
+
+
+
+                                const postCard = document.createElement("div");
+                                postCard.classList.add("card", "post-card");
+                                postCard.innerHTML = `
+                                        <div class="card-body">
+                                            <span class="post-number">${postCount}</span>
+                                            <h5 class="card-title">${post.Title}</h5>
+                                            ${videoEmbed ? videoEmbed : `<p class="card-text">${post.ContentBody}</p>`}
+                                        </div>
+                                    `;
+
+
+                                // Ensure no content inside the card has 'contenteditable'
+                                const editableElems = postCard.querySelectorAll('[contenteditable]');
+                                editableElems.forEach(elem => {
+                                    elem.removeAttribute('contenteditable');
+                                });
+
+                                // Remove any <input> elements inside the post
+                                const inputs = postCard.querySelectorAll('input');
+                                inputs.forEach(input => input.remove());
+
+
+                                postsContainer.appendChild(postCard);
+                            } else {
+                                console.warn(`Duplicate post with ID ${post.ContentID} skipped.`);
+                            }
+                        });
+                        page++;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching posts:", error);
+                })
+                .finally(() => {
+                    isLoading = false;
+                    loadingIndicator.style.display = "none";
+                });
+        }
+
+        /**
+         * Fallback scroll event if IntersectionObserver isn't supported.
+         */
+        function onScroll() {
+            const scrollPosition = window.innerHeight + window.scrollY;
+            const pageHeight = document.documentElement.scrollHeight;
+            if (scrollPosition >= pageHeight - 50) {
+                loadPosts();
+            }
+        }
+
+        let observer;
+        document.addEventListener("DOMContentLoaded", function () {
+            if ('IntersectionObserver' in window) {
+                observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            console.log("Sentinel is in view. Loading more posts...");
+                            loadPosts();
+                        }
+                    });
+                }, {
+                    rootMargin: "50px"  // Trigger loading before the sentinel is fully visible
+                });
+                observer.observe(sentinel);
+            } else {
+                window.addEventListener("scroll", onScroll);
+            }
+
+            // Load the first batch of posts immediately.
+            loadPosts();
+        });
+    </script>
+</body>
+</html>

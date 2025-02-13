@@ -1,0 +1,61 @@
+﻿@model es.view.Models.ReferralViewModel
+
+@{
+    ViewBag.Title = "Referral";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4 text-center">@ViewBag.Title</h2>
+
+            <!-- Display the referral message -->
+            <div class="alert alert-info">
+                @Model.ReferralMessage
+            </div>
+
+            @using (Html.BeginForm("SubmitReferral", "Referral", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    @if (Model.ShowName)
+                    {
+                        @Html.LabelFor(m => m.Name)
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    }
+                </div>
+
+                <div class="form-group">
+                    @if (Model.ShowEmail)
+                    {
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    }
+                </div>
+
+                <div class="form-group">
+                    @if (Model.ShowPhone)
+                    {
+                        @Html.LabelFor(m => m.Phone)
+                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                    }
+                </div>
+
+                <div class="form-group">
+                    @if (Model.ShowComments)
+                    {
+                        @Html.LabelFor(m => m.Comments)
+                        @Html.TextAreaFor(m => m.Comments, new { @class = "form-control", rows = "4" })
+                        @Html.ValidationMessageFor(m => m.Comments, "", new { @class = "text-danger" })
+                    }
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit Referral</button>
+            }
+        </div>
+    </div>
+</div>
