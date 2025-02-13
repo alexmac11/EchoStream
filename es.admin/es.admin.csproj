@@ -3061,7 +3061,6 @@
     <Content Include="assets\vendors\zangdar\zangdar.css.map" />
     <Content Include="assets\vendors\zangdar\zangdar.min.css.map" />
     <Content Include="appsettings.json" />
-    <Content Include="json.json" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
