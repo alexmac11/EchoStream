@@ -44,6 +44,7 @@
                             <div class="d-md-flex gap-4">
                                 <div class="flex-fill">
 
+
                                     <!-- Quill TextEditor -->
                                     <div class="ql-mh  h-100 d-flex flex-column">
 
@@ -52,6 +53,7 @@
                                             <div class="d-sm-flex flex-wrap">
                                                 <div class="d-flex flex-column mb-3">
                                                     <div class="d-flex flex-column mb-2">
+                                                       
 
                                                         <!-- Fonts selector -->
                                                         <div class="d-flex">
@@ -62,6 +64,7 @@
                                                                     <option value="monospace"></option>
                                                                 </select>
                                                             </span>
+
                                                             <span class="ql-formats m-0">
                                                                 <select class="ql-size">
                                                                     <option value="small"></option>
@@ -127,16 +130,37 @@
                                                         </span>
 
                                                         <div class="vr opacity-10 mx-2"></div>
-
+                                                
                                                         <!-- Attachment -->
                                                         <span class="ql-formats d-flex">
                                                             <button class="ql-link"></button>
                                                             <button class="ql-image"></button>
                                                             <button class="ql-video"></button>
-                                                        </span>
+    
+                                                           <asp:UpdatePanel ID="UpdatePanelFileUpload" runat="server">
+                                                                <ContentTemplate>
+                                                                    <!-- Custom File Upload Button -->
+                                                                    <button type="button" id="custom-file-upload" class="ql-attach">
+                                                                        📎 <!-- You can replace this with an icon -->
+                                                                    </button>
 
+                                                                    <!-- Hidden File Upload Control -->
+                                                                    <asp:FileUpload ID="FileUploadControl" runat="server" CssClass="d-none" />
+                                                                    <asp:Button ID="btnUpload" runat="server" CssClass="d-none" OnClick="BtnUpload_Click" />
+                                                                    <asp:Label ID="lblMessage" runat="server" ForeColor="Red" CssClass="d-none" />
+
+                                                                </ContentTemplate>
+
+                                                                <Triggers>
+                                                                    <asp:PostBackTrigger ControlID="btnUpload" />
+                                                                    <asp:PostBackTrigger ControlID="PublishButton" />
+                                                                </Triggers>
+                                                            </asp:UpdatePanel>
+     
+                                                        </span>
+                                                           
                                                     </div>
-                                                    <div>
+                                                   <div>
 
                                                         <!-- Background and text colors -->
                                                         <span class="ql-formats m-0">
@@ -157,6 +181,7 @@
                                                         </span>
 
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -180,20 +205,58 @@
                                                 document.getElementById('_dm-quillAdvancedEditor').innerHTML = initialContent;
                                             });
                                         </script>
-                                        <!-- END : Editor -->
 
-                                    </div>
+                                        <!-- END : Editor -->
+                                        <!-- File upload Button -->
+                                       <script>
+                                           document.addEventListener("DOMContentLoaded", function () {
+                                               // Ensure Quill toolbar is fully loaded
+                                               setTimeout(function () {
+                                                   var uploadButton = document.getElementById("custom-file-upload");
+                                                   var fileInput = document.getElementById('<%= FileUploadControl.ClientID %>');
+                                                    var uploadTriggerButton = document.getElementById('<%= btnUpload.ClientID %>');  // Button to trigger server-side file upload
+
+                                                        if (!uploadButton || !fileInput || !uploadTriggerButton) {
+                                                            console.error("Upload button or file input not found!");
+                                                            return;
+                                                        }
+
+                                                        // When button is clicked, open file picker
+                                                        uploadButton.addEventListener("click", function () {
+                                                            console.log("Upload button clicked, opening file picker...");
+                                                            fileInput.click();
+                                                        });
+
+                                                        // Handle file selection
+                                                   fileInput.addEventListener("change", function () {
+                                                       console.log("file picked");
+                                                            if (fileInput.files.length > 0) {
+                                                                var fileName = fileInput.files[0].name;
+                                                                console.log("File selected: " + fileName);  // Log selected file name
+
+                                                                // Trigger the upload button click
+                                                                console.log("Triggering the upload button click...");
+                                                                uploadTriggerButton.click();
+                                                            } else {
+                                                                console.log("No file selected.");
+                                                            }
+                                                        });
+                                                    }, 500); // Delay to ensure Quill initializes first
+                                                });
+                                       </script>
+
+
+                                      <!--   End File Upload button -->
+                                        
                                     <!-- END : Quill TextEditor -->
 
+                                  </div>
+
                                 </div>
-
-
                                 <!-- Sidebar -->
                                 <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                                    <ContentTemplate>
-                                        <div class="w-md-250px d-flex flex-column flex-grow-0 flex-shrink-0 card-body ps-md-0">
-
-
+                                <ContentTemplate>
+                                 <div class="w-md-250px d-flex flex-column flex-grow-0 flex-shrink-0 card-body ps-md-0">
                                             <!-- Publish option -->
                                             <div class="mb-3">
                                                 <div class="d-flex align-items-center justify-content-between mb-3">
@@ -227,6 +290,7 @@
                                                                     <i class="demo-pli-upload-to-cloud fs-5 me-2"></i>Publish
                                                                 </a>
                                                             </li>
+
                                                             <li>
                                                                 <a href="#" class="dropdown-item">
                                                                     <i class="demo-pli-lock-user fs-5 me-2"></i>Lock
@@ -326,17 +390,13 @@
 
 
                                         </div>
-                                    </ContentTemplate>
+                                </ContentTemplate>
                                 </asp:UpdatePanel>
                                 <!-- END : Sidebar -->
-
                             </div>
                         </div>
-
                     </div>
                 </div>
-
-
                 <!-- FOOTER -->
                 <usercontrols:Footer runat="server" />
 

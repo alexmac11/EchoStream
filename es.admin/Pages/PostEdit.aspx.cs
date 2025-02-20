@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using es.data;
@@ -147,7 +150,18 @@ namespace es.admin
             bool isClientVisible = clientCheck.Checked;
             bool isProspectVisible = prospectCheck.Checked;
 
+            byte[] fileData = null;
+            string fileName = null;
+            string contentType = null;
 
+            // Use the file from session if it was uploaded
+            if (Session["UploadedFileData"] != null)
+            {
+                fileData = (byte[])Session["UploadedFileData"];
+                fileName = (string)Session["UploadedFileName"];
+                
+            }
+            // Create or update the post
             if (ContentID == 0)
             {
                 // Save New Post
@@ -155,11 +169,14 @@ namespace es.admin
                 {
                     Title = title,
                     ContentBody = editorContent,
+                    ContentType = contentType,  
                     Tags = categories,
                     PublishedDate = DateTime.Now,
                     IsActive = true,
                     isClientVisible = isClientVisible,
-                    isProspectVisible = isProspectVisible
+                    isProspectVisible = isProspectVisible,
+                    FileName = fileName,
+                    FileData = fileData
                 });
             }
             else
@@ -171,15 +188,59 @@ namespace es.admin
                 {
                     post.Title = title;
                     post.ContentBody = editorContent;
+                    post.ContentType = contentType;  
                     post.Tags = categories;
                     post.isClientVisible = isClientVisible;
                     post.isProspectVisible = isProspectVisible;
+                    post.FileName = fileName;
+                    post.FileData = fileData;
 
                     db.Content.Update(post);
                 }
             }
 
             db.Save();
+
+            // Clear session after saving
+            Session["UploadedFileData"] = null;
+            Session["UploadedFileName"] = null;
         }
+
+        protected void BtnUpload_Click(object sender, EventArgs e)
+        {
+            if (FileUploadControl.HasFile)
+            {
+                try
+                {
+                    // Read the file data
+                    byte[] fileData;
+                    using (BinaryReader reader = new BinaryReader(FileUploadControl.PostedFile.InputStream))
+                    {
+                        fileData = reader.ReadBytes(FileUploadControl.PostedFile.ContentLength);
+                    }
+
+                    // Store file in Session for retrieval in SaveEdit_Click
+                    Session["UploadedFileData"] = fileData;
+                    Session["UploadedFileName"] = FileUploadControl.FileName;
+                    
+
+                    lblMessage.Text = "File uploaded successfully!";
+                    lblMessage.ForeColor = System.Drawing.Color.Green;
+                }
+                catch (Exception ex)
+                {
+                    lblMessage.Text = "Please try again later.";
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
+                    System.Diagnostics.Debug.WriteLine("File Upload Error: " + ex.ToString());
+                }
+            }
+            else
+            {
+                lblMessage.Text = "Please select a file to upload.";
+                lblMessage.ForeColor = System.Drawing.Color.Red;
+            }
+        }
+
     }
+
 }
