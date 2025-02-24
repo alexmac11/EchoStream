@@ -99,6 +99,8 @@ namespace es.view.Models
         [Required(ErrorMessage = "You must agree to the Terms and Conditions.")]
         [Range(typeof(bool), "true", "true", ErrorMessage = "You must agree to the Terms and Conditions.")]
         public bool AgreeToTerms { get; set; }
+
+        public string DeviceID { get; set; }
     }
 
     public class ResetPasswordViewModel

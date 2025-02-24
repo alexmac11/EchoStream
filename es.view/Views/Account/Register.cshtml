@@ -62,6 +62,10 @@
                     <div class="text-center mt-3">
                         Already have an account? <a href="@Url.Action("Login", "Account")" class="btn-link text-decoration-none">Sign In</a>
                     </div>
+
+                    <input type="hidden" id="deviceID" name="DeviceID" />
+
+                    <script>document.getElementById("deviceID").value = navigator.userAgent;</script>
                 }
             </div>
         </div>

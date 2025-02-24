@@ -198,7 +198,8 @@ namespace es.view.Controllers
                         Phone = model.Phone,
                         Address = model.Address,
                         IsClient = false,
-                        RegistrationDate = DateTime.UtcNow
+                        RegistrationDate = DateTime.UtcNow,
+                        DeviceID= model.DeviceID
                     });
                     db.Save();
 
