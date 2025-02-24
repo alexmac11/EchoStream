@@ -32,6 +32,8 @@ namespace es.data
         public bool isClientVisible { get; set; }
         public bool isProspectVisible { get; set; }
         public string ContentURL { get; set; }
+        public byte[] FileData { get; set; }
+        public string FileName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AuditLog> AuditLogs { get; set; }

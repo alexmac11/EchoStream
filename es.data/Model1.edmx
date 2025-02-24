@@ -37,6 +37,8 @@
           <Property Name="isClientVisible" Type="bit" Nullable="false" />
           <Property Name="isProspectVisible" Type="bit" Nullable="false" />
           <Property Name="ContentURL" Type="varchar" MaxLength="255" />
+          <Property Name="FileData" Type="varbinary(max)" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="HtmlPosts">
           <Key>
@@ -93,7 +95,7 @@
           <Property Name="PasswordHash" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="RegistrationDate" Type="datetime" />
           <Property Name="IsClient" Type="bit" Nullable="false" />
-          <Property Name="DeviceID" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DeviceID" Type="nvarchar" MaxLength="255" />
           <Property Name="IsVerified" Type="bit" />
           <Property Name="Website" Type="varchar" MaxLength="255" />
           <Property Name="Phone" Type="varchar" MaxLength="255" />
@@ -340,6 +342,8 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <Property Name="isClientVisible" Type="Boolean" Nullable="false" />
           <Property Name="isProspectVisible" Type="Boolean" Nullable="false" />
           <Property Name="ContentURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FileData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="HtmlPost">
           <Key>
@@ -401,7 +405,7 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="RegistrationDate" Type="DateTime" Precision="3" />
           <Property Name="IsClient" Type="Boolean" Nullable="false" />
-          <Property Name="DeviceID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeviceID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="IsVerified" Type="Boolean" />
           <NavigationProperty Name="AuditLogs" Relationship="Self.FK_AuditLogs_UserID" FromRole="Users" ToRole="AuditLogs" />
           <NavigationProperty Name="HtmlPosts" Relationship="Self.FK__HtmlPosts__UserI__73BA3083" FromRole="Users" ToRole="HtmlPosts" />
@@ -628,6 +632,8 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <EntitySetMapping Name="Contents">
             <EntityTypeMapping TypeName="DataModel.Content">
               <MappingFragment StoreEntitySet="Content">
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FileData" ColumnName="FileData" />
                 <ScalarProperty Name="ContentURL" ColumnName="ContentURL" />
                 <ScalarProperty Name="isProspectVisible" ColumnName="isProspectVisible" />
                 <ScalarProperty Name="isClientVisible" ColumnName="isClientVisible" />

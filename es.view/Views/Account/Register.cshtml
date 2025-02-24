@@ -4,44 +4,68 @@
 }
 
 <main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <!-- Center the form -->
+                <h2 id="title">@ViewBag.Title</h2>
+                <h4>Create a New Account</h4>
+                <hr />
 
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        <h4>Create a new account.</h4>
-        <hr />
-        @Html.ValidationSummary("", new { @class = "text-danger" })
-        <div class="row">
-            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control w-75 mx-auto", placeholder = "First Name" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control w-75 mx-auto", placeholder = "Last Name" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control w-75 mx-auto", placeholder = "Company Name" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.Website, new { @class = "form-control w-75 mx-auto", placeholder = "Website" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control w-75 mx-auto", placeholder = "Email", type = "email" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control w-75 mx-auto", placeholder = "Phone" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control w-75 mx-auto", placeholder = "Address" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control w-75 mx-auto", placeholder = "Username" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control w-75 mx-auto", placeholder = "Password" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control w-75 mx-auto", placeholder = "Confirm Password" })
+                    </div>
+
+                    <div class="form-check d-flex justify-content-center align-items-center mb-3">
+                        @Html.CheckBoxFor(m => m.AgreeToTerms, new { @class = "form-check-input me-2" })
+                        <label class="form-check-label">
+                            I agree with the <a href="#" class="btn-link text-decoration-underline">Terms and Conditions</a>
+                        </label>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" class="btn btn-primary btn-lg w-75" value="Register" />
+                    </div>
+
+                    <div class="text-center mt-3">
+                        Already have an account? <a href="@Url.Action("Login", "Account")" class="btn-link text-decoration-none">Sign In</a>
+                    </div>
+                }
             </div>
         </div>
-        <div class="row">
-            @Html.LabelFor(m => m.Hometown, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Hometown, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="row">
-            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="row">
-            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-md-2 col-md-10">
-                <input type="submit" class="btn btn-outline-dark" value="Register" />
-            </div>
-        </div>
-    }
+    </div>
 </main>
 
 @section Scripts {

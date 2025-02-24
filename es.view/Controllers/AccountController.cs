@@ -1,13 +1,17 @@
-﻿using es.view.Models;
+﻿using BCrypt.Net;
+using es.data;
+using es.view.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
+using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace es.view.Controllers
@@ -17,6 +21,7 @@ namespace es.view.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private readonly DatabaseService db = new DatabaseService();
 
         public AccountController()
         {
@@ -78,30 +83,35 @@ namespace es.view.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            // Fetch user from database using Username instead of Email
+            var user = db.User.GetAll().FirstOrDefault(u => u.Username == model.Username);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                ModelState.AddModelError("", "Invalid username or password.");
+                return View(model);
             }
+
+            // Sign in the user manually
+            var identity = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity")
+            }, DefaultAuthenticationTypes.ApplicationCookie);
+
+            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe }, identity);
+            return RedirectToLocal(returnUrl);
         }
+
+
 
         //
         // GET: /Account/VerifyCode
@@ -159,30 +169,71 @@ namespace es.view.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Hometown = model.Hometown };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                try
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    // Check if the username already exists
+                    var existingUser = db.User.GetAll().FirstOrDefault(u => u.Username == model.Username);
+                    if (existingUser != null)
+                    {
+                        ModelState.AddModelError("", "Username already exists.");
+                        return View(model);
+                    }
 
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    // Hash the password before saving
+                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+                    db.User.Insert(new data.User
+                    {
+                        Username = model.Username,
+                        Email = model.Email,
+                        PasswordHash = hashedPassword,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        CompanyName = model.CompanyName,
+                        Website = model.Website,
+                        Phone = model.Phone,
+                        Address = model.Address,
+                        IsClient = false,
+                        RegistrationDate = DateTime.UtcNow
+                    });
+                    db.Save();
+
+                    var user = db.User.GetAll().FirstOrDefault(u => u.Username == model.Username);
+
+                    // Auto-login the new user
+                    var identity = new ClaimsIdentity(new[]
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity")
+                    }, DefaultAuthenticationTypes.ApplicationCookie);
+
+                    AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = false }, identity);
 
                     return RedirectToAction("Index", "Home");
                 }
-                AddErrors(result);
+                catch (DbEntityValidationException ex)
+                {
+                    // Capture and log entity validation errors
+                    foreach (var validationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            ModelState.AddModelError("", $"{validationError.PropertyName}: {validationError.ErrorMessage}");
+                        }
+                    }
+                    return View(model);
+                }
             }
 
-            // If we got this far, something failed, redisplay form
+            // If registration failed, redisplay form
             return View(model);
         }
+
 
         //
         // GET: /Account/ConfirmEmail
@@ -403,7 +454,7 @@ namespace es.view.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -439,13 +490,8 @@ namespace es.view.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
+
 
         private void AddErrors(IdentityResult result)
         {
