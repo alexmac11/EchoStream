@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mime;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using es.data;
@@ -87,6 +89,28 @@ namespace es.admin
         {
             Search = search.Text.Trim();
             BindData();
+        }
+
+        protected void chkClient_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox chk = (CheckBox)sender;
+            GridViewRow row = (GridViewRow)chk.NamingContainer;
+            int rowIndex = row.RowIndex;
+
+            // Retrieve the UserID from DataKeys (make sure DataKeyNames="UserID" is set in GridView)
+            int userId = Convert.ToInt32(AccountsGridView.DataKeys[rowIndex].Value);
+
+            // Get the new checked state
+            bool isClient = chk.Checked;
+
+            // Update user
+            var user = db.User.GetById(userId);
+            if (user != null)
+            {
+                user.IsClient = isClient;
+                db.User.Update(user);
+                db.User.Save();
+            }
         }
     }
 }

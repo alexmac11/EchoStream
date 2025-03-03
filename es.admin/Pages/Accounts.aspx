@@ -106,6 +106,17 @@
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
 
+                                                <asp:TemplateField HeaderText="Client">
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox 
+                                                            ID="chkClient" 
+                                                            runat="server" 
+                                                            Checked='<%# Eval("IsClient") %>' 
+                                                            AutoPostBack="true" 
+                                                            OnCheckedChanged="chkClient_CheckedChanged" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
                                                 <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-end" HeaderStyle-Width="20px" ItemStyle-Width="20px">
                                                     <ItemTemplate>
                                                         <div class="d-flex justify-content-end">
