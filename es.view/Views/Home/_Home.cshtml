@@ -91,6 +91,11 @@
                                 // If ContentURL exists, create a video embed, otherwise show ContentBody text.
                                 let videoEmbed = "";
                                 if (post.ContentURL && post.ContentURL.trim() !== "") {
+                                    let embedUrl = post.ContentURL;
+                                    // If it's a YouTube URL and doesn't already have the parameter, add it.
+                                    if (embedUrl.includes("youtube.com") && !embedUrl.includes("enablejsapi=1")) {
+                                        embedUrl += (embedUrl.includes("?") ? "&" : "?") + "enablejsapi=1";
+                                    }
                                     videoEmbed = `
                                         <div
                                             style="
@@ -106,7 +111,7 @@
                                             "
                                         >
                                             <iframe
-                                                src="${post.ContentURL}"
+                                                src="${embedUrl}"
                                                 allowfullscreen
                                                 style="
                                                     position: absolute;
@@ -151,6 +156,9 @@
                                 console.warn(`Duplicate post with ID ${post.ContentID} skipped.`);
                             }
                         });
+
+                        initializeVideoTracking();
+
                         page++;
                     }
                 })
@@ -161,6 +169,69 @@
                     isLoading = false;
                     loadingIndicator.style.display = "none";
                 });
+        }
+
+        function initializeVideoTracking() {
+            // Load YouTube API if not already loaded
+            if (document.querySelector("iframe[src*='youtube.com']") && !window.YT) {
+                const script = document.createElement("script");
+                script.src = "https://www.youtube.com/iframe_api";
+                script.onload = () => {
+                    setupYouTubeTracking(); // Ensure tracking is set up once API loads
+                };
+                document.body.appendChild(script);
+            } else if (window.YT && YT.Player) {
+                setupYouTubeTracking(); // If already loaded, initialize tracking immediately
+            }
+
+            // Load Vimeo API if not already loaded
+            if (document.querySelector("iframe[src*='vimeo.com']") && !window.Vimeo) {
+                const script = document.createElement("script");
+                script.src = "https://player.vimeo.com/api/player.js";
+                script.onload = () => setupVimeoTracking();
+                document.body.appendChild(script);
+            } else {
+                setupVimeoTracking();
+            }
+        }
+
+        // Ensure YouTube API callback runs AFTER new iframes are added
+        function onYouTubeIframeAPIReady() {
+            setupYouTubeTracking();
+        }
+
+        // Function to dynamically attach YouTube API to new iframes
+        function setupYouTubeTracking() {
+            document.querySelectorAll("iframe[src*='youtube.com']").forEach((iframe) => {
+                if (!iframe.dataset.youtubeInitialized) {
+                    console.log(`Initializing YouTube Player for: ${iframe.src}`);
+
+                    const player = new YT.Player(iframe, {
+                        events: {
+                            'onStateChange': function (event) {
+                                if (event.data === YT.PlayerState.PLAYING) {
+                                    console.log("User started watching YouTube video:", event.target.getVideoUrl());
+                                }
+                            }
+                        }
+                    });
+
+                    iframe.dataset.youtubeInitialized = "true"; // Prevent re-initialization
+                }
+            });
+        }
+
+        // Vimeo tracking setup (works fine)
+        function setupVimeoTracking() {
+            document.querySelectorAll("iframe[src*='vimeo.com']").forEach(iframe => {
+                if (!iframe.dataset.vimeoInitialized) {
+                    const player = new Vimeo.Player(iframe);
+                    player.on('play', function () {
+                        console.log("User started watching Vimeo video:", iframe.src);
+                    });
+                    iframe.dataset.vimeoInitialized = "true"; // Prevent re-initialization
+                }
+            });
         }
 
         /**
