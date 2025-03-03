@@ -120,6 +120,9 @@
     <Compile Include="User.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserLogin.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Video.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

@@ -55,8 +55,14 @@ namespace es.data
     {
         public ReferralDataHandler(DataEntities context) : base(context) { }
     }
+
     public class VideoWatchHandler : GenericDataHandler<VideoWatch>
     {
         public VideoWatchHandler(DataEntities context) : base(context) { }
+    }
+
+    public class UserLoginHandler : GenericDataHandler<UserLogin>
+    {
+        public UserLoginHandler(DataEntities context) : base(context) { }
     }
 }

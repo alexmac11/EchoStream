@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -78,6 +79,27 @@ namespace es.view.Controllers
             return View();
         }
 
+        private void LogLoginAttempt(int userId, string username, string ipAddress, string loginStatus)
+        {
+            try
+            {
+                db.UserLogins.Insert(new UserLogin
+                {
+                    UserID = userId,  // Use -1 if the user is not found
+                    LoginTime = DateTime.UtcNow,
+                    IPAddress = ipAddress,
+                    LoginStatus = loginStatus
+                });
+
+                db.Save();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error logging login attempt: {ex.Message}");
+            }
+        }
+
+
         //
         // POST: /Account/Login
         [HttpPost]
@@ -90,27 +112,42 @@ namespace es.view.Controllers
                 return View(model);
             }
 
-            // Fetch user from database using Username instead of Email
-            var user = db.User.GetAll().FirstOrDefault(u => u.Username == model.Username);
-
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+            string ipAddress = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (string.IsNullOrEmpty(ipAddress))
             {
-                ModelState.AddModelError("", "Invalid username or password.");
-                return View(model);
+                ipAddress = Request.ServerVariables["REMOTE_ADDR"];
             }
 
-            // Sign in the user manually
-            var identity = new ClaimsIdentity(new[]
+            var user = db.User.GetAll().FirstOrDefault(u => u.Username == model.Username);
+            int userId = user?.UserID ?? -1; // Use -1 if user is not found
+            string loginStatus = "Failure";
+
+            if (user != null && BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity")
-            }, DefaultAuthenticationTypes.ApplicationCookie);
+                loginStatus = "Success";
 
-            AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe }, identity);
-            return RedirectToLocal(returnUrl);
+                // Sign in the user manually
+                var identity = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity")
+                }, DefaultAuthenticationTypes.ApplicationCookie);
+
+                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe }, identity);
+
+                // Log successful login
+                LogLoginAttempt(userId, model.Username, ipAddress, loginStatus);
+
+                return RedirectToLocal(returnUrl);
+            }
+
+            // Log failed login attempt
+            LogLoginAttempt(userId, model.Username, ipAddress, loginStatus);
+
+            ModelState.AddModelError("", "Invalid username or password.");
+            return View(model);
         }
-
 
 
         //

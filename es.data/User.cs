@@ -23,6 +23,7 @@ namespace es.data
             this.Referrals = new HashSet<Referral>();
             this.RegistrationTrackings = new HashSet<RegistrationTracking>();
             this.VideoWatches = new HashSet<VideoWatch>();
+            this.UserLogins = new HashSet<UserLogin>();
         }
     
         public int UserID { get; set; }
@@ -55,5 +56,7 @@ namespace es.data
         public virtual ICollection<RegistrationTracking> RegistrationTrackings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VideoWatch> VideoWatches { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserLogin> UserLogins { get; set; }
     }
 }

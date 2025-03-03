@@ -27,6 +27,8 @@
         <EntityTypeShape EntityType="DataModel.VideoWatch" Width="1.5" PointX="4.625" PointY="9.125" />
         <AssociationConnector Association="DataModel.FK_VideoWatch_Content" />
         <AssociationConnector Association="DataModel.FK_VideoWatch_User" />
+        <EntityTypeShape EntityType="DataModel.UserLogin" Width="1.5" PointX="4.625" PointY="11.625" />
+        <AssociationConnector Association="DataModel.FK__UserLogin__UserI__43D61337" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

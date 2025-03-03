@@ -83,6 +83,16 @@
           <Property Name="RegistrationStatus" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RegistrationDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="UserLogins">
+          <Key>
+            <PropertyRef Name="LoginID" />
+          </Key>
+          <Property Name="LoginID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="LoginTime" Type="datetime" />
+          <Property Name="IPAddress" Type="nvarchar" MaxLength="45" />
+          <Property Name="LoginStatus" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="UserID" />
@@ -192,6 +202,20 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__UserLogin__UserI__43D61337">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserLogins" Type="Self.UserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserLogins">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AuditLogs_ContentID">
           <End Role="Content" Type="Self.Content" Multiplicity="0..1" />
           <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
@@ -284,6 +308,7 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <EntitySet Name="PasswordResetTokens" EntityType="Self.PasswordResetTokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Referrals" EntityType="Self.Referrals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RegistrationTracking" EntityType="Self.RegistrationTracking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Videos" EntityType="Self.Videos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VideoWatch" EntityType="Self.VideoWatch" Schema="dbo" store:Type="Tables" />
@@ -312,6 +337,10 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <AssociationSet Name="FK__Registrat__UserI__7C4F7684" Association="Self.FK__Registrat__UserI__7C4F7684">
             <End Role="Users" EntitySet="Users" />
             <End Role="RegistrationTracking" EntitySet="RegistrationTracking" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserLogin__UserI__43D61337" Association="Self.FK__UserLogin__UserI__43D61337">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserLogins" EntitySet="UserLogins" />
           </AssociationSet>
           <AssociationSet Name="FK_AuditLogs_ContentID" Association="Self.FK_AuditLogs_ContentID">
             <End Role="Content" EntitySet="Content" />
@@ -464,6 +493,7 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <Property Name="YTRefreshToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="VideoWatches" Relationship="DataModel.FK_VideoWatch_User" FromRole="User" ToRole="VideoWatch" />
+          <NavigationProperty Name="UserLogins" Relationship="DataModel.FK__UserLogin__UserI__43D61337" FromRole="User" ToRole="UserLogin" />
         </EntityType>
         <EntityType Name="Video">
           <Key>
@@ -657,6 +687,11 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
             <End Role="User" EntitySet="Users" />
             <End Role="VideoWatch" EntitySet="VideoWatches" />
           </AssociationSet>
+          <EntitySet Name="UserLogins" EntityType="DataModel.UserLogin" />
+          <AssociationSet Name="FK__UserLogin__UserI__43D61337" Association="DataModel.FK__UserLogin__UserI__43D61337">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserLogin" EntitySet="UserLogins" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="VideoWatch">
           <Key>
@@ -690,6 +725,31 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="VideoWatch">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="LoginID" />
+          </Key>
+          <Property Name="LoginID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="LoginTime" Type="DateTime" Precision="3" />
+          <Property Name="IPAddress" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="LoginStatus" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="DataModel.FK__UserLogin__UserI__43D61337" FromRole="UserLogin" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__UserLogin__UserI__43D61337">
+          <End Type="DataModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DataModel.UserLogin" Role="UserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserLogin">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -840,6 +900,17 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
                 <ScalarProperty Name="ContentID" ColumnName="ContentID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="VideoWatchID" ColumnName="VideoWatchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="DataModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogins">
+                <ScalarProperty Name="LoginStatus" ColumnName="LoginStatus" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
