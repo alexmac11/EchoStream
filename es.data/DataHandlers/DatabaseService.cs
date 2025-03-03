@@ -24,6 +24,7 @@ namespace es.data
         public RegistrationTrackingDataHandler RegistrationTracking => new RegistrationTrackingDataHandler(_context);
         public PasswordResetTokenDataHandler PasswordReset => new PasswordResetTokenDataHandler(_context);
         public ReferralDataHandler Referral => new ReferralDataHandler(_context);
+        public VideoWatchHandler VideoWatch => new VideoWatchHandler(_context);
 
 
         public void Exists() => _context.Database.Exists();

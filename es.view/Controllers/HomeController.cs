@@ -26,6 +26,13 @@ namespace es.view.Controllers
                 .OrderByDescending(c => c.PublishedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .Select(c => new {
+                    ContentID = c.ContentID,
+                    Title = c.Title,
+                    ContentBody = c.ContentBody,
+                    ContentURL = c.ContentURL,
+                    PublishedDate = c.PublishedDate
+                })
                 .ToList();
 
 

@@ -19,6 +19,7 @@ namespace es.data
         {
             this.AuditLogs = new HashSet<AuditLog>();
             this.Videos = new HashSet<Video>();
+            this.VideoWatches = new HashSet<VideoWatch>();
         }
     
         public int ContentID { get; set; }
@@ -40,5 +41,7 @@ namespace es.data
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Video> Videos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VideoWatch> VideoWatches { get; set; }
     }
 }

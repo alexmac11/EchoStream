@@ -35,5 +35,6 @@ namespace es.data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Video> Videos { get; set; }
         public virtual DbSet<database_firewall_rules> database_firewall_rules { get; set; }
+        public virtual DbSet<VideoWatch> VideoWatches { get; set; }
     }
 }
