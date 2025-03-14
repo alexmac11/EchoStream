@@ -31,13 +31,24 @@ namespace es.view.Controllers
                     Title = c.Title,
                     ContentBody = c.ContentBody,
                     ContentURL = c.ContentURL,
-                    PublishedDate = c.PublishedDate
+                    PublishedDate = c.PublishedDate,
+                    FileName = c.FileName
                 })
                 .ToList();
 
-
-
             return Json(posts, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DownloadFile(int id)
+        {
+            var post = db.Content.GetById(id);
+            if (post != null && post.FileData != null)
+            {
+                // If ContentType is not set, default to a generic binary type.
+                string contentType = post.ContentType ?? "application/octet-stream";
+                return File(post.FileData, contentType, post.FileName);
+            }
+            return HttpNotFound();
         }
     }
 }

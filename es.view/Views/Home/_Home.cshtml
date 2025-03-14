@@ -110,7 +110,7 @@
                                 postCount++;
                                 console.log(`Adding post ID ${post.ContentID}, Count: ${postCount}`);
 
-                                // If ContentURL exists, create a video embed, otherwise show ContentBody text.
+                                // Check for a video embed if a ContentURL exists.
                                 let videoEmbed = "";
                                 if (post.ContentURL && post.ContentURL.trim() !== "") {
                                     let embedUrl = post.ContentURL;
@@ -119,46 +119,53 @@
                                         embedUrl += (embedUrl.includes("?") ? "&" : "?") + "enablejsapi=1";
                                     }
                                     videoEmbed = `
-                                <div
-                                    style="
-                                        position: relative;
-                                        width: 100%;
-                                        /* 16:9 aspect ratio => 9 / 16 = 56.25% */
-                                        padding-top: 56.25%;
-                                        border: 2px solid #ddd;
-                                        border-radius: 5px;
-                                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                                        overflow: hidden;
-                                        margin-bottom: 1rem;
-                                    "
-                                >
-                                    <iframe
-                                        data-contentid="${post.ContentID}"
-                                        src="${embedUrl}"
-                                        allowfullscreen
-                                        style="
-                                            position: absolute;
-                                            top: 0;
-                                            left: 0;
-                                            width: 100%;
-                                            height: 100%;
-                                            border: 0;
-                                        "
-                                    >
-                                    </iframe>
-                                </div>
-                            `;
+                        <div
+                            style="
+                                position: relative;
+                                width: 100%;
+                                /* 16:9 aspect ratio => 9 / 16 = 56.25% */
+                                padding-top: 56.25%;
+                                border: 2px solid #ddd;
+                                border-radius: 5px;
+                                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                                overflow: hidden;
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            <iframe
+                                data-contentid="${post.ContentID}"
+                                src="${embedUrl}"
+                                allowfullscreen
+                                style="
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    border: 0;
+                                "
+                            >
+                            </iframe>
+                        </div>
+                    `;
+                                }
+
+                                // If the FileData column is not NULL, create a download link using FileName.
+                                let downloadLink = "";
+                                if (post.FileName != null) {
+                                    downloadLink = `<a href="/Home/DownloadFile?id=${post.ContentID}">${post.FileName}</a>`;
                                 }
 
                                 const postCard = document.createElement("div");
                                 postCard.classList.add("card", "post-card");
                                 postCard.innerHTML = `
-                            <div class="card-body">
-                                <span class="post-number">${postCount}</span>
-                                <h5 class="card-title">${post.Title}</h5>
-                                ${videoEmbed ? videoEmbed : `<p class="card-text">${post.ContentBody}</p>`}
-                            </div>
-                        `;
+                    <div class="card-body">
+                        <span class="post-number">${postCount}</span>
+                        <h5 class="card-title">${post.Title}</h5>
+                        ${videoEmbed ? videoEmbed : `<div class="card-text">${post.ContentBody}</div>`}
+                        ${downloadLink}
+                    </div>
+                `;
                                 console.log("Created postCard for post ID:", post.ContentID);
 
                                 // Ensure no content inside the card has 'contenteditable'
