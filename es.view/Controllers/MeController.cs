@@ -39,12 +39,5 @@ namespace es.view.Controllers
                 _userManager = value;
             }
         }
-
-        // GET api/Me
-        public GetViewModel Get()
-        {
-            //var user = UserManager.FindById(User.Identity.GetUserId());
-            return null; //new GetViewModel() { Hometown = user.Hometown };
-        }
     }
 }
