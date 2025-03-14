@@ -7,9 +7,8 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
-    <!-- Assuming Bootstrap is already included via your template -->
     <style>
-        /* Additional custom styling */
+        /* Styling for post cards */
         .post-card {
             position: relative;
             margin-bottom: 20px;
@@ -35,275 +34,207 @@
     <div class="container mt-5">
         <main aria-labelledby="title">
             <h2 id="title" class="text-center mb-4">@ViewBag.Title</h2>
-
-            <!-- Container that will hold all of our loaded posts -->
+            <!-- Posts will be appended here -->
             <div id="posts-container"></div>
-
-            <!-- Loading indicator, shown when we are fetching data -->
+            <!-- Loading and end-of-list indicators -->
             <div id="loading" class="text-center my-3" style="display: none;">Loading...</div>
-
-            <!-- A sentinel element for IntersectionObserver to watch -->
             <div id="scroll-sentinel"></div>
-
-            <!-- Displayed when there are no more posts to load -->
             <div id="no-more-posts" class="text-center my-3" style="display: none;">No more posts available.</div>
         </main>
     </div>
 
     <script>
-        let page = 1;
+        // ===== Configuration and Global Variables =====
         const pageSize = 5;
+        let page = 1;
         let isLoading = false;
         let hasMorePosts = true;
+        let postCount = 0;
         const loadedPostIds = new Set();
-        let postCount = 0; // Count of posts loaded
-        let currentWatchId = null;
-        var youtubeIntervals = {};
-        var watchSessions = {};
+        let youtubeIntervals = {};
+        let watchSessions = {};
 
+        // ===== DOM Element References =====
         const postsContainer = document.getElementById("posts-container");
         const loadingIndicator = document.getElementById("loading");
-        const sentinel = document.getElementById("scroll-sentinel");
         const noMorePosts = document.getElementById("no-more-posts");
+        const sentinel = document.getElementById("scroll-sentinel");
 
-        /**
-         * Fetches and appends posts from the server.
-         */
-        function loadPosts() {
-            if (isLoading || !hasMorePosts) return;
-            isLoading = true;
-            loadingIndicator.style.display = "block";
-            console.log(`Loading posts for page ${page}...`);
+        // ===== Helper Functions =====
 
-            const url = `/Home/GetPosts?page=${page}&pageSize=${pageSize}`;
-            console.log("Fetching posts from:", url);
+        // Create a post card element from a post object
+        const createPostCard = (post, count) => {
+            const card = document.createElement("div");
+            card.classList.add("card", "post-card");
 
-            fetch(url, { credentials: "include" })
-                .then(response => {
-                    console.log("HTTP status:", response.status);
-                    return response.text();
-                })
-                .then(text => {
-                    console.log("Raw response text:", text);
-                    let data;
-                    try {
-                        data = JSON.parse(text);
-                    } catch (e) {
-                        console.error("Error parsing JSON:", e);
-                        throw e;
-                    }
-                    return data;
-                })
-                .then(data => {
-                    if (!data || data.length === 0) {
-                        console.log("No more posts to load.");
-                        hasMorePosts = false;
-                        noMorePosts.style.display = "block";
-                        if (observer) observer.disconnect();
-                    } else {
-                        console.log(`Received ${data.length} posts.`);
-                        data.forEach(post => {
-                            console.log("Processing post:", post);
-                            // Using the JSON property 'ContentID', 'Title', and 'ContentBody'
-                            if (!loadedPostIds.has(post.ContentID)) {
-                                loadedPostIds.add(post.ContentID);
-                                postCount++;
-                                console.log(`Adding post ID ${post.ContentID}, Count: ${postCount}`);
-
-                                // Check for a video embed if a ContentURL exists.
-                                let videoEmbed = "";
-                                if (post.ContentURL && post.ContentURL.trim() !== "") {
-                                    let embedUrl = post.ContentURL;
-                                    // If it's a YouTube URL and doesn't already have the parameter, add it.
-                                    if (embedUrl.includes("youtube.com") && !embedUrl.includes("enablejsapi=1")) {
-                                        embedUrl += (embedUrl.includes("?") ? "&" : "?") + "enablejsapi=1";
-                                    }
-                                    videoEmbed = `
-                        <div
-                            style="
+            // Determine video embed if ContentURL is provided
+            let videoEmbed = "";
+            if (post.ContentURL && post.ContentURL.trim()) {
+                let embedUrl = post.ContentURL;
+                if (embedUrl.includes("youtube.com") && !embedUrl.includes("enablejsapi=1")) {
+                    embedUrl += (embedUrl.includes("?") ? "&" : "?") + "enablejsapi=1";
+                }
+                videoEmbed = `
+                            <div style="
                                 position: relative;
                                 width: 100%;
-                                /* 16:9 aspect ratio => 9 / 16 = 56.25% */
                                 padding-top: 56.25%;
                                 border: 2px solid #ddd;
                                 border-radius: 5px;
                                 box-shadow: 0 4px 8px rgba(0,0,0,0.1);
                                 overflow: hidden;
                                 margin-bottom: 1rem;
-                            "
-                        >
-                            <iframe
-                                data-contentid="${post.ContentID}"
-                                src="${embedUrl}"
-                                allowfullscreen
-                                style="
+                            ">
+                                <iframe data-contentid="${post.ContentID}" src="${embedUrl}" allowfullscreen style="
                                     position: absolute;
                                     top: 0;
                                     left: 0;
                                     width: 100%;
                                     height: 100%;
                                     border: 0;
-                                "
-                            >
-                            </iframe>
+                                "></iframe>
+                            </div>
+                        `;
+            }
+
+            // Determine download link if a file is attached (using FileName)
+            let downloadLink = "";
+            if (post.FileName && post.FileName.trim()) {
+                downloadLink = `<a href="/Home/DownloadFile?id=${post.ContentID}">${post.FileName}</a>`;
+            }
+
+            // Set inner HTML of the card
+            card.innerHTML = `
+                        <div class="card-body">
+                            <span class="post-number">${count}</span>
+                            <h5 class="card-title">${post.Title}</h5>
+                            ${videoEmbed ? videoEmbed : `<div class="card-text">${post.ContentBody}</div>`}
+                            ${downloadLink}
                         </div>
                     `;
-                                }
 
-                                // If the FileData column is not NULL, create a download link using FileName.
-                                let downloadLink = "";
-                                if (post.FileName != null) {
-                                    downloadLink = `<a href="/Home/DownloadFile?id=${post.ContentID}">${post.FileName}</a>`;
-                                }
+            // Remove any unwanted attributes or elements from the card
+            card.querySelectorAll('[contenteditable]').forEach(elem => elem.removeAttribute('contenteditable'));
+            card.querySelectorAll('input').forEach(input => input.remove());
 
-                                const postCard = document.createElement("div");
-                                postCard.classList.add("card", "post-card");
-                                postCard.innerHTML = `
-                    <div class="card-body">
-                        <span class="post-number">${postCount}</span>
-                        <h5 class="card-title">${post.Title}</h5>
-                        ${videoEmbed ? videoEmbed : `<div class="card-text">${post.ContentBody}</div>`}
-                        ${downloadLink}
-                    </div>
-                `;
-                                console.log("Created postCard for post ID:", post.ContentID);
+            return card;
+        };
 
-                                // Ensure no content inside the card has 'contenteditable'
-                                const editableElems = postCard.querySelectorAll('[contenteditable]');
-                                editableElems.forEach(elem => {
-                                    elem.removeAttribute('contenteditable');
-                                });
+        // Load posts from the server and append them to the posts container
+        const loadPosts = () => {
+            if (isLoading || !hasMorePosts) return;
+            isLoading = true;
+            loadingIndicator.style.display = "block";
 
-                                // Remove any <input> elements inside the post
-                                const inputs = postCard.querySelectorAll('input');
-                                inputs.forEach(input => input.remove());
-
-                                postsContainer.appendChild(postCard);
-                                console.log("Appended postCard to postsContainer.");
-                            } else {
-                                console.warn(`Duplicate post with ID ${post.ContentID} skipped.`);
-                            }
-                        });
-
-                        initializeVideoTracking();
-                        page++;
-                        console.log("Incremented page to:", page);
+            fetch(`/Home/GetPosts?page=${page}&pageSize=${pageSize}`, { credentials: "include" })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data || data.length === 0) {
+                        hasMorePosts = false;
+                        noMorePosts.style.display = "block";
+                        if (observer) observer.disconnect();
+                        return;
                     }
+                    data.forEach(post => {
+                        if (!loadedPostIds.has(post.ContentID)) {
+                            loadedPostIds.add(post.ContentID);
+                            postCount++;
+                            const postCard = createPostCard(post, postCount);
+                            postsContainer.appendChild(postCard);
+                        }
+                    });
+                    initializeVideoTracking();
+                    page++;
                 })
-                .catch(error => {
-                    console.error("Error fetching posts:", error);
-                })
+                .catch(error => console.error("Error fetching posts:", error))
                 .finally(() => {
                     isLoading = false;
                     loadingIndicator.style.display = "none";
-                    console.log("Finished processing posts, isLoading set to false.");
                 });
-        }
+        };
 
+        // ===== Video Tracking Functions =====
 
-        function initializeVideoTracking() {
-            // Load YouTube API if not already loaded
+        // Initialize video tracking by loading necessary APIs
+        const initializeVideoTracking = () => {
+            // Load YouTube API if needed
             if (document.querySelector("iframe[src*='youtube.com']") && !window.YT) {
-                const script = document.createElement("script");
-                script.src = "https://www.youtube.com/iframe_api";
-                script.onload = () => {
-                    setupYouTubeTracking(); // Ensure tracking is set up once API loads
-                };
-                document.body.appendChild(script);
+                const ytScript = document.createElement("script");
+                ytScript.src = "https://www.youtube.com/iframe_api";
+                ytScript.onload = setupYouTubeTracking;
+                document.body.appendChild(ytScript);
             } else if (window.YT && YT.Player) {
-                setupYouTubeTracking(); // If already loaded, initialize tracking immediately
+                setupYouTubeTracking();
             }
 
-            // Load Vimeo API if not already loaded
+            // Load Vimeo API if needed
             if (document.querySelector("iframe[src*='vimeo.com']") && !window.Vimeo) {
-                const script = document.createElement("script");
-                script.src = "https://player.vimeo.com/api/player.js";
-                script.onload = () => setupVimeoTracking();
-                document.body.appendChild(script);
+                const vimeoScript = document.createElement("script");
+                vimeoScript.src = "https://player.vimeo.com/api/player.js";
+                vimeoScript.onload = setupVimeoTracking;
+                document.body.appendChild(vimeoScript);
             } else {
                 setupVimeoTracking();
             }
-        }
+        };
 
-        // Ensure YouTube API callback runs AFTER new iframes are added
-        function onYouTubeIframeAPIReady() {
-            setupYouTubeTracking();
-        }
-
-        // YouTube tracking setup: start the session on play and update every 5 seconds.
-        function setupYouTubeTracking() {
-            document.querySelectorAll("iframe[src*='youtube.com']").forEach((iframe) => {
+        // Setup YouTube tracking for all YouTube iframes
+        const setupYouTubeTracking = () => {
+            document.querySelectorAll("iframe[src*='youtube.com']").forEach(iframe => {
                 if (!iframe.dataset.youtubeInitialized) {
-                    // Ensure each iframe has a unique id for tracking.
                     if (!iframe.id) {
                         iframe.id = "yt-player-" + Math.random().toString(36).substr(2, 9);
                     }
-                    console.log(`Initializing YouTube Player for: ${iframe.src}`);
-
                     new YT.Player(iframe, {
                         events: {
-                            'onStateChange': function (event) {
-                                var playerId = event.target.getIframe().id;
-                                var contentId = iframe.dataset.contentid;
+                            onStateChange: event => {
+                                const playerId = event.target.getIframe().id;
+                                const contentId = iframe.dataset.contentid;
                                 if (event.data === YT.PlayerState.PLAYING) {
-                                    console.log("User started watching YouTube video:", event.target.getVideoUrl());
-                                    // Start the watch session if it hasn't been started already.
                                     startWatching(contentId);
-                                    // Start an interval if one isn't already running.
                                     if (!youtubeIntervals[playerId]) {
-                                        youtubeIntervals[playerId] = setInterval(function () {
-                                            var currentTime = event.target.getCurrentTime();
-                                            console.log(`YouTube [${playerId}] current time: ${Math.floor(currentTime)} seconds`);
+                                        youtubeIntervals[playerId] = setInterval(() => {
+                                            const currentTime = event.target.getCurrentTime();
                                             updateWatching(contentId, Math.floor(currentTime));
-                                        }, 5000); // Update every 5 seconds.
+                                        }, 5000);
                                     }
-                                } else {
-                                    // Clear the interval when video is paused, buffering, or ended.
-                                    if (youtubeIntervals[playerId]) {
-                                        clearInterval(youtubeIntervals[playerId]);
-                                        delete youtubeIntervals[playerId];
-                                    }
+                                } else if (youtubeIntervals[playerId]) {
+                                    clearInterval(youtubeIntervals[playerId]);
+                                    delete youtubeIntervals[playerId];
                                 }
                             }
                         }
                     });
-
-                    iframe.dataset.youtubeInitialized = "true"; // Prevent re-initialization.
+                    iframe.dataset.youtubeInitialized = "true";
                 }
             });
-        }
+        };
 
-        // Vimeo tracking setup: start session on play and throttle updates to every 5 seconds.
-        function setupVimeoTracking() {
+        // Setup Vimeo tracking for all Vimeo iframes
+        const setupVimeoTracking = () => {
             document.querySelectorAll("iframe[src*='vimeo.com']").forEach(iframe => {
                 if (!iframe.dataset.vimeoInitialized) {
                     const player = new Vimeo.Player(iframe);
-                    player.on('play', function () {
-                        console.log("User started watching Vimeo video:", iframe.src);
-                        var contentId = iframe.dataset.contentid;
-                        startWatching(contentId);
-                    });
-                    player.on('timeupdate', function (data) {
-                        console.log(`Vimeo [${iframe.src}] current time: ${Math.floor(data.seconds)} seconds (duration: ${data.duration} seconds)`);
-                        var contentId = iframe.dataset.contentid;
-                        // Throttle: only update every 5 seconds.
-                        var lastUpdate = iframe.dataset.lastUpdate ? parseFloat(iframe.dataset.lastUpdate) : 0;
+                    player.on('play', () => startWatching(iframe.dataset.contentid));
+                    player.on('timeupdate', data => {
+                        const contentId = iframe.dataset.contentid;
+                        const lastUpdate = iframe.dataset.lastUpdate ? parseFloat(iframe.dataset.lastUpdate) : 0;
                         if (data.seconds - lastUpdate >= 5) {
                             iframe.dataset.lastUpdate = data.seconds;
                             updateWatching(contentId, Math.floor(data.seconds));
                         }
                     });
-                    iframe.dataset.vimeoInitialized = "true"; // Prevent re-initialization.
+                    iframe.dataset.vimeoInitialized = "true";
                 }
             });
-        }
+        };
 
-        // Call this when the video starts playing.
-        function startWatching(contentId) {
-            // If no session exists for this content, create one.
+        // ===== Video Watch Session Functions =====
+
+        const startWatching = contentId => {
             if (!watchSessions[contentId]) {
                 const data = {
-                    contentId: contentId,
+                    contentId,
                     startTime: new Date().toISOString(),
                     watchedSeconds: 0
                 };
@@ -313,68 +244,48 @@
                     credentials: "include",
                     body: JSON.stringify(data)
                 })
-                .then(response => response.json())
-                .then(result => {
-                    console.log("Started watch session:", result);
-                    watchSessions[contentId] = result.videoWatchID;
-                })
-                .catch(error => console.error("Error starting watch session:", error));
+                    .then(response => response.json())
+                    .then(result => {
+                        watchSessions[contentId] = result.videoWatchID;
+                    })
+                    .catch(error => console.error("Error starting watch session:", error));
             }
-        }
+        };
 
-        // Call this to update the existing watch session.
-        function updateWatching(contentId, watchedSeconds) {
-            console.log("updateWatching called for contentId:", contentId, "with watchedSeconds:", watchedSeconds);
-            console.log("watch sessions: ", watchSessions)
+        const updateWatching = (contentId, watchedSeconds) => {
             if (watchSessions[contentId]) {
-                console.log("Found watch session ID:", watchSessions[contentId]);
-                const data = {
-                    watchedSeconds: watchedSeconds
-                };
+                const data = { watchedSeconds };
                 fetch(`/api/VideoWatch/Update/${watchSessions[contentId]}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
                     body: JSON.stringify(data)
                 })
-                .then(response => response.json())
-                .then(result => {
-                    console.log("Updated watch session:", result);
-                })
-                .catch(error => console.error("Error updating watch session:", error));
+                    .then(response => response.json())
+                    .then(result => console.log("Updated watch session:", result))
+                    .catch(error => console.error("Error updating watch session:", error));
             }
-        }
+        };
 
-        /**
-         * Fallback scroll event if IntersectionObserver isn't supported.
-         */
-        function onScroll() {
-            const scrollPosition = window.innerHeight + window.scrollY;
-            const pageHeight = document.documentElement.scrollHeight;
-            if (scrollPosition >= pageHeight - 50) {
-                loadPosts();
-            }
-        }
-
+        // ===== Infinite Scrolling with Intersection Observer =====
         let observer;
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", () => {
             if ('IntersectionObserver' in window) {
-                observer = new IntersectionObserver((entries) => {
+                observer = new IntersectionObserver(entries => {
                     entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            console.log("Sentinel is in view. Loading more posts...");
-                            loadPosts();
-                        }
+                        if (entry.isIntersecting) loadPosts();
                     });
-                }, {
-                    rootMargin: "50px"  // Trigger loading before the sentinel is fully visible
-                });
+                }, { rootMargin: "50px" });
                 observer.observe(sentinel);
             } else {
-                window.addEventListener("scroll", onScroll);
+                // Fallback scroll event
+                window.addEventListener("scroll", () => {
+                    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+                        loadPosts();
+                    }
+                });
             }
-
-            // Load the first batch of posts immediately.
+            // Load the first set of posts
             loadPosts();
         });
     </script>
