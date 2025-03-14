@@ -79,6 +79,7 @@
     <Compile Include="Category.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataHandlers\MyDatabaseConfiguration.cs" />
     <Compile Include="DataHandlers\DatabaseService.cs" />
     <Compile Include="DataHandlers\GenericDataHandler.cs" />
     <Compile Include="DataHandlers\IDataHandler.cs" />

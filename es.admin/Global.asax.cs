@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Optimization;
@@ -31,7 +32,7 @@ namespace es.admin
             Application["YouTubeClientId"] = config["YouTubeSettings:ClientId"];
             Application["YouTubeClientSecret"] = config["YouTubeSettings:ClientSecret"];
 
-
+            DbConfiguration.SetConfiguration(new MyDbConfiguration()); // AzureDB Configuration
             //var _keepAliveTimer = new System.Threading.Timer(KeepDatabaseAlive, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
         }
 
