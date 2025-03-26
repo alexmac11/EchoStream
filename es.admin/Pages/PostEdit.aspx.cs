@@ -154,14 +154,15 @@ namespace es.admin
             string fileName = null;
             string contentType = null;
 
-            // Use the file from session if it was uploaded
-            if (Session["UploadedFileData"] != null)
+            // Check if a new file was uploaded
+            bool isNewFileUploaded = Session["UploadedFileData"] != null;
+
+            if (isNewFileUploaded)
             {
                 fileData = (byte[])Session["UploadedFileData"];
                 fileName = (string)Session["UploadedFileName"];
-                
             }
-            // Create or update the post
+
             if (ContentID == 0)
             {
                 // Save New Post
@@ -169,7 +170,7 @@ namespace es.admin
                 {
                     Title = title,
                     ContentBody = editorContent,
-                    ContentType = contentType,  
+                    ContentType = contentType,
                     Tags = categories,
                     PublishedDate = DateTime.Now,
                     IsActive = true,
@@ -188,12 +189,16 @@ namespace es.admin
                 {
                     post.Title = title;
                     post.ContentBody = editorContent;
-                    post.ContentType = contentType;  
                     post.Tags = categories;
                     post.isClientVisible = isClientVisible;
                     post.isProspectVisible = isProspectVisible;
-                    post.FileName = fileName;
-                    post.FileData = fileData;
+
+                    // Only update file details if a new file is uploaded
+                    if (isNewFileUploaded)
+                    {
+                        post.FileName = fileName;
+                        post.FileData = fileData;
+                    }
 
                     db.Content.Update(post);
                 }
