@@ -223,11 +223,11 @@ namespace es.view.Controllers
                     // Hash the password before saving
                     string hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
-                    db.User.Insert(new data.User
+                    var user = new data.User
                     {
                         Username = model.Username,
                         Email = model.Email,
-                        PasswordHash = hashedPassword,
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         CompanyName = model.CompanyName,
@@ -236,11 +236,21 @@ namespace es.view.Controllers
                         Address = model.Address,
                         IsClient = false,
                         RegistrationDate = DateTime.UtcNow,
-                        DeviceID= model.DeviceID
-                    });
+                        DeviceID = model.DeviceID
+                    };
+
+                    // 2) Insert and save so newUser.UserID is set
+                    db.User.Insert(user);
                     db.Save();
 
-                    var user = db.User.GetAll().FirstOrDefault(u => u.Username == model.Username);
+                    // 3) Now we have the PK in newUser.UserID—no need to fetch again
+                    db.RegistrationTracking.Insert(new data.RegistrationTracking
+                    {
+                        UserID = user.UserID,
+                        RegistrationStatus = "Pending", // Rejected, Verified, Pending
+                        RegistrationDate = DateTime.UtcNow
+                    });
+                    db.Save();
 
                     // Auto-login the new user
                     var identity = new ClaimsIdentity(new[]
