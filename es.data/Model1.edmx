@@ -5,16 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="AuditLogs">
-          <Key>
-            <PropertyRef Name="AuditID" />
-          </Key>
-          <Property Name="AuditID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="int" />
-          <Property Name="Action" Type="varchar" MaxLength="255" />
-          <Property Name="ContentID" Type="int" />
-          <Property Name="Timestamp" Type="datetime" />
-        </EntityType>
         <EntityType Name="Categories">
           <Key>
             <PropertyRef Name="CategoryID" />
@@ -216,30 +206,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AuditLogs_ContentID">
-          <End Role="Content" Type="Self.Content" Multiplicity="0..1" />
-          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Content">
-              <PropertyRef Name="ContentID" />
-            </Principal>
-            <Dependent Role="AuditLogs">
-              <PropertyRef Name="ContentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AuditLogs_UserID">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="AuditLogs">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Content_CategoryID">
           <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
           <End Role="Content" Type="Self.Content" Multiplicity="*" />
@@ -277,7 +243,9 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VideoWatch_Content">
-          <End Role="Content" Type="Self.Content" Multiplicity="1" />
+          <End Role="Content" Type="Self.Content" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="VideoWatch" Type="Self.VideoWatch" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Content">
@@ -301,7 +269,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DataModelStoreContainer">
-          <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HtmlPosts" EntityType="Self.HtmlPosts" Schema="dbo" store:Type="Tables" />
@@ -342,14 +309,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
             <End Role="Users" EntitySet="Users" />
             <End Role="UserLogins" EntitySet="UserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK_AuditLogs_ContentID" Association="Self.FK_AuditLogs_ContentID">
-            <End Role="Content" EntitySet="Content" />
-            <End Role="AuditLogs" EntitySet="AuditLogs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AuditLogs_UserID" Association="Self.FK_AuditLogs_UserID">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="AuditLogs" EntitySet="AuditLogs" />
-          </AssociationSet>
           <AssociationSet Name="FK_Content_CategoryID" Association="Self.FK_Content_CategoryID">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Content" EntitySet="Content" />
@@ -375,18 +334,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="AuditLog">
-          <Key>
-            <PropertyRef Name="AuditID" />
-          </Key>
-          <Property Name="AuditID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="Action" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ContentID" Type="Int32" />
-          <Property Name="Timestamp" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Content" Relationship="Self.FK_AuditLogs_ContentID" FromRole="AuditLogs" ToRole="Content" />
-          <NavigationProperty Name="User" Relationship="Self.FK_AuditLogs_UserID" FromRole="AuditLogs" ToRole="Users" />
-        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryID" />
@@ -408,7 +355,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <Property Name="Tags" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="PublishedDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="AuditLogs" Relationship="Self.FK_AuditLogs_ContentID" FromRole="Content" ToRole="AuditLogs" />
           <NavigationProperty Name="Category" Relationship="Self.FK_Content_CategoryID" FromRole="Content" ToRole="Categories" />
           <NavigationProperty Name="Videos" Relationship="Self.FK_Videos_ContentID" FromRole="Content" ToRole="Videos" />
           <Property Name="isClientVisible" Type="Boolean" Nullable="false" />
@@ -480,7 +426,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <Property Name="IsClient" Type="Boolean" Nullable="false" />
           <Property Name="DeviceID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="IsVerified" Type="Boolean" />
-          <NavigationProperty Name="AuditLogs" Relationship="Self.FK_AuditLogs_UserID" FromRole="Users" ToRole="AuditLogs" />
           <NavigationProperty Name="HtmlPosts" Relationship="Self.FK__HtmlPosts__UserI__73BA3083" FromRole="Users" ToRole="HtmlPosts" />
           <NavigationProperty Name="PasswordResetTokens" Relationship="Self.FK__PasswordR__UserI__778AC167" FromRole="Users" ToRole="PasswordResetTokens" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referrals_UserID" FromRole="Users" ToRole="Referrals" />
@@ -523,30 +468,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
-        <Association Name="FK_AuditLogs_ContentID">
-          <End Role="Content" Type="Self.Content" Multiplicity="0..1" />
-          <End Role="AuditLogs" Type="Self.AuditLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Content">
-              <PropertyRef Name="ContentID" />
-            </Principal>
-            <Dependent Role="AuditLogs">
-              <PropertyRef Name="ContentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AuditLogs_UserID">
-          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
-          <End Role="AuditLogs" Type="Self.AuditLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="AuditLogs">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__HtmlPosts__Categ__72C60C4A">
           <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
           <End Role="HtmlPosts" Type="Self.HtmlPost" Multiplicity="*" />
@@ -632,7 +553,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DataEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AuditLogs" EntityType="Self.AuditLog" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Contents" EntityType="Self.Content" />
           <EntitySet Name="HtmlPosts" EntityType="Self.HtmlPost" />
@@ -642,14 +562,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="Videos" EntityType="Self.Video" />
           <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" />
-          <AssociationSet Name="FK_AuditLogs_ContentID" Association="Self.FK_AuditLogs_ContentID">
-            <End Role="Content" EntitySet="Contents" />
-            <End Role="AuditLogs" EntitySet="AuditLogs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AuditLogs_UserID" Association="Self.FK_AuditLogs_UserID">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="AuditLogs" EntitySet="AuditLogs" />
-          </AssociationSet>
           <AssociationSet Name="FK__HtmlPosts__Categ__72C60C4A" Association="Self.FK__HtmlPosts__Categ__72C60C4A">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="HtmlPosts" EntitySet="HtmlPosts" />
@@ -760,17 +672,6 @@ warning 6002: The table/view 'Data.sys.database_firewall_rules' does not have a 
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DataModelStoreContainer" CdmEntityContainer="DataEntities">
-          <EntitySetMapping Name="AuditLogs">
-            <EntityTypeMapping TypeName="DataModel.AuditLog">
-              <MappingFragment StoreEntitySet="AuditLogs">
-                <ScalarProperty Name="AuditID" ColumnName="AuditID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Action" ColumnName="Action" />
-                <ScalarProperty Name="ContentID" ColumnName="ContentID" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="DataModel.Category">
               <MappingFragment StoreEntitySet="Categories">

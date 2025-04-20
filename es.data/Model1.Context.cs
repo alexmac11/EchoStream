@@ -25,7 +25,6 @@ namespace es.data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AuditLog> AuditLogs { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Content> Contents { get; set; }
         public virtual DbSet<HtmlPost> HtmlPosts { get; set; }

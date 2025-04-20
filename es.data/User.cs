@@ -17,7 +17,6 @@ namespace es.data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.AuditLogs = new HashSet<AuditLog>();
             this.HtmlPosts = new HashSet<HtmlPost>();
             this.PasswordResetTokens = new HashSet<PasswordResetToken>();
             this.Referrals = new HashSet<Referral>();
@@ -44,8 +43,6 @@ namespace es.data
         public string YTRefreshToken { get; set; }
         public string CompanyName { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AuditLog> AuditLogs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HtmlPost> HtmlPosts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

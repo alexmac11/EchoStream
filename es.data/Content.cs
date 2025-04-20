@@ -17,7 +17,6 @@ namespace es.data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Content()
         {
-            this.AuditLogs = new HashSet<AuditLog>();
             this.Videos = new HashSet<Video>();
             this.VideoWatches = new HashSet<VideoWatch>();
         }
@@ -36,8 +35,6 @@ namespace es.data
         public byte[] FileData { get; set; }
         public string FileName { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AuditLog> AuditLogs { get; set; }
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Video> Videos { get; set; }

@@ -21,11 +21,6 @@ namespace es.data
         public HtmlPostDataHandler(DataEntities context) : base(context) { }
     }
 
-    public class AuditLogDataHandler : GenericDataHandler<AuditLog>
-    {
-        public AuditLogDataHandler(DataEntities context) : base(context) { }
-    }
-
     public class CategoryDataHandler : GenericDataHandler<Category>
     {
         public CategoryDataHandler(DataEntities context) : base(context) { }
