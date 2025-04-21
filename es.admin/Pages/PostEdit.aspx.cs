@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
@@ -11,10 +12,13 @@ using Ganss.Xss;
 
 namespace es.admin
 {
+    [Serializable]
     public class CategoryItem
     {
         public string CategoryName { get; set; }
         public bool IsChecked { get; set; }
+        public bool ShowCheckbox =>
+            !CategoryName.Equals("Video", StringComparison.OrdinalIgnoreCase);
     }
 
     public partial class PostEdit : Page
@@ -75,50 +79,46 @@ namespace es.admin
 
         private void LoadCategories()
         {
-            var categories = db.Category.GetAll().ToList();
+            var allCats = db.Category.GetAll().ToList();
 
-            // Initialize the category list with unchecked state
-            var categoryList = categories.Select(c => new CategoryItem
-            {
-                CategoryName = Server.HtmlEncode(c.CategoryName),
-                IsChecked = false
-            }).ToList();
+            var selected = ContentID == 0
+                ? new List<string>()
+                : db.Content.GetById(ContentID)
+                    .Tags
+                    .Split(',')
+                    .Select(t => t.Trim())
+                    .ToList();
 
-            if (ContentID != 0)
-            {
-                // Fetch selected categories for the existing post
-                var selectedCategories = db.Content.GetById(ContentID)
-                                          .Tags
-                                          .Split(',')
-                                          .Select(t => t.Trim())
-                                          .ToList();
-
-                // Update the IsChecked flag for matching categories
-                foreach (var category in categoryList)
+            var items = allCats
+                .Select(c => new CategoryItem
                 {
-                    if (selectedCategories.Contains(category.CategoryName, StringComparer.OrdinalIgnoreCase))
-                    {
-                        category.IsChecked = true;
-                    }
-                }
-            }
+                    CategoryName = Server.HtmlEncode(c.CategoryName),
+                    IsChecked = selected.Contains(c.CategoryName, StringComparer.OrdinalIgnoreCase)
+                })
+                .ToList();
 
+            ViewState["CategoryItems"] = items;
 
-            CategoryRepeater.DataSource = categoryList;
+            CategoryRepeater.DataSource = items.Where(i => i.ShowCheckbox);
             CategoryRepeater.DataBind();
         }
+
 
 
         protected void AddCategory_Click(object sender, EventArgs e)
         {
             string categoryName = categoryInput.Value.Trim();
-            if (!string.IsNullOrEmpty(categoryName))
-            {
-                db.Category.Insert(new Category { CategoryName = categoryName });
-                db.Save();
+            if (
+                string.IsNullOrEmpty(categoryName) || 
+                categoryName.Equals("Video", StringComparison.OrdinalIgnoreCase) || // Video is reserved Tag
+                db.Category.GetAll().Any(c => c.CategoryName.Equals(categoryName, StringComparison.OrdinalIgnoreCase))
+                )
+            { return; }
 
-                LoadCategories();
-            }
+            db.Category.Insert(new Category { CategoryName = categoryName });
+            db.Save();
+
+            LoadCategories();
         }
 
         protected void CategoryRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -136,10 +136,26 @@ namespace es.admin
 
         public string GetSelectedCategories()
         {
-            return string.Join(", ",
-                CategoryRepeater.Items.Cast<RepeaterItem>()
-                    .Where(item => ((CheckBox)item.FindControl("CategoryCheckBox")).Checked)
-                    .Select(item => ((Label)item.FindControl("CategoryLabel")).Text));
+            var selected = CategoryRepeater.Items
+                .Cast<RepeaterItem>()
+                .Where(item => ((CheckBox)item.FindControl("CategoryCheckBox")).Checked)
+                .Select(item => ((Label)item.FindControl("CategoryLabel")).Text)
+                .ToList();
+
+            var post = db.Content.GetById(ContentID);
+            bool hadVideo = post != null
+                && post.Tags
+                       .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                       .Select(t => t.Trim())
+                       .Any(t => t.Equals("Video", StringComparison.OrdinalIgnoreCase));
+
+            if (hadVideo
+                && !selected.Any(t => t.Equals("Video", StringComparison.OrdinalIgnoreCase)))
+            {
+                selected.Add("Video");
+            }
+
+            return string.Join(", ", selected);
         }
 
         protected void SaveEdit_Click(object sender, EventArgs e)
@@ -209,6 +225,9 @@ namespace es.admin
             // Clear session after saving
             Session["UploadedFileData"] = null;
             Session["UploadedFileName"] = null;
+
+            Response.Redirect("/Pages/PostManagement.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         protected void BtnUpload_Click(object sender, EventArgs e)

@@ -62,6 +62,8 @@ namespace es.admin
                     .Select(c => new { c.ContentID, c.Tags })
                     .ToDictionary(c => c.ContentID, c => c.Tags);
 
+                var excludedTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "video" };
+
                 var tagCounts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
                 foreach (var w in watchList)
                 {
@@ -71,7 +73,8 @@ namespace es.admin
 
                     foreach (var tag in tagString
                         .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(t => t.Trim()))
+                        .Select(t => t.Trim())
+                        .Where(t => !excludedTags.Contains(t)))
                     {
                         if (tagCounts.ContainsKey(tag)) tagCounts[tag]++;
                         else tagCounts[tag] = 1;
