@@ -1,11 +1,16 @@
-﻿using es.view.Models;
+﻿using es.data;
+using es.view.Models;
+using System;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace es.view.Controllers
 {
     [AllowAnonymous]
     public class ReferralController : Controller
     {
+        private readonly DatabaseService db = new DatabaseService();
+
         // GET: /Referral/
         public ActionResult Index()
         {
@@ -31,7 +36,19 @@ namespace es.view.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO: Process the referral (e.g., save to database, send email, etc.)
+                int userId = int.Parse(User.Identity.GetUserId());
+
+                var entity = new Referral
+                {
+                    UserID = userId,
+                    ReferralName = model.Name?.Trim(),
+                    ReferralEmail = model.Email?.Trim(),
+                    ReferralComments = model.Comments?.Trim(),
+                    ReferralDate = DateTime.UtcNow
+                };
+                db.Referral.Insert(entity);
+                db.Save();
+
                 return RedirectToAction("ThankYou");
             }
             // If validation fails, redisplay the form.
