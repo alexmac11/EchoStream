@@ -6,7 +6,6 @@ using Microsoft.AspNet.Identity;
 
 namespace es.view.Controllers
 {
-    [AllowAnonymous]
     public class ReferralController : Controller
     {
         private readonly DatabaseService db = new DatabaseService();
@@ -31,7 +30,6 @@ namespace es.view.Controllers
         // POST: /Referral/SubmitReferral
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public ActionResult SubmitReferral(ReferralViewModel model)
         {
             if (ModelState.IsValid)
@@ -56,7 +54,6 @@ namespace es.view.Controllers
         }
 
         // GET: /Referral/ThankYou
-        [AllowAnonymous]
         public ActionResult ThankYou()
         {
             return View("~/Views/Home/ThankYou.cshtml");
