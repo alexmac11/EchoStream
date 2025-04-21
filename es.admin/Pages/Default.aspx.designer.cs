@@ -13,5 +13,32 @@ namespace es.admin
 
     public partial class _Default
     {
+
+        /// <summary>
+        /// litTotalUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl litTotalUsers;
+
+        /// <summary>
+        /// litTotalPosts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl litTotalPosts;
+
+        /// <summary>
+        /// litTotalVideos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl litTotalVideos;
     }
 }
