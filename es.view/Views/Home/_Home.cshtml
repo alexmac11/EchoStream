@@ -44,6 +44,10 @@
     </div>
 
     <script>
+        window.onYouTubeIframeAPIReady = () => {
+            setupYouTubeTracking();
+        };
+
         // ===== Configuration and Global Variables =====
         const pageSize = 5;
         let page = 1;
@@ -71,9 +75,13 @@
             let videoEmbed = "";
             if (post.ContentURL && post.ContentURL.trim()) {
                 let embedUrl = post.ContentURL;
-                if (embedUrl.includes("youtube.com") && !embedUrl.includes("enablejsapi=1")) {
-                    embedUrl += (embedUrl.includes("?") ? "&" : "?") + "enablejsapi=1";
+
+                if (embedUrl.includes("youtube.com")) {
+                    const sep = embedUrl.includes("?") ? "&" : "?";
+                    const origin = encodeURIComponent(location.origin);
+                    embedUrl += `${sep}enablejsapi=1&origin=${origin}`;
                 }
+
                 videoEmbed = `
                             <div style="
                                 position: relative;
@@ -161,7 +169,6 @@
             if (document.querySelector("iframe[src*='youtube.com']") && !window.YT) {
                 const ytScript = document.createElement("script");
                 ytScript.src = "https://www.youtube.com/iframe_api";
-                ytScript.onload = setupYouTubeTracking;
                 document.body.appendChild(ytScript);
             } else if (window.YT && YT.Player) {
                 setupYouTubeTracking();
@@ -183,24 +190,27 @@
             document.querySelectorAll("iframe[src*='youtube.com']").forEach(iframe => {
                 if (!iframe.dataset.youtubeInitialized) {
                     if (!iframe.id) {
-                        iframe.id = "yt-player-" + Math.random().toString(36).substr(2, 9);
+                        iframe.id = "yt-player-" + Math.random().toString(36).slice(2, 10);
                     }
-                    new YT.Player(iframe, {
+                    const player = new YT.Player(iframe.id, {
                         events: {
                             onStateChange: event => {
-                                const playerId = event.target.getIframe().id;
-                                const contentId = iframe.dataset.contentid;
+                                const id = event.target.getIframe().id;
+                                const contentId = event.target.getIframe().dataset.contentid;
+
                                 if (event.data === YT.PlayerState.PLAYING) {
                                     startWatching(contentId);
-                                    if (!youtubeIntervals[playerId]) {
-                                        youtubeIntervals[playerId] = setInterval(() => {
-                                            const currentTime = event.target.getCurrentTime();
-                                            updateWatching(contentId, Math.floor(currentTime));
+                                    if (!youtubeIntervals[id]) {
+                                        youtubeIntervals[id] = setInterval(() => {
+                                            updateWatching(
+                                                contentId,
+                                                Math.floor(event.target.getCurrentTime())
+                                            );
                                         }, 5000);
                                     }
-                                } else if (youtubeIntervals[playerId]) {
-                                    clearInterval(youtubeIntervals[playerId]);
-                                    delete youtubeIntervals[playerId];
+                                } else if (youtubeIntervals[id]) {
+                                    clearInterval(youtubeIntervals[id]);
+                                    delete youtubeIntervals[id];
                                 }
                             }
                         }
@@ -209,6 +219,7 @@
                 }
             });
         };
+
 
         // Setup Vimeo tracking for all Vimeo iframes
         const setupVimeoTracking = () => {
