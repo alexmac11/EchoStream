@@ -1,0 +1,89 @@
+﻿
+/* This is where the Color Theme can be managed */
+
+:root {
+    /* Theme colors */
+    --header-bg: #183b91;
+    --header-text: #ffffff;
+    --content-bg: #183b91;
+    --content-header-bg: #183b91;
+    --content-header-text: #ffffff;
+    --btn-bg: #183b91;
+    --btn-text: #ffffff;
+    --btn-primary-bg: #73727b;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-bg: #73727b;
+    --btn-secondary-text: #ffffff;
+    --btn-success-bg: #43a047;
+    --btn-success-text: #ffffff;
+    --btn-warning-bg: #ffa726;
+    --btn-warning-text: #ffffff;
+    --btn-danger-bg: #e53935;
+    --btn-danger-text: #ffffff;
+    --btn-light-bg: #f1f1f1;
+    --btn-light-text: #000000;
+}
+/* New Theme Overrides */
+
+/* Header at the top with EchoStream */
+.header {
+    background-color: var(--header-bg) !important;
+    color: var(--header-text) !important;
+}
+
+/* Background area behind search box and buttons */
+.content__header,
+.content__boxed,
+.content__wrap {
+    background-color: var(--content-bg) !important;
+    color: var(--content-text) !important;
+}
+
+    .content__header .text-center {
+        color: #ffffff !important; /* Change to match theme */
+    }
+
+/* Base Button Overrides */
+
+/* Buttons on background (content_header area) */
+.btn {
+    background-color: var(--btn-bg) !important;
+    border-color: var(--btn-bg) !important;
+    color: var(--btn-text) !important;
+}
+/* Generic buttons */
+.btn-primary {
+    background-color: var(--btn-primary-bg) !important;
+    border-color: var(--btn-primary-bg) !important;
+    color: var(--btn-primary-text) !important;
+}
+/* Generic buttons */
+.btn-secondary {
+    background-color: var(--btn-secondary-bg) !important;
+    border-color: var(--btn-secondary-bg) !important;
+    color: var(--btn-secondary-text) !important;
+}
+/* Add Post button */
+.btn-success {
+    background-color: var(--btn-success-bg) !important;
+    border-color: var(--btn-success-bg) !important;
+    color: var(--btn-success-text) !important;
+}
+/* Edit Post button */
+.btn-warning {
+    background-color: var(--btn-warning-bg) !important;
+    border-color: var(--btn-warning-bg) !important;
+    color: var(--btn-warning-text) !important;
+}
+/* Delete and Remove button */
+.btn-danger {
+    background-color: var(--btn-danger-bg) !important;
+    border-color: var(--btn-danger-bg) !important;
+    color: var(--btn-danger-text) !important;
+}
+
+.btn-light {
+    background-color: var(--btn-light-bg) !important;
+    border-color: var(--btn-light-bg) !important;
+    color: var(--btn-light-text) !important;
+}

@@ -29,6 +29,8 @@
     <!-- Quill [ OPTIONAL ] -->
     <link rel="stylesheet" href="./assets/vendors/quill/quill.min.css">
 
+    <!-- Color Theme -->
+    <link rel="stylesheet" href="./Content/theme.css">
 
     <!-- Favicons [ OPTIONAL ] -->
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
