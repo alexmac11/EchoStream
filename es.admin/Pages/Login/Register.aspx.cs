@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -12,6 +13,7 @@ namespace es.admin
     public partial class Register : Page
     {
         private readonly DatabaseService db = new DatabaseService();
+        private static readonly Regex StrongPwd = new Regex(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d]).{12,64}$", RegexOptions.Compiled);
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,8 +22,12 @@ namespace es.admin
 
         protected void Register_Button(object sender, EventArgs e)
         {
-            //TODO encrypt user data
-            //TODO remove connectionstring from public
+            if (!StrongPwd.IsMatch(password.Value))
+            {
+                ModelState.AddModelError("", "Password does not meet complexity requirements.");
+                return;
+            }
+
             db.User.Insert(new User{
                 FirstName = firstname.Value.Trim(),
                 LastName = lastname.Value.Trim(), 

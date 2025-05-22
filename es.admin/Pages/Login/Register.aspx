@@ -51,6 +51,15 @@
                                 <p class="mb-3"/>
                                 <div class="col-sm-12">
                                     <input runat="server" id="username" type="text" class="form-control" placeholder="Username" aria-label="Username">
+                                    <asp:RegularExpressionValidator
+                                        ID="valPassword"
+                                        runat="server"
+                                        ControlToValidate="password"
+                                        ValidationGroup="Register"
+                                        Display="Dynamic"
+                                        ErrorMessage="Password must be 12‑64 chars and include upper, lower, digit, and symbol."
+                                        ValidationExpression="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d]).{12,64}$" 
+                                     />
                                 </div>
                                 <div class="col-sm-6">
                                     <input runat="server" id="password" type="password" class="form-control" placeholder="Password" aria-label="Password">

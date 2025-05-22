@@ -85,8 +85,13 @@ namespace es.view.Models
         public string Username { get; set; }
 
         [Required]
+        [StringLength(64, MinimumLength = 12,
+            ErrorMessage = "Password must be 12‑64 characters.")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z\d]).{12,64}$",
+            ErrorMessage = "Password must include upper, lower, digit and symbol.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
 
         [Required]
         [DataType(DataType.Password)]
