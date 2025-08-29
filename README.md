@@ -106,4 +106,4 @@ graph LR
 4. Push and open a Pull Request
 
 ## License
-MIT License. See [LICENSE](LICENSE) for details.
+See [LICENSE](LICENSE) for details.

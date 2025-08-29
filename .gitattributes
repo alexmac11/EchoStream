@@ -61,3 +61,44 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+
+###############################################################################
+# GitHub Linguist tuning (exclude assets/build outputs from language stats)
+###############################################################################
+
+# Common ASP.NET/Web asset folders
+es.view/Scripts/**        linguist-vendored
+es.view/Content/**        linguist-vendored
+es.admin/Scripts/**       linguist-vendored
+es.admin/Content/**       linguist-vendored
+es.admin/assets/**        linguist-vendored
+
+# Build outputs
+**/bin/**                 linguist-vendored
+**/obj/**                 linguist-vendored
+packages/**               linguist-vendored
+
+# Typical web build dirs
+node_modules/**           linguist-vendored
+dist/**                   linguist-vendored
+public/**                 linguist-vendored
+build/**                  linguist-vendored
+
+# Large/static assets
+*.min.js                  linguist-vendored
+*.min.css                 linguist-vendored
+*.png                     linguist-vendored
+*.jpg                     linguist-vendored
+*.jpeg                    linguist-vendored
+*.gif                     linguist-vendored
+*.svg                     linguist-vendored
+*.mp3                     linguist-vendored
+*.wav                     linguist-vendored
+*.mp4                     linguist-vendored
+*.json                    linguist-vendored
+
+# Generated C# files
+*.g.cs                    linguist-generated
+*.Designer.cs             linguist-generated
+*.designer.cs             linguist-generated
